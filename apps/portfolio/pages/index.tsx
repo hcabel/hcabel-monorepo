@@ -1,9 +1,10 @@
-import styles from './index.module.scss';
+import styles from '@styles/pages/index.module.scss';
 
 export function Index() {
 
 	return (
-		<div>
+		<div className={styles.test}>
+			test
 		</div>
 	);
 }
