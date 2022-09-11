@@ -24,7 +24,6 @@ class Camera {
 	private _Sizes: Sizes;
 	private _Scene: THREE.Scene;
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
-	private _Controls: OrbitControls | undefined = undefined;
 	private _PositionLerp: ILerp;
 
 	private _StartRotation: Vector2D = { x: 0, y: -0.25 };
@@ -45,7 +44,6 @@ class Camera {
 		};
 
 		this.InitPerspectiveCamera();
-
 	}
 
 	private InitPerspectiveCamera()
@@ -64,17 +62,6 @@ class Camera {
 			const rotationY = (event.clientY - window.innerHeight / 2) * 2 / window.innerHeight;
 			this._PositionLerp.target.y = rotationY;
 		};
-
-		/* DEBUG */
-		// this._Controls = new OrbitControls(this._PerspectiveCamera, this._Canvas);
-		if (this._Controls) {
-			this._Controls.enableDamping = true;
-			this._Controls.zoom = true;
-		}
-		const grid = new THREE.GridHelper(10, 10);
-		this._Scene.add(grid);
-		const axis = new THREE.AxesHelper(5);
-		this._Scene.add(axis);
 	}
 
 	public Resize()
@@ -102,12 +89,6 @@ class Camera {
 
 		// Update cam rotation to focus the center of the scene
 		this._PerspectiveCamera.lookAt(0, 1.5, 0);
-
-		/* DEBUG */
-		if (this._Controls) {
-			console.log(this._PerspectiveCamera.position);
-			this._Controls.update();
-		}
 	}
 }
 

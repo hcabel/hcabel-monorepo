@@ -16,46 +16,39 @@ class Environements {
 		this._Scene = this._Canvas3D.Scene;
 		this._Resources = this._Canvas3D.Resources;
 
+		// @TODO: Is it weird that you see the sun but the directional light is at another angle?
+		// Add directional light (sun)
 		const light = new THREE.DirectionalLight("#ffffff", 3);
 		light.castShadow = true;
 		light.shadow.camera.far = 20;
-		light.shadow.mapSize.set(4096, 4096);
+		light.shadow.mapSize.set(2048, 2048);
 		light.shadow.normalBias = 0.05;
 		light.position.set(5, 10, 5);
 		this._Scene.add(light);
 
+		// Add ambient light (for the shadows)
 		const ambiantLight = new THREE.AmbientLight("#ffffff", 1);
 		this._Scene.add(ambiantLight);
 
+		// Create sky backgound
 		const sky = new Sky();
-		sky.scale.setScalar( 450000 );
+		sky.scale.setScalar(20);
 
-		const sun = new THREE.Vector3();
-
-		const effectController = {
-			turbidity: 10,
-			rayleigh: 3,
-			mieCoefficient: 0.005,
-			mieDirectionalG: 0.8,
-			elevation: 1,
-			azimuth: 165,
-		};
-
+		// sky material
 		const uniforms = sky.material.uniforms;
-		uniforms[ 'turbidity' ].value = effectController.turbidity;
-		uniforms[ 'rayleigh' ].value = effectController.rayleigh;
-		uniforms[ 'mieCoefficient' ].value = effectController.mieCoefficient;
-		uniforms[ 'mieDirectionalG' ].value = effectController.mieDirectionalG;
+		uniforms['turbidity'].value = 10;
+		uniforms['rayleigh'].value = 3;
+		uniforms['mieCoefficient'].value = 0.005;
+		uniforms['mieDirectionalG'].value = 1;
+
+		// Set sun position
+		const sun = new THREE.Vector3();
+		const phi = THREE.MathUtils.degToRad(88);
+		const theta = THREE.MathUtils.degToRad(0);
+		sun.setFromSphericalCoords(1, phi, theta);
+		uniforms['sunPosition'].value.copy(sun);
 
 		this._Scene.add(sky);
-
-		const phi = THREE.MathUtils.degToRad( 90 - effectController.elevation );
-		const theta = THREE.MathUtils.degToRad( effectController.azimuth );
-
-		sun.setFromSphericalCoords( 1, phi, theta );
-
-		uniforms[ 'sunPosition' ].value.copy( sun );
-
 	}
 }
 

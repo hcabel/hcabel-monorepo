@@ -10,21 +10,20 @@ import Environements from '@3D/world/Environements';
 
 class World {
 	private _Canvas3D: Canvas3D;
-	private _Canvas: HTMLCanvasElement;
 	private _Sizes: Sizes;
 	private _Scene: THREE.Scene;
 	private _Camera: Camera;
 	private _Resources: Resources;
-	private _Environements: Environements;
+	private _Environements: Environements | undefined;
 
 	constructor()
 	{
 		this._Canvas3D = new Canvas3D();
-		this._Canvas = this._Canvas3D.Canvas;
 		this._Sizes = this._Canvas3D.Sizes;
 		this._Scene = this._Canvas3D.Scene;
 		this._Camera = this._Canvas3D.Camera;
 		this._Resources = this._Canvas3D.Resources;
+		this._Environements = undefined;
 
 		this._Resources.on('loaded', () => {
 			this._Environements = new Environements();
@@ -46,16 +45,6 @@ class World {
 			this._Scene.add(actualScene);
 		});
 	}
-
-	// public Resize()
-	// {
-
-	// }
-
-	// public Update()
-	// {
-
-	// }
 }
 
 export default World;
