@@ -79,6 +79,7 @@ class Camera {
 	public Resize()
 	{
 		this._PerspectiveCamera.aspect = this._Sizes.Aspect;
+		this._PerspectiveCamera.updateProjectionMatrix();
 	}
 
 	public Update()
