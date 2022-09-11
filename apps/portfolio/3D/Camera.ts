@@ -21,26 +21,24 @@ interface ILerp {
 
 class Camera {
 	private _Canvas3D: Canvas3D;
-	private _Canvas: HTMLCanvasElement;
 	private _Sizes: Sizes;
 	private _Scene: THREE.Scene;
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
 	private _Controls: OrbitControls | undefined = undefined;
-	private _RotationLerp: ILerp;
+	private _PositionLerp: ILerp;
 
-	private _OriginRotation: Vector2D = { x: 0, y: -0.25 };
-	private _OriginLocation: Vector3D = { x: 0, y: 2.5, z: 3 };
+	private _StartRotation: Vector2D = { x: 0, y: -0.25 };
+	private _StartLocation: Vector3D = { x: 0, y: 2.5, z: 3 };
 
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
 
 	constructor()
 	{
 		this._Canvas3D = new Canvas3D();
-		this._Canvas = this._Canvas3D.Canvas;
 		this._Sizes = this._Canvas3D.Sizes;
 		this._Scene = this._Canvas3D.Scene;
 
-		this._RotationLerp = {
+		this._PositionLerp = {
 			current: { x: 0, y: 0 },
 			target: { x: 0, y: 0 },
 			speed: 0.05,
@@ -52,16 +50,19 @@ class Camera {
 
 	private InitPerspectiveCamera()
 	{
+		// Init cam
 		this._PerspectiveCamera = new THREE.PerspectiveCamera(35, this._Sizes.Aspect, 0.1, 1000);
+		this._PerspectiveCamera.position.set(this._StartLocation.x, this._StartLocation.y, this._StartLocation.z);
+		this._PerspectiveCamera.rotation.set(this._StartRotation.x, this._StartRotation.y, 0.0);
 		this._Scene.add(this._PerspectiveCamera);
-		this._PerspectiveCamera.position.set(this._OriginLocation.x, this._OriginLocation.y, this._OriginLocation.z);
 
+		// Listen to mouse pointer to animate camera
 		window.onmousemove = (event) => {
 			const rotationX = (event.clientX - window.innerWidth / 2) * 2 / window.innerWidth;
-			this._RotationLerp.target.x = rotationX;
+			this._PositionLerp.target.x = rotationX;
 
 			const rotationY = (event.clientY - window.innerHeight / 2) * 2 / window.innerHeight;
-			this._RotationLerp.target.y = rotationY;
+			this._PositionLerp.target.y = rotationY;
 		};
 
 		/* DEBUG */
@@ -84,22 +85,25 @@ class Camera {
 
 	public Update()
 	{
-		this._RotationLerp.current.x = THREE.MathUtils.lerp(
-			this._RotationLerp.current.x,
-			this._RotationLerp.target.x,
-			this._RotationLerp.speed
+		this._PositionLerp.current.x = THREE.MathUtils.lerp(
+			this._PositionLerp.current.x,
+			this._PositionLerp.target.x,
+			this._PositionLerp.speed
 		);
-		this._RotationLerp.current.y = THREE.MathUtils.lerp(
-			this._RotationLerp.current.y,
-			this._RotationLerp.target.y,
-			this._RotationLerp.speed
+		this._PositionLerp.current.y = THREE.MathUtils.lerp(
+			this._PositionLerp.current.y,
+			this._PositionLerp.target.y,
+			this._PositionLerp.speed
 		);
 
-		this._PerspectiveCamera.rotation.y = this._RotationLerp.current.x * -0.1 + this._OriginRotation.x;
-		this._PerspectiveCamera.rotation.x = this._RotationLerp.current.y * -0.1 + this._OriginRotation.y;
+		// Update cam position depending on mouse position
+		this._PerspectiveCamera.position.y = this._PositionLerp.current.y * 1 + this._StartLocation.y;
+		this._PerspectiveCamera.position.x = this._PositionLerp.current.x * -1 + this._StartLocation.x;
 
-		console.log([this._PerspectiveCamera.rotation.x, this._PerspectiveCamera.rotation.x]);
+		// Update cam rotation to focus the center of the scene
+		this._PerspectiveCamera.lookAt(0, 1.5, 0);
 
+		/* DEBUG */
 		if (this._Controls) {
 			console.log(this._PerspectiveCamera.position);
 			this._Controls.update();
