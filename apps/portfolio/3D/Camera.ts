@@ -28,8 +28,8 @@ class Camera {
 	private _Controls: OrbitControls | undefined = undefined;
 	private _RotationLerp: ILerp;
 
-	private _OriginRotation: Vector2D = { x: 0, y: -0.5 };
-	private _OriginLocation: Vector3D = { x: 0, y: 3, z: 4 };
+	private _OriginRotation: Vector2D = { x: 0, y: -0.25 };
+	private _OriginLocation: Vector3D = { x: 0, y: 2.5, z: 3 };
 
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
 
@@ -43,7 +43,7 @@ class Camera {
 		this._RotationLerp = {
 			current: { x: 0, y: 0 },
 			target: { x: 0, y: 0 },
-			speed: 0.01,
+			speed: 0.05,
 		};
 
 		this.InitPerspectiveCamera();
@@ -96,7 +96,9 @@ class Camera {
 		);
 
 		this._PerspectiveCamera.rotation.y = this._RotationLerp.current.x * -0.1 + this._OriginRotation.x;
-		this._PerspectiveCamera.rotation.x = this._RotationLerp.current.y * -0.25 + this._OriginRotation.y;
+		this._PerspectiveCamera.rotation.x = this._RotationLerp.current.y * -0.1 + this._OriginRotation.y;
+
+		console.log([this._PerspectiveCamera.rotation.x, this._PerspectiveCamera.rotation.x]);
 
 		if (this._Controls) {
 			console.log(this._PerspectiveCamera.position);

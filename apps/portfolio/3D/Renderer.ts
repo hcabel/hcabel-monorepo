@@ -33,7 +33,7 @@ class Renderer {
 		this._Renderer.physicallyCorrectLights = true;
 		this._Renderer.outputEncoding = THREE.sRGBEncoding;
 		this._Renderer.toneMapping = THREE.CineonToneMapping;
-		this._Renderer.toneMappingExposure = 1.75;
+		this._Renderer.toneMappingExposure = 1.5;
 		this._Renderer.shadowMap.enabled = true;
 		this._Renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this._Renderer.setSize(this._Sizes.Width, this._Sizes.Height);
