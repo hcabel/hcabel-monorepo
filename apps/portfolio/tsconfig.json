@@ -14,7 +14,8 @@
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@3D/*": ["3D/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
