@@ -35,27 +35,6 @@
           "dev": false
         }
       }
-    },
-    "export": {
-      "executor": "@nrwl/next:export",
-      "options": {
-        "buildTarget": "portfolio:build:production"
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/portfolio"],
-      "options": {
-        "jestConfig": "apps/portfolio/jest.config.ts",
-        "passWithNoTests": true
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/portfolio/**/*.{ts,tsx,js,jsx}"]
-      }
     }
   },
   "tags": []

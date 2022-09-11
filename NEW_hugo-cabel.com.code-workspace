@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "./apps/portfolio",
+			"name": "Apps/Portfolio"
+		},
+		{
+			"path": "./apps/portfolio-e2e",
+			"name": "Apps/Portfolio/e2e",
+		},
+		{
+			"path": ".",
+			"name": "/"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"apps": true
+		},
+		"search.exclude": {
+			"apps": true,
+			"node_modules": true,
+			"dist": true,
+			"package-lock.json": true,
+			"package.json": true,
+		},
+	}
+}
