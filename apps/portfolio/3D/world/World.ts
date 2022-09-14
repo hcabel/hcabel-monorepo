@@ -22,7 +22,7 @@ class World {
 
 		this.LoadAllAssets()
 			.then(() => {
-				this._Environements = new Environements();
+				this._Environements = new Environements(this._Scene);
 
 				// Create plane as a floor
 				const plane = new THREE.Mesh(

@@ -57,28 +57,18 @@ class Control
 
 		window.onwheel = (e: WheelEvent) => {
 			const offset = THREE.MathUtils.clamp(e.deltaY, -50, 50) * 0.0001;
-			console.log(offset);
 			this._CurveProgress = THREE.MathUtils.clamp(this._CurveProgress + offset, 0, 1);
-			console.log(1, {
-				x: this._Camera.PerspectiveCamera.position.x,
-				y: this._Camera.PerspectiveCamera.position.y,
-				z: this._Camera.PerspectiveCamera.position.z,
-			});
 		}
 	}
 
 	public Update()
 	{
-		// Update cam rotation to focus the center of the scene
-		// this._Camera.PerspectiveCamera.lookAt(0, 1.5, 0);
-
 		// Update cam position
 		const position = this._Curve.getPointAt(this._CurveProgress);
 		this._Camera.MoveTo(position.x, position.y, position.z, false);
 
 		// Update cam rotation
 		if (position.y) {
-
 			this._Camera.PerspectiveCamera.lookAt(0, position.y - 1, 0);
 		}
 	}

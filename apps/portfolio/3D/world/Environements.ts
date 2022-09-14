@@ -1,17 +1,13 @@
 import * as THREE from 'three';
 
-import Canvas3D from "@3D/Canvas3D";
-
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 
 class Environements {
-	private _Canvas3D: Canvas3D;
 	private _Scene: THREE.Scene;
 
-	constructor()
+	constructor(InScene: THREE.Scene)
 	{
-		this._Canvas3D = new Canvas3D();
-		this._Scene = this._Canvas3D.World.Scene;
+		this._Scene = InScene;
 
 		// @TODO: Is it weird that you see the sun but the directional light is at another angle?
 		// Add directional light (sun)
@@ -26,6 +22,10 @@ class Environements {
 		// Add ambient light (for the shadows)
 		const ambiantLight = new THREE.AmbientLight("#ffffff", 1);
 		this._Scene.add(ambiantLight);
+
+		// show shadow debug
+		// const helper = new THREE.CameraHelper(light.shadow.camera);
+		// this._Scene.add(helper);
 
 		// Create sky backgound
 		const sky = new Sky();
