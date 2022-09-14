@@ -40,7 +40,7 @@ class World {
 
 				for (const asset of this._Assets) {
 					asset.UpdateShadow(true, true);
-					this._Scene.add(asset.Mesh);
+					this._Scene.add(asset.Scene);
 				}
 			});
 	}

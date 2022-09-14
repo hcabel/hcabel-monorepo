@@ -13,7 +13,7 @@ class GLTFAsset extends EventEmitter {
 	private _Content: any | undefined;
 
 	get Content(): any | undefined { return this._Content; }
-	get Mesh(): any | undefined { return this._Content?.scene; }
+	get Scene(): any | undefined { return this._Content?.scene; }
 
 	constructor(filePath: string)
 	{
