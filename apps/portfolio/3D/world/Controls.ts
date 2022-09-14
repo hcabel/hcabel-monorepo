@@ -18,7 +18,7 @@ class Level {
 		this._LookAt = InLookAt;
 		this._Progress = THREE.MathUtils.clamp(InProgress, 0, 1);
 
-		this.ShowDebug();
+		// this.ShowDebug();
 	}
 
 	private ShowDebug()
