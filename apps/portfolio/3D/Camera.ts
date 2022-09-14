@@ -3,19 +3,9 @@ import * as THREE from 'three';
 import Canvas3D from "./Canvas3D";
 import Sizes from '@3D/utils/Sizes';
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
-interface Vector2D {
-	x: number,
-	y: number
-}
-interface Vector3D extends Vector2D {
-	z: number,
-}
-
 interface ILerp {
-	current: Vector2D,
-	target: Vector2D,
+	current: THREE.Vector2,
+	target: THREE.Vector2,
 	speed: number,
 }
 
@@ -26,8 +16,8 @@ class Camera {
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
 	private _PositionLerp: ILerp;
 
-	private _StartRotation: Vector2D = { x: 0, y: -0.25 };
-	private _StartLocation: Vector3D = { x: 0, y: 2.5, z: 3 };
+	private _StartRotation: THREE.Vector2 = { x: 0, y: -0.25 };
+	private _StartLocation: THREE.Vector3 = { x: 5, y: 10, z: 0 };
 
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
 
