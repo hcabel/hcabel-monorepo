@@ -28,12 +28,12 @@ class World {
 				const plane = new THREE.Mesh(
 					new THREE.PlaneGeometry(),
 					new THREE.MeshStandardMaterial({
-						color: 0x888888,
+						color: 0x333333,
 						roughness: 0.75,
 						metalness: 0.5,
 					})
 				);
-				plane.scale.set(5, 5, 1);
+				plane.scale.set(10, 10, 1);
 				plane.rotation.x = Math.PI * -0.5;
 				plane.receiveShadow = true;
 				this._Scene.add(plane);

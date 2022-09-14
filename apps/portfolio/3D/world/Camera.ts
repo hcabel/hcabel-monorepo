@@ -4,6 +4,7 @@ import Canvas3D from "../Canvas3D";
 import Sizes from '@3D/utils/Sizes';
 import Control from './Controls';
 
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export interface ILerp3d {
 	current: THREE.Vector3,
 	target: THREE.Vector3,
@@ -22,6 +23,8 @@ class Camera {
 
 	private _PositionLerp: ILerp3d = { current: new THREE.Vector3(0), target: new THREE.Vector3(0), speed: 0.05 };
 	private _RotationLerp: ILerp3d = { current: new THREE.Vector3(0), target: new THREE.Vector3(0), speed: 0.05 };
+
+	private _OrbitControls: OrbitControls | undefined;
 
 	// Own properties getters
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
@@ -47,6 +50,14 @@ class Camera {
 
 		// Init controls
 		this._Controls = new Control(this);
+
+		// Init OrbitControls
+		// this._OrbitControls = new OrbitControls(this._PerspectiveCamera, this._Canvas3D.Canvas);
+		if (this._OrbitControls) {
+			this._OrbitControls.enableDamping = true;
+			this._OrbitControls.dampingFactor = 0.05;
+			this._OrbitControls.enableZoom = true;
+		}
 	}
 
 	public Resize()
@@ -57,6 +68,11 @@ class Camera {
 
 	public Update()
 	{
+		if (this._OrbitControls) {
+			this._OrbitControls.update();
+			return;
+		}
+
 
 		this._PositionLerp.current.lerp(this._PositionLerp.target, this._PositionLerp.speed);
 		this._RotationLerp.current.lerp(this._RotationLerp.target, this._RotationLerp.speed);
