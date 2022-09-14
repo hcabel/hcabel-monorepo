@@ -25,7 +25,7 @@ class Camera {
 	{
 		this._Canvas3D = new Canvas3D();
 		this._Sizes = this._Canvas3D.Sizes;
-		this._Scene = this._Canvas3D.Scene;
+		this._Scene = this._Canvas3D.World.Scene;
 
 		this._PositionLerp = {
 			current: { x: 0, y: 0 },

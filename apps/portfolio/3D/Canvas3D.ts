@@ -19,17 +19,16 @@ class Canvas3D {
 	private _World: World;
 	private _Renderer: Renderer;
 
-	private _Scene: THREE.Scene;
 	private _Camera: Camera;
 	private _Resources: Resources;
 
 	get Canvas(): HTMLCanvasElement { return this._Canvas; }
-	get Sizes(): Sizes { return this._Sizes; }
-	get Scene(): Sizes { return this._Scene; }
-	get Camera(): Camera { return this._Camera; }
-	get Renderer(): Renderer { return this._Renderer; }
 	get Clock(): Clock { return this._Clock; }
+	get Sizes(): Sizes { return this._Sizes; }
 	get World(): World { return this._World; }
+	get Renderer(): Renderer { return this._Renderer; }
+
+	get Camera(): Camera { return this._Camera; }
 	get Resources(): Resources { return this._Resources; }
 
 	constructor(canvas: HTMLCanvasElement | undefined = undefined)
@@ -46,7 +45,6 @@ class Canvas3D {
 		this._Canvas = canvas;
 		this._Clock = new Clock();
 		this._Sizes = new Sizes();
-		this._Scene = new THREE.Scene();
 		this._Camera = new Camera();
 		this._Renderer = new Renderer();
 		this._Resources = new Resources([ DesktopSceneAsset ]);
