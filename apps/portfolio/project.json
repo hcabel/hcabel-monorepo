@@ -32,7 +32,8 @@
         },
         "production": {
           "buildTarget": "portfolio:build:production",
-          "dev": false
+          "dev": false,
+          "hostname": "10.0.0.78"
         }
       }
     }
