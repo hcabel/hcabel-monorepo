@@ -18,12 +18,12 @@ class Environements {
 
 		// @TODO: Is it weird that you see the sun but the directional light is at another angle?
 		// Add directional light (sun)
-		const light = new THREE.DirectionalLight("#ffffff", 3);
+		const light = new THREE.DirectionalLight("#ffffff", 8);
 		light.castShadow = true;
-		light.shadow.camera.far = 20;
+		light.shadow.camera.far = 10;
 		light.shadow.mapSize.set(2048, 2048);
-		light.shadow.normalBias = 0.05;
-		light.position.set(5, 10, 5);
+		light.shadow.normalBias = 0.5;
+		light.position.set(3, 5, 3);
 		this._Scene.add(light);
 
 		// Add ambient light (for the shadows)
