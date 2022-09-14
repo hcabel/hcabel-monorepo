@@ -46,6 +46,7 @@ class Camera {
 			this._Sizes.Aspect,
 			0.1,
 			1000);
+		this._PerspectiveCamera.position.set(0, 6, 0);
 		this._Scene.add(this._PerspectiveCamera);
 
 		// Init controls
@@ -73,18 +74,11 @@ class Camera {
 			return;
 		}
 
-
 		this._PositionLerp.current.lerp(this._PositionLerp.target, this._PositionLerp.speed);
 		this._RotationLerp.current.lerp(this._RotationLerp.target, this._RotationLerp.speed);
 
-		this._PerspectiveCamera.position.set(
-			this._PositionLerp.current.x,
-			this._PositionLerp.current.y,
-			this._PositionLerp.current.z);
-		this._PerspectiveCamera.rotation.set(
-			this._RotationLerp.current.x,
-			this._RotationLerp.current.y,
-			this._RotationLerp.current.z);
+		this._PerspectiveCamera.position.copy(this._PositionLerp.current);
+		this._PerspectiveCamera.rotation.copy(this._RotationLerp.current);
 
 		this._Controls.Update();
 	}
