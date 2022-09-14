@@ -1,34 +1,23 @@
 import * as THREE from 'three';
 
 import Resources from '@3D/utils/Resources';
-import Sizes from '@3D/utils/Sizes';
-
-import Canvas3D from "@3D/Canvas3D";
-import Camera from '@3D/world/Camera';
 
 import Environements from '@3D/world/Environements';
 import { DesktopSceneAsset } from '@3D/utils/Assets';
 
 class World {
-	private _Canvas3D: Canvas3D;
 
-	private _Environements: Environements;
-	private _Resources: Resources;
-	private _Camera: Camera;
+	// Own properties
 	private _Scene: THREE.Scene;
+	private _Resources: Resources;
+	private _Environements: Environements;
 
-	// Quick access
-	private _Sizes: Sizes;
-
+	// Own properties getters
 	get Scene(): THREE.Scene { return this._Scene; }
 
 	constructor()
 	{
-		this._Canvas3D = new Canvas3D();
-		this._Sizes = this._Canvas3D.Sizes;
-
 		this._Scene = new THREE.Scene();
-		this._Camera = this._Canvas3D.Camera;
 		this._Resources = new Resources([ DesktopSceneAsset ]);
 
 		this._Resources.on('loaded', () => {

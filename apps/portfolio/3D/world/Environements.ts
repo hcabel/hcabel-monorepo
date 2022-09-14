@@ -1,20 +1,17 @@
 import * as THREE from 'three';
 
 import Canvas3D from "@3D/Canvas3D";
-import Resources from '@3D/utils/Resources';
 
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 
 class Environements {
 	private _Canvas3D: Canvas3D;
 	private _Scene: THREE.Scene;
-	private _Resources: Resources;
 
 	constructor()
 	{
 		this._Canvas3D = new Canvas3D();
 		this._Scene = this._Canvas3D.World.Scene;
-		this._Resources = this._Canvas3D.Resources;
 
 		// @TODO: Is it weird that you see the sun but the directional light is at another angle?
 		// Add directional light (sun)

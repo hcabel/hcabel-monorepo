@@ -10,15 +10,18 @@ interface ILerp {
 }
 
 class Camera {
+	// Quick access
 	private _Canvas3D: Canvas3D;
 	private _Sizes: Sizes;
 	private _Scene: THREE.Scene;
+
+	// Own properties
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
 	private _PositionLerp: ILerp;
-
 	private _StartRotation: THREE.Vector2 = { x: 0, y: -0.25 };
 	private _StartLocation: THREE.Vector3 = { x: 5, y: 10, z: 0 };
 
+	// Own properties getters
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
 
 	constructor()

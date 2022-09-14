@@ -9,21 +9,22 @@ class Canvas3D {
 	// Singleton instance
 	private static instance: Canvas3D;
 
+
+	// Own properties
 	private _Canvas: HTMLCanvasElement;
 	private _Clock: Clock;
 	private _Sizes: Sizes;
 	private _World: World;
+	private _Camera: Camera;
 	private _Renderer: Renderer;
 
-	private _Camera: Camera;
-
+	// Own properties getters
 	get Canvas(): HTMLCanvasElement { return this._Canvas; }
 	get Clock(): Clock { return this._Clock; }
 	get Sizes(): Sizes { return this._Sizes; }
 	get World(): World { return this._World; }
-	get Renderer(): Renderer { return this._Renderer; }
-
 	get Camera(): Camera { return this._Camera; }
+	get Renderer(): Renderer { return this._Renderer; }
 
 	constructor(canvas: HTMLCanvasElement | undefined = undefined)
 	{
