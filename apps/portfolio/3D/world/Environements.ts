@@ -13,7 +13,7 @@ class Environements {
 	constructor()
 	{
 		this._Canvas3D = new Canvas3D();
-		this._Scene = this._Canvas3D.Scene;
+		this._Scene = this._Canvas3D.World.Scene;
 		this._Resources = this._Canvas3D.Resources;
 
 		// @TODO: Is it weird that you see the sun but the directional light is at another angle?

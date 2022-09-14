@@ -7,6 +7,7 @@ import Canvas3D from "@3D/Canvas3D";
 import Camera from '@3D/world/Camera';
 
 import Environements from '@3D/world/Environements';
+import { DesktopSceneAsset } from '@3D/utils/Assets';
 
 class World {
 	private _Canvas3D: Canvas3D;
@@ -28,7 +29,7 @@ class World {
 
 		this._Scene = new THREE.Scene();
 		this._Camera = this._Canvas3D.Camera;
-		this._Resources = this._Canvas3D.Resources;
+		this._Resources = new Resources([ DesktopSceneAsset ]);
 
 		this._Resources.on('loaded', () => {
 			this._Environements = new Environements();

@@ -1,9 +1,5 @@
-import * as THREE from 'three';
-
 import Sizes from '@3D/utils/Sizes';
 import Clock from '@3D/utils/Clock';
-import Resources from '@3D/utils/Resources';
-import { DesktopSceneAsset } from './utils/Assets';
 
 import Camera from "@3D/world/Camera";
 import Renderer from '@3D/Renderer';
@@ -20,7 +16,6 @@ class Canvas3D {
 	private _Renderer: Renderer;
 
 	private _Camera: Camera;
-	private _Resources: Resources;
 
 	get Canvas(): HTMLCanvasElement { return this._Canvas; }
 	get Clock(): Clock { return this._Clock; }
@@ -29,7 +24,6 @@ class Canvas3D {
 	get Renderer(): Renderer { return this._Renderer; }
 
 	get Camera(): Camera { return this._Camera; }
-	get Resources(): Resources { return this._Resources; }
 
 	constructor(canvas: HTMLCanvasElement | undefined = undefined)
 	{
@@ -45,10 +39,9 @@ class Canvas3D {
 		this._Canvas = canvas;
 		this._Clock = new Clock();
 		this._Sizes = new Sizes();
+		this._World = new World();
 		this._Camera = new Camera();
 		this._Renderer = new Renderer();
-		this._Resources = new Resources([ DesktopSceneAsset ]);
-		this._World = new World();
 
 		this._Clock.on('tick', () => {
 			this.Update();
