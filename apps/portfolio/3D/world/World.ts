@@ -28,9 +28,25 @@ class World {
 		this._Resources.on('loaded', () => {
 			this._Environements = new Environements();
 
-			const actualScene = this._Resources.Items['DesktopScene'].scene;
+			// Create plane as a floor
+			const plane = new THREE.Mesh(
+				new THREE.PlaneGeometry(100, 100),
+				new THREE.MeshStandardMaterial({
+					color: 0x888888,
+					roughness: 0.75,
+					metalness: 0.5,
+				})
+			);
+			plane.scale.set(10, 10, 10);
+			plane.rotation.x = -Math.PI * 0.5;
+			plane.receiveShadow = true;
+			this._Scene.add(plane);
 
+			const actualScene = this._Resources.Items['DesktopScene'].scene;
 			actualScene.children.forEach((child) => {
+				if (child.name === 'FirstName' || child.name === 'LastName') {
+					return;
+				}
 				child.castShadow = true;
 				child.receiveShadow = true;
 
@@ -41,8 +57,10 @@ class World {
 					});
 				}
 			});
-
 			this._Scene.add(actualScene);
+
+			// const gridHelper = new THREE.GridHelper();
+			// this._Scene.add( gridHelper );
 		});
 	}
 }
