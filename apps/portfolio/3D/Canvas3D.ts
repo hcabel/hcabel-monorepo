@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
 import Sizes from '@3D/utils/Sizes';
-import Time from '@3D/utils/Time';
+import Clock from '@3D/utils/Clock';
 import Resources from '@3D/utils/Resources';
 import { DesktopSceneAsset } from './utils/Assets';
 
-import Camera from "@3D/Camera";
+import Camera from "@3D/world/Camera";
 import Renderer from '@3D/Renderer';
 import World from '@3D/world/World';
 
@@ -14,12 +14,13 @@ class Canvas3D {
 	private static instance: Canvas3D;
 
 	private _Canvas: HTMLCanvasElement;
+	private _Clock: Clock;
 	private _Sizes: Sizes;
+	private _World: World;
+	private _Renderer: Renderer;
+
 	private _Scene: THREE.Scene;
 	private _Camera: Camera;
-	private _Renderer: Renderer;
-	private _Time: Time;
-	private _World: World;
 	private _Resources: Resources;
 
 	get Canvas(): HTMLCanvasElement { return this._Canvas; }
@@ -27,7 +28,7 @@ class Canvas3D {
 	get Scene(): Sizes { return this._Scene; }
 	get Camera(): Camera { return this._Camera; }
 	get Renderer(): Renderer { return this._Renderer; }
-	get Time(): Time { return this._Time; }
+	get Clock(): Clock { return this._Clock; }
 	get World(): World { return this._World; }
 	get Resources(): Resources { return this._Resources; }
 
@@ -43,7 +44,7 @@ class Canvas3D {
 			throw new Error("Canvas3D need a canvas element at initialization");
 		}
 		this._Canvas = canvas;
-		this._Time = new Time();
+		this._Clock = new Clock();
 		this._Sizes = new Sizes();
 		this._Scene = new THREE.Scene();
 		this._Camera = new Camera();
@@ -51,7 +52,7 @@ class Canvas3D {
 		this._Resources = new Resources([ DesktopSceneAsset ]);
 		this._World = new World();
 
-		this._Time.on('update', () => {
+		this._Clock.on('tick', () => {
 			this.Update();
 		});
 

@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-class Time extends EventEmitter {
+class Clock extends EventEmitter {
 	private _Start: number;
 	private _Current: number;
 	private _Elapsed: number;
@@ -30,11 +30,11 @@ class Time extends EventEmitter {
 		this._Current = currentTime;
 		this._Elapsed = this._Current - this._Start;
 
-		this.emit("update");
+		this.emit("tick");
 		window.requestAnimationFrame(() => {
 			this.Update();
 		});
 	}
 }
 
-export default Time;
+export default Clock;

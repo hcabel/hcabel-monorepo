@@ -4,7 +4,7 @@ import Resources from '@3D/utils/Resources';
 import Sizes from '@3D/utils/Sizes';
 
 import Canvas3D from "@3D/Canvas3D";
-import Camera from '@3D/Camera';
+import Camera from '@3D/world/Camera';
 
 import Environements from '@3D/world/Environements';
 

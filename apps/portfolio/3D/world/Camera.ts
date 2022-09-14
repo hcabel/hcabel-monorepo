@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import Canvas3D from "./Canvas3D";
+import Canvas3D from "../Canvas3D";
 import Sizes from '@3D/utils/Sizes';
 
 interface ILerp {
