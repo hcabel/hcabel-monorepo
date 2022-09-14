@@ -11,21 +11,22 @@ class Control
 	constructor(InCamera: Camera)
 	{
 		this._Camera = InCamera;
+		this._Camera.MoveTo(0, 6, 0, true);
+		this._Camera.RotateTo(-90, 0, -90, true);
 
-		// Listen to mouse pointer to animate camera
-		window.onmousemove = (event: MouseEvent) => {
-			const rotationX = (event.clientX - window.innerWidth / 2) * 2 / window.innerWidth;
-			const rotationY = (event.clientY - window.innerHeight / 2) * 2 / window.innerHeight;
-			this._Camera.OffsetPosition(rotationX, rotationY, 0);
-		};
+		window.onmousemove = (e: MouseEvent) => {
+			const x = e.clientX - window.innerWidth / 2;
+			const y = e.clientY - window.innerHeight / 2;
 
-		this._Camera.MoveTo(0, 2.5, 5, true);
+			this._Camera.OffsetPosition(y * -0.001, 0, x * 0.001, false);
+			console.log(1, this._Camera.PerspectiveCamera.rotation);
+		}
 	}
 
 	public Update()
 	{
 		// Update cam rotation to focus the center of the scene
-		this._Camera.PerspectiveCamera.lookAt(0, 1.5, 0);
+		// this._Camera.PerspectiveCamera.lookAt(0, 1.5, 0);
 	}
 }
 

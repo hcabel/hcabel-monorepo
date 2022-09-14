@@ -61,12 +61,16 @@ class Camera {
 		this._PositionLerp.current.lerp(this._PositionLerp.target, this._PositionLerp.speed);
 		this._RotationLerp.current.lerp(this._RotationLerp.target, this._RotationLerp.speed);
 
-		this._PerspectiveCamera.position.set(...this._PositionLerp.current);
-		this._PerspectiveCamera.rotation.set(...this._RotationLerp.current);
+		this._PerspectiveCamera.position.set(
+			this._PositionLerp.current.x,
+			this._PositionLerp.current.y,
+			this._PositionLerp.current.z);
+		this._PerspectiveCamera.rotation.set(
+			this._RotationLerp.current.x,
+			this._RotationLerp.current.y,
+			this._RotationLerp.current.z);
 
 		this._Controls.Update();
-
-		console.log(this._PerspectiveCamera.position);
 	}
 
 	public MoveTo(x: number, y: number, z: number, teleport = false)
@@ -89,6 +93,11 @@ class Camera {
 
 	public RotateTo(x: number, y: number, z: number, teleport = false)
 	{
+		// Convert to radians
+		x = THREE.MathUtils.degToRad(x);
+		y = THREE.MathUtils.degToRad(y);
+		z = THREE.MathUtils.degToRad(z);
+
 		if (teleport) {
 			this._PerspectiveCamera.rotation.set(x, y, z);
 			this._RotationLerp.current.set(x, y, z);
