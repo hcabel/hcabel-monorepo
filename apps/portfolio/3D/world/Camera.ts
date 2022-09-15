@@ -78,7 +78,7 @@ class Camera {
 		this._RotationLerp.current.lerp(this._RotationLerp.target, this._RotationLerp.speed);
 
 		this._PerspectiveCamera.position.copy(this._PositionLerp.current);
-		this._PerspectiveCamera.rotation.copy(this._RotationLerp.current);
+		this._PerspectiveCamera.rotation.setFromVector3(this._RotationLerp.current);
 
 		this._Controls.Update();
 	}
