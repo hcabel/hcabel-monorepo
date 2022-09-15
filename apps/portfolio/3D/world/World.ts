@@ -39,7 +39,13 @@ class World {
 				this._Scene.add(plane);
 
 				for (const asset of this._Assets) {
-					asset.UpdateShadow(true, true);
+
+					// Enable casting and receiving shadows for all meshes
+					GLTFAsset.TraverseMeshs(asset.Scene, (mesh) => {
+						mesh.castShadow = true;
+						mesh.receiveShadow = true;
+					});
+
 					this._Scene.add(asset.Scene);
 				}
 			});

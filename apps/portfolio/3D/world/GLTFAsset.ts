@@ -7,19 +7,37 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 class GLTFAsset extends EventEmitter {
 
+	static TraverseMeshs(scene: THREE.Group, callback: (mesh: THREE.Mesh) => void, depth = 0) {
+		if (depth >= 10) {
+			throw new Error("Too much depth in your scene");
+		}
+		for (const child of scene.children) {
+			if (child.isMesh === true) {
+				callback(child);
+			}
+			else if (child.isGroup === true) {
+				GLTFAsset.TraverseMeshs(child, callback, depth + 1);
+			}
+		}
+	}
+
 	private static _GLTFLoader: GLTFLoader;
 	private static _DRACOLoader: DRACOLoader;
 	private _FilePath: string;
 	private _Content: any | undefined;
+	private _Meshs: Map<string, THREE.Mesh>;
 
 	get Content(): any | undefined { return this._Content; }
-	get Scene(): any | undefined { return this._Content?.scene; }
+	get Scene(): THREE.Group | undefined { return this._Content?.scene; }
+	get Meshs(): Map<string, THREE.Mesh> | undefined { return this._Meshs; }
 
 	constructor(filePath: string)
 	{
 		super(); // call EventEmitter constructor
 
 		this._FilePath = filePath;
+
+		this._Meshs = new Map<string, THREE.Mesh>();
 
 		// Setup loader
 		if (GLTFAsset._GLTFLoader === undefined || GLTFAsset._DRACOLoader === undefined) {
@@ -36,28 +54,11 @@ class GLTFAsset extends EventEmitter {
 		GLTFAsset._GLTFLoader.load(this._FilePath, (content) => {
 			this._Content = content;
 			this.emit("loaded");
-		});
-	}
 
-	public UpdateShadow(receiving: boolean, casting: boolean)
-	{
-		if (this._Content === undefined) {
-			return;
-		}
-
-		this._Content.scene.traverse((child) => {
-			if (child.isMesh) {
-				child.castShadow = casting;
-				child.receiveShadow = receiving;
-			}
-			else if (child instanceof THREE.Group) {
-				child.children.forEach((childGroup) => {
-					if (childGroup.isMesh) {
-						childGroup.castShadow = casting;
-						childGroup.receiveShadow = receiving;
-					}
-				});
-			}
+			// Store all mesh in the map for quick access
+			GLTFAsset.TraverseMeshs(this._Content.scene, (mesh) => {
+				this._Meshs.set(mesh.name, mesh);
+			});
 		});
 	}
 }

@@ -185,7 +185,6 @@ class Control
 
 			// Update cam rotation
 			const lookAt = level.GetProgressLookAt();
-			console.log(1000, lookAt);
 			this._Camera.PerspectiveCamera.lookAt(lookAt.x, lookAt.y, lookAt.z);
 		}
 	}

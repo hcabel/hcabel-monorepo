@@ -23,6 +23,7 @@
 			"dist": true,
 			"package-lock.json": true,
 			"package.json": true,
+			".next": true,
 		},
 	}
 }
