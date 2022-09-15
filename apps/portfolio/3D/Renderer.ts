@@ -12,6 +12,8 @@ class Renderer {
 	private _Camera: Camera;
 	private _Renderer: THREE.WebGLRenderer;
 
+	get WebGLRenderer(): THREE.WebGLRenderer { return this._Renderer; }
+
 	constructor()
 	{
 		this._Canvas3D = new Canvas3D();
@@ -36,8 +38,7 @@ class Renderer {
 		this._Renderer.toneMappingExposure = 1.5;
 		this._Renderer.shadowMap.enabled = true;
 		this._Renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-		this._Renderer.setSize(this._Sizes.Width, this._Sizes.Height);
-		this._Renderer.setPixelRatio(this._Sizes.PixelRatio);
+		this.Resize();
 	}
 
 	public Resize()

@@ -2,6 +2,7 @@ import * as THREE from 'three';
 
 import Environements from '@3D/world/Environements';
 import GLTFAsset from './GLTFAsset';
+import Canvas3D from '@3D/Canvas3D';
 
 class World {
 
@@ -38,8 +39,15 @@ class World {
 				plane.receiveShadow = true;
 				this._Scene.add(plane);
 
-				for (const asset of this._Assets) {
+				const glass = this._Assets[0].Meshs.get("CubeBuilding_2");
 
+				// Add reflection to the glass material
+				const gen = new THREE.PMREMGenerator(new Canvas3D().Renderer.WebGLRenderer);
+				glass.material.envMap = gen.fromScene(this._Scene, 0, 5, 20).texture;
+				glass.material.roughness = 0;
+				glass.material.reflectivity = 1;
+
+				for (const asset of this._Assets) {
 					// Enable casting and receiving shadows for all meshes
 					GLTFAsset.TraverseMeshs(asset.Scene, (mesh) => {
 						mesh.castShadow = true;
