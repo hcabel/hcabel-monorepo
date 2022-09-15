@@ -10,9 +10,9 @@ class Renderer {
 	private _Sizes: Sizes;
 	private _Scene: THREE.Scene;
 	private _Camera: Camera;
-	private _Renderer: THREE.WebGLRenderer;
+	private _WebGLRenderer: THREE.WebGLRenderer;
 
-	get WebGLRenderer(): THREE.WebGLRenderer { return this._Renderer; }
+	get WebGLRenderer(): THREE.WebGLRenderer { return this._WebGLRenderer; }
 
 	constructor()
 	{
@@ -27,29 +27,29 @@ class Renderer {
 
 	private SetRenderer()
 	{
-		this._Renderer = new THREE.WebGLRenderer({
+		this._WebGLRenderer = new THREE.WebGLRenderer({
 			canvas: this._Canvas,
 			antialias: true,
 		});
 
-		this._Renderer.physicallyCorrectLights = true;
-		this._Renderer.outputEncoding = THREE.sRGBEncoding;
-		this._Renderer.toneMapping = THREE.CineonToneMapping;
-		this._Renderer.toneMappingExposure = 1.5;
-		this._Renderer.shadowMap.enabled = true;
-		this._Renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		this._WebGLRenderer.physicallyCorrectLights = true;
+		this._WebGLRenderer.outputEncoding = THREE.sRGBEncoding;
+		this._WebGLRenderer.toneMapping = THREE.CineonToneMapping;
+		this._WebGLRenderer.toneMappingExposure = 1.5;
+		this._WebGLRenderer.shadowMap.enabled = true;
+		this._WebGLRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.Resize();
 	}
 
 	public Resize()
 	{
-		this._Renderer.setSize(this._Sizes.Width, this._Sizes.Height);
-		this._Renderer.setPixelRatio(this._Sizes.PixelRatio);
+		this._WebGLRenderer.setSize(this._Sizes.Width, this._Sizes.Height);
+		this._WebGLRenderer.setPixelRatio(this._Sizes.PixelRatio);
 	}
 
 	public Update()
 	{
-		this._Renderer.render(this._Scene, this._Camera.PerspectiveCamera);
+		this._WebGLRenderer.render(this._Scene, this._Camera.PerspectiveCamera);
 	}
 }
 
