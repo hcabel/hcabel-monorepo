@@ -39,9 +39,8 @@ class World {
 				plane.receiveShadow = true;
 				this._Scene.add(plane);
 
-				const glass = this._Assets[0].Meshs.get("CubeBuilding_2");
-
 				// Add reflection to the glass material
+				const glass = this._Assets[0].Meshs.get("CubeBuilding_2");
 				const gen = new THREE.PMREMGenerator(new Canvas3D().Renderer.WebGLRenderer);
 				glass.material.envMap = gen.fromScene(this._Scene, 0, 5, 20).texture;
 				glass.material.roughness = 0;

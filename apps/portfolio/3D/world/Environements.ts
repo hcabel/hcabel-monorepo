@@ -15,7 +15,7 @@ class Environements {
 		light.castShadow = true;
 		light.shadow.camera.far = 10;
 		light.shadow.mapSize.set(2048, 2048);
-		light.shadow.normalBias = 0.5;
+		light.shadow.normalBias = 0.1;
 		light.position.set(3, 5, 3);
 		this._Scene.add(light);
 
