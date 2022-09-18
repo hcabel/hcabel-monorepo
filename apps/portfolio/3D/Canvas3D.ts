@@ -5,6 +5,8 @@ import Camera from "@3D/world/Camera";
 import Renderer from '@3D/Renderer';
 import World from '@3D/world/World';
 
+import Stats from "stats.js"
+
 class Canvas3D {
 	// Singleton instance
 	private static instance: Canvas3D;
@@ -17,6 +19,8 @@ class Canvas3D {
 	private _World: World;
 	private _Camera: Camera;
 	private _Renderer: Renderer;
+
+	private _Stats: Stats;
 
 	// Own properties getters
 	get Canvas(): HTMLCanvasElement { return this._Canvas; }
@@ -51,12 +55,21 @@ class Canvas3D {
 		this._Sizes.on('resize', () => {
 			this.Resize();
 		});
+
+		this._Stats = new Stats();
+		this._Stats.showPanel(0);
+		document.body.appendChild(this._Stats.dom);
+
 	}
 
 	Update()
 	{
+		this._Stats.begin();
+
 		this._Camera.Update();
 		this._Renderer.Update();
+
+		this._Stats.end();
 	}
 
 	Resize()
