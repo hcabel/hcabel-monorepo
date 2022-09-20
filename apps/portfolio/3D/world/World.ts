@@ -25,6 +25,7 @@ class World {
 			new GLTFAsset("models/scene.glb")
 				.on("loaded", (asset: GLTFAsset) => {
 					asset.Scene.scale.set(0.1, 0.1, 0.1);
+					asset.Scene.position.set(0, 5, 0);
 
 					const generator = new THREE.PMREMGenerator(new Canvas3D().Renderer.WebGLRenderer);
 					const cubemap = generator.fromScene(this._Scene, 0, 5, 20).texture;

@@ -18,20 +18,20 @@ class Control
 	{
 		this._Camera = InCamera;
 
-		this._Camera.MoveTo(0, 0, 8, true);
+		this._Camera.MoveTo(0, 5, 8, true);
 		this._Camera.RotateTo(new THREE.Quaternion(), true);
 		this._ControlSteps = [
-			new ControlShakeStep(InCamera, new THREE.Vector3(-2, 0, 0), new THREE.Vector2(1.5, 0.5)), // UVCH
+			new ControlShakeStep(InCamera, new THREE.Vector3(-2, 5, 0), new THREE.Vector2(1.5, 0.5)), // UVCH
+			new ControlTransitionStep(InCamera, [
+				new THREE.Vector3(0, 5, 8),
+				new THREE.Vector3(0, 0, 8),
+			], 0.025),
+			new ControlShakeStep(InCamera, new THREE.Vector3(-2, 0, 0), new THREE.Vector2(1.5, 0.5)), // HugoMeet
 			new ControlTransitionStep(InCamera, [
 				new THREE.Vector3(0, 0, 8),
 				new THREE.Vector3(0, -5, 8),
-			]),
-			new ControlShakeStep(InCamera, new THREE.Vector3(-2, -5, 0), new THREE.Vector2(1.5, 0.5)), // HugoMeet
-			new ControlTransitionStep(InCamera, [
-				new THREE.Vector3(0, -5, 8),
-				new THREE.Vector3(0, -10, 8),
-				new ControlShakeStep(InCamera, new THREE.Vector3(-2, -10, 0), new THREE.Vector2(1.5, 0.5)), // Terrain Generator
-			]),
+			], 0.025),
+			new ControlShakeStep(InCamera, new THREE.Vector3(-2, -5, 0), new THREE.Vector2(1.5, 0.5)), // Terrain Generator
 		];
 		this._StepIndex = 0;
 
