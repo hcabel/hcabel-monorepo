@@ -2,12 +2,18 @@ import * as THREE from 'three';
 
 import Canvas3D from "../Canvas3D";
 import Sizes from '@3D/utils/Sizes';
-import Control from './controls/Controls';
+import Control from './controls/ControlsManager';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export interface ILerp3d {
 	current: THREE.Vector3,
 	target: THREE.Vector3,
+	speed: number,
+}
+
+export interface ILerpQuad {
+	current: THREE.Quaternion,
+	target: THREE.Quaternion,
 	speed: number,
 }
 
@@ -22,7 +28,7 @@ class Camera {
 	private _Controls: Control;
 
 	private _PositionLerp: ILerp3d = { current: new THREE.Vector3(0), target: new THREE.Vector3(0), speed: 0.05 };
-	private _RotationLerp: ILerp3d = { current: new THREE.Vector3(0), target: new THREE.Vector3(0), speed: 0.05 };
+	private _RotationLerp: ILerpQuad = { current: new THREE.Quaternion(0), target: new THREE.Quaternion(0), speed: 0.05 };
 
 	private _OrbitControls: OrbitControls | undefined;
 
@@ -46,14 +52,15 @@ class Camera {
 			this._Sizes.Aspect,
 			0.1,
 			1000);
-		this._PerspectiveCamera.position.set(5, 3, 0);
+		this._PerspectiveCamera.position.set(0, 0, 0);
+		this._PerspectiveCamera.rotation.set(0, 0, 0);
 		this._Scene.add(this._PerspectiveCamera);
 
 		// Init controls
 		this._Controls = new Control(this);
 
 		// Init OrbitControls
-		this._OrbitControls = new OrbitControls(this._PerspectiveCamera, this._Canvas3D.Canvas);
+		// this._OrbitControls = new OrbitControls(this._PerspectiveCamera, this._Canvas3D.Canvas);
 		if (this._OrbitControls) {
 			this._OrbitControls.enableDamping = true;
 			this._OrbitControls.dampingFactor = 0.05;
@@ -74,22 +81,35 @@ class Camera {
 			return;
 		}
 
+		// Update smooth position
 		this._PositionLerp.current.lerp(this._PositionLerp.target, this._PositionLerp.speed);
-		this._RotationLerp.current.lerp(this._RotationLerp.target, this._RotationLerp.speed);
-
+		if (this._PositionLerp.current.distanceTo(this._PositionLerp.target) < 0.01) {
+			this._PositionLerp.current.copy(this._PositionLerp.target);
+		}
 		this._PerspectiveCamera.position.copy(this._PositionLerp.current);
-		this._PerspectiveCamera.rotation.setFromVector3(this._RotationLerp.current);
+
+		// Update smooth rotation
+		this._RotationLerp.current.slerp(this._RotationLerp.target, this._RotationLerp.speed);
+		this._PerspectiveCamera.rotation.setFromQuaternion(this._RotationLerp.current);
 
 		this._Controls.Update();
 	}
 
+	/* LOCATION **************************************************************/
+
 	public MoveTo(x: number, y: number, z: number, teleport = false)
 	{
+		console.log(`update Loc {${x}, ${y}, ${z}}`);
 		if (teleport) {
 			this._PerspectiveCamera.position.set(x, y, z);
 			this._PositionLerp.current.set(x, y, z);
 		}
 		this._PositionLerp.target.set(x, y, z);
+	}
+
+	public MoveToVector3(pos: THREE.Vector3, teleport = false)
+	{
+		this.MoveTo(pos.x, pos.y, pos.z, teleport);
 	}
 
 	public OffsetPosition(x: number, y: number, z: number, teleport = false)
@@ -101,27 +121,29 @@ class Camera {
 			teleport);
 	}
 
-	public RotateTo(x: number, y: number, z: number, teleport = false)
-	{
-		// Convert to radians
-		x = THREE.MathUtils.degToRad(x);
-		y = THREE.MathUtils.degToRad(y);
-		z = THREE.MathUtils.degToRad(z);
+	/* ROTATION **************************************************************/
 
+	public RotateTo(rot: THREE.Quaternion, teleport = false)
+	{
+		console.log(`update Rot`, rot);
 		if (teleport) {
-			this._PerspectiveCamera.rotation.set(x, y, z);
-			this._RotationLerp.current.set(x, y, z);
+			this._PerspectiveCamera.rotation.setFromQuaternion(rot);
+			this._RotationLerp.current.copy(rot);
 		}
-		this._RotationLerp.target.set(x, y, z);
+		this._RotationLerp.target.copy(rot);
 	}
 
-	public OffsetRotation(x: number, y: number, z: number, teleport = false)
+	public LookAt(target: THREE.Vector3)
 	{
-		this.RotateTo(
-			this._PerspectiveCamera.rotation.x + x,
-			this._PerspectiveCamera.rotation.y + y,
-			this._PerspectiveCamera.rotation.z + z,
-			teleport);
+		const rot = new THREE.Euler();
+		rot.setFromRotationMatrix(
+			new THREE.Matrix4()
+				.lookAt(
+					this._PerspectiveCamera.position,
+					target,
+					new THREE.Vector3(0, 1, 0)));
+
+		this.RotateTo(new THREE.Quaternion().setFromEuler(rot));
 	}
 }
 
