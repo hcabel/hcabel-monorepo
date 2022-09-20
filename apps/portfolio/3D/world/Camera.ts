@@ -53,7 +53,7 @@ class Camera {
 		this._Controls = new Control(this);
 
 		// Init OrbitControls
-		// this._OrbitControls = new OrbitControls(this._PerspectiveCamera, this._Canvas3D.Canvas);
+		this._OrbitControls = new OrbitControls(this._PerspectiveCamera, this._Canvas3D.Canvas);
 		if (this._OrbitControls) {
 			this._OrbitControls.enableDamping = true;
 			this._OrbitControls.dampingFactor = 0.05;

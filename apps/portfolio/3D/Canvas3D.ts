@@ -66,6 +66,7 @@ class Canvas3D {
 	{
 		this._Stats.begin();
 
+		this._World.Update();
 		this._Camera.Update();
 		this._Renderer.Update();
 

@@ -53,12 +53,13 @@ class GLTFAsset extends EventEmitter {
 	{
 		GLTFAsset._GLTFLoader.load(this._FilePath, (content) => {
 			this._Content = content;
-			this.emit("loaded");
 
 			// Store all mesh in the map for quick access
 			GLTFAsset.TraverseMeshs(this._Content.scene, (mesh) => {
 				this._Meshs.set(mesh.name, mesh);
 			});
+
+			this.emit("loaded", this);
 		});
 	}
 }
