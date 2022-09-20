@@ -11,7 +11,9 @@
   "dependencies": {
     "@nrwl/next": "14.7.3",
     "core-js": "^3.6.5",
+    "glslify-loader": "^2.0.0",
     "next": "12.2.5",
+    "raw-loader": "^4.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "regenerator-runtime": "0.13.7",
