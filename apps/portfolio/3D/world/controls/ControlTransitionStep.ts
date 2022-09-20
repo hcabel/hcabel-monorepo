@@ -7,11 +7,13 @@ class ControlTransitionStep extends ControlSteps {
 	// Own properties
 	private _TransitionPath: THREE.CatmullRomCurve3;
 	private _Progress: number;
+	private _Speed: number;
 
-	constructor(InCamera: Camera, InTransitionPath: THREE.Vector3[])
+	constructor(InCamera: Camera, InTransitionPath: THREE.Vector3[], InSpeed: number)
 	{
 		super(InCamera);
 
+		this._Speed = InSpeed;
 		if (InTransitionPath.length < 2) {
 			throw new Error("Transition path must have at least 2 points");
 		}
@@ -31,10 +33,11 @@ class ControlTransitionStep extends ControlSteps {
 	public Update()
 	{
 		// update progress and clamp it
-		this._Progress = Math.min(this._Progress + 0.01, 1);
+		this._Progress = Math.min(this._Progress + this._Speed, 1);
 
-		// update camera rotation
-		this._Camera.LookAt(new THREE.Vector3(0, 0, 1));
+		// update camera position
+		const newPos = this.GetPosition();
+		this._Camera.MoveTo(newPos.x, newPos.y, newPos.z, true);
 	}
 
 	public GetPosition(): THREE.Vector3
