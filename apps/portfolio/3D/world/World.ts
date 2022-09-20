@@ -43,7 +43,6 @@ class World {
 						mesh.castShadow = true;
 						mesh.receiveShadow = true;
 
-						console.log(name);
 						if (name === "GroundTerrain") {
 
 							// Load terrain height map
