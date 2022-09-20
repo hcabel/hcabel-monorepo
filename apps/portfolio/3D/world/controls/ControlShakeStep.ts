@@ -10,6 +10,7 @@ class ControlShakeStep extends ControlSteps
 	private _NewPosition: THREE.Vector3;
 	private _TargetPoint: THREE.Vector3;
 	private _MaxDistance: THREE.Vector2;
+	private _IsFinish: boolean;
 
 	constructor(InCamera: Camera, InTarget: THREE.Vector3, InMaxDistance: THREE.Vector2)
 	{
@@ -20,6 +21,7 @@ class ControlShakeStep extends ControlSteps
 
 		this._NewPosition = new THREE.Vector3();
 		this._StartPosition = new THREE.Vector3();
+		this._IsFinish = false;
 	}
 
 	public Start()
@@ -42,6 +44,15 @@ class ControlShakeStep extends ControlSteps
 			this._Camera.RotateTo(new THREE.Quaternion().setFromEuler(this.GetRotation()));
 			this._Camera.MoveTo(this._NewPosition.x, this._NewPosition.y, this._NewPosition.z);
 		});
+
+		// add event on keypress
+		window.addEventListener('keypress', (event: KeyboardEvent) => {
+			console.log(event.key);
+			if (event.key === ' ') {
+				this._IsFinish = true;
+			}
+		});
+
 		this._Camera.MoveToVector3(this.GetPosition());
 	}
 
@@ -70,7 +81,7 @@ class ControlShakeStep extends ControlSteps
 
 	public IsFinish(): boolean
 	{
-		return false;
+		return this._IsFinish;
 	}
 }
 
