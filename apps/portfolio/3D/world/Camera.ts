@@ -46,7 +46,7 @@ class Camera {
 			this._Sizes.Aspect,
 			0.1,
 			1000);
-		this._PerspectiveCamera.position.set(0, 6, 0);
+		this._PerspectiveCamera.position.set(5, 3, 0);
 		this._Scene.add(this._PerspectiveCamera);
 
 		// Init controls

@@ -4,6 +4,9 @@ import Environements from '@3D/world/Environements';
 import GLTFAsset from './GLTFAsset';
 import Canvas3D from '@3D/Canvas3D';
 
+import m_terrainV from '@3D/world/materials/TerrainVertex.glsl';
+import m_terrainF from '@3D/world/materials/TerrainFragment.glsl';
+
 class World {
 
 	// Own properties
@@ -40,20 +43,22 @@ class World {
 						mesh.castShadow = true;
 						mesh.receiveShadow = true;
 
-						if (name == "GroundTerrainTop") {
+						console.log(name);
+						if (name === "GroundTerrain") {
 
 							// Load terrain height map
 							const heightmap = new THREE.TextureLoader().load("images/terrain.png");
-
-							// Tile texture
 							heightmap.wrapS = THREE.RepeatWrapping;
 							heightmap.wrapT = THREE.MirroredRepeatWrapping; // This is because I messed up the tilling in the texture (on the Y axis)
 
-							// Apply the height map to the terrain
-							mesh.material = new THREE.MeshPhongMaterial({
-								map: heightmap,
-								displacementMap: heightmap,
-								displacementScale: 0.5,
+							mesh.material = new THREE.ShaderMaterial({
+								vertexColors: true,
+								vertexShader: m_terrainV,
+								fragmentShader: m_terrainF,
+								uniforms: {
+									tHeightMap: { value: heightmap, type: "sampler2D" },
+									vOffset: { value: new THREE.Vector2(0, 0), type: "v2" },
+								}
 							});
 						}
 					}
@@ -88,15 +93,15 @@ class World {
 	public Update()
 	{
 		// Update GroundTerrainTop displacecment map offset
-		const ground = this._Assets[0].Meshs.get("GroundTerrainTop");
+		const ground = this._Assets[0].Meshs.get("GroundTerrain");
 		if (ground) {
-			const offset = ground.material.displacementMap.offset;
+			const offset = ground.material.uniforms.vOffset.value;
 
 			const speed = 0.0005;
 
 			// Offset the texture
-			ground.material.map.offset.x = (offset.x + speed) % 1;
-			ground.material.map.offset.y = (offset.y + speed) % 2;
+			offset.x = (offset.x + speed) % 1;
+			offset.y = (offset.y + speed) % 2;
 		}
 	}
 }
