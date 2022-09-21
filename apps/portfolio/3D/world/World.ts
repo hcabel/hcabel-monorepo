@@ -32,6 +32,9 @@ class World {
 
 					for (const [name, mesh] of asset.Meshs) {
 
+						mesh.material.roughness = 0;
+						mesh.material.metalness = 0;
+
 						// If material name start with "glass", add reflection and transparency
 						if (/glass/i.test(mesh.material.name)) {
 							mesh.material.roughness = 0;

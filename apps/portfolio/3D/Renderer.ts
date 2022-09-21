@@ -34,10 +34,10 @@ class Renderer {
 
 		this._WebGLRenderer.physicallyCorrectLights = true;
 		this._WebGLRenderer.outputEncoding = THREE.sRGBEncoding;
-		// this._WebGLRenderer.toneMapping = THREE.CineonToneMapping;
-		this._WebGLRenderer.toneMapping = THREE.ReinhardToneMapping;
+		this._WebGLRenderer.toneMapping = THREE.CineonToneMapping;
+		// this._WebGLRenderer.toneMapping = THREE.ReinhardToneMapping;
 		// this._WebGLRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-		this._WebGLRenderer.toneMappingExposure = 1.1;
+		this._WebGLRenderer.toneMappingExposure = 1;
 		this._WebGLRenderer.shadowMap.enabled = true;
 		this._WebGLRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
 		this.Resize();

@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 
-import { Sky } from 'three/examples/jsm/objects/Sky.js';
-
 class Environements {
 	private _Scene: THREE.Scene;
 
@@ -11,41 +9,37 @@ class Environements {
 
 		// @TODO: Is it weird that you see the sun but the directional light is at another angle?
 		// Add directional light (sun)
-		const light = new THREE.DirectionalLight("#ffffff", 8);
-		light.castShadow = true;
-		light.shadow.camera.far = 10;
-		light.shadow.mapSize.set(2048, 2048);
-		light.shadow.normalBias = 0.1;
-		light.position.set(3, 5, 3);
-		this._Scene.add(light);
+		const directionalLight = new THREE.DirectionalLight("#ffffff", 5);
+		directionalLight.castShadow = true;
+		directionalLight.shadow.camera.far = 25;
+		directionalLight.shadow.mapSize.set(4096, 4096);
+		directionalLight.shadow.normalBias = 0.1;
+		directionalLight.position.set(5, 2, 10);
+
+		directionalLight.shadow.camera.left = -3;
+		directionalLight.shadow.camera.right = 3;
+		directionalLight.shadow.camera.top = 10;
+		directionalLight.shadow.camera.bottom = -10;
+
+		this._Scene.add(directionalLight);
+
+		// show shadow debug
+		const helper = new THREE.CameraHelper(directionalLight.shadow.camera);
+		this._Scene.add(helper);
 
 		// Add ambient light (for the shadows)
 		const ambiantLight = new THREE.AmbientLight("#ffffff", 1);
 		this._Scene.add(ambiantLight);
 
-		// show shadow debug
-		// const helper = new THREE.CameraHelper(light.shadow.camera);
-		// this._Scene.add(helper);
-
-		// Create sky backgound
-		const sky = new Sky();
-		sky.scale.setScalar(20);
-
-		// sky material
-		const uniforms = sky.material.uniforms;
-		uniforms['turbidity'].value = 10;
-		uniforms['rayleigh'].value = 3;
-		uniforms['mieCoefficient'].value = 0.005;
-		uniforms['mieDirectionalG'].value = 1;
-
-		// Set sun position
-		const sun = new THREE.Vector3();
-		const phi = THREE.MathUtils.degToRad(88);
-		const theta = THREE.MathUtils.degToRad(0);
-		sun.setFromSphericalCoords(1, phi, theta);
-		uniforms['sunPosition'].value.copy(sun);
-
-		this._Scene.add(sky);
+		// Add background plane
+		const planeGeometry = new THREE.PlaneGeometry(20, 20);
+		const planeMaterial = new THREE.MeshStandardMaterial({
+			color: "#ffffff",
+		});
+		const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+		plane.position.set(0, 0, -1);
+		plane.receiveShadow = true;
+		this._Scene.add(plane);
 	}
 }
 
