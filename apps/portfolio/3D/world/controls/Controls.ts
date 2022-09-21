@@ -25,32 +25,16 @@ class Controls
 		// Register ScrollTrigger to navigate between UVCH and HugoMeet
 		GSAP.registerPlugin(ScrollTrigger);
 		ScrollTrigger.create({
-			trigger: '#HugoMeetProject',
-			markers: false,
-			start: 'top bottom',
+			trigger: '#HtmlGridContent',
+			markers: true,
+			start: 'top top',
 			end: 'bottom bottom',
 			onUpdate: (e: ScrollTrigger) => {
 				this._Camera.MoveTo(
 					this._Camera.PerspectiveCamera.position.x,
-					5 - (e.progress * 5),
+					5 - (e.progress * 10),
 					this._Camera.PerspectiveCamera.position.z
 				);
-			}
-		});
-		// Register ScrollTrigger to navigate between HugoMeet and ProceduralTerrain
-		ScrollTrigger.create({
-			trigger: '#ProceTerrainProject',
-			markers: false,
-			start: 'top bottom',
-			end: 'bottom bottom',
-			onUpdate: (e: ScrollTrigger) => {
-				const newpos = new THREE.Vector3(
-					this._Camera.PerspectiveCamera.position.x,
-					0 - (e.progress * 5),
-					this._Camera.PerspectiveCamera.position.z
-				);
-				this._Camera.MoveTo(newpos.x, newpos.y, newpos.z);
-				this._StartPosition = newpos;
 			}
 		});
 	}

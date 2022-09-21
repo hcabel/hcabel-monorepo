@@ -12,9 +12,8 @@ export function Index() {
 
 	return (
 		<div className="Page">
-			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}>
-			</canvas>
-			<main className={Style.HtmlPageContent}>
+			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}></canvas>
+			<main id="HtmlGridContent" className={Style.HtmlPageContent}>
 				<ProjectSection
 					id="UVCHProject"
 					className={Style.ProjectUVCHDescription}
