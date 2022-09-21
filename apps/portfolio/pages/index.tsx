@@ -11,13 +11,21 @@ export function Index() {
 	}, [])
 
 	return (
-		<div className={`Page ${Style.Page}`}>
-			<canvas id="Canvas3D">
+		<div className="Page">
+			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}>
 			</canvas>
 			<main className={Style.HtmlPageContent}>
 				<ProjectSection
 					className={Style.ProjectUVCHDescription}
 					title="Unreal VsCode Helper"
+				/>
+				<ProjectSection
+					className={Style.ProjectHugoMeetDescription}
+					title="HugoMeet"
+				/>
+				<ProjectSection
+					className={Style.ProjectProceTerrainDescription}
+					title="Procedural Terrain Generator"
 				/>
 			</main>
 		</div>

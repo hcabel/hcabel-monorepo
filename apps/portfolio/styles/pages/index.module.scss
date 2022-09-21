@@ -1,6 +1,10 @@
 
-.Page {
+.ThreeJsCanvas3D {
 	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .HtmlPageContent {
@@ -11,14 +15,32 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 100%;
+	height: 300%;
+	overflow-x: hidden;
 
 	display: grid;
-	grid-template-columns: repeat(24, 1fr);
-	grid-template-rows: repeat(7, 1fr);
+
+	$gapC: 0.25fr;
+	$gapR: 0.25fr;
+
+	grid-template-columns: ($gapC / 2) 1fr ($gapC * 2) 1fr ($gapC / 2);
+	grid-template-rows: ($gapR / 2) 1fr $gapR 1fr $gapR 1fr ($gapR / 2);
 }
 
 .ProjectUVCHDescription {
-	grid-column: 2 / 10;
-	grid-row: 2 / 7;
+	grid-column: 2 / 3;
+	grid-row: 2 / 3;
+	background: linear-gradient(340deg, #202033 0%, #4CC8C8 100%);
+}
+
+.ProjectHugoMeetDescription {
+	grid-column: 2 / 3;
+	grid-row: 4 / 5;
+	background: linear-gradient(340deg, #F6D365 0%, #FDA085 100%);
+}
+
+.ProjectProceTerrainDescription {
+	grid-column: 2 / 3;
+	grid-row: 6 / 7;
+	background: linear-gradient(340deg, #F18271 0%, #CC6B8E 33%, #8F6AAE 66%, #3F51B1 99%);
 }
