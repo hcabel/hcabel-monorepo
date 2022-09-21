@@ -15,7 +15,8 @@
     "baseUrl": ".",
     "paths": {
       "@styles/*": ["styles/*"],
-      "@3D/*": ["3D/*"]
+      "@3D/*": ["3D/*"],
+      "@Components/*": ["components/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", "**/*.glsl"],
