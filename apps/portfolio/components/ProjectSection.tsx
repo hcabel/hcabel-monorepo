@@ -1,6 +1,7 @@
 import Style from "@styles/components/ProjectSection.module.scss";
 
 export interface IProjectSectionProps {
+	id?: string;
 	className?: string;
 	style?: React.CSSProperties;
 	children?: React.ReactNode;
@@ -11,7 +12,7 @@ export default function ProjectSection(props: IProjectSectionProps)
 {
 
 	return (
-		<section className={`${Style.Window} ${props.className || ""}`} style={props.style}>
+		<section id={props.id || ""} className={`${Style.Window} ${props.className || ""}`} style={props.style}>
 			<header className={Style.WindowHeader}>
 				<div className={`${Style.WindowButton} ${Style.CloseButton}`}></div>
 				<div className={`${Style.WindowButton} ${Style.MinimiseButton}`}></div>

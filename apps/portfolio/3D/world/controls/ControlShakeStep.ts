@@ -42,15 +42,6 @@ class ControlShakeStep extends ControlSteps
 
 			// Update camera
 			this._Camera.RotateTo(new THREE.Quaternion().setFromEuler(this.GetRotation()));
-			this._Camera.MoveTo(this._NewPosition.x, this._NewPosition.y, this._NewPosition.z);
-		});
-
-		// add event on keypress
-		window.addEventListener('keypress', (event: KeyboardEvent) => {
-			console.log(event.key);
-			if (event.key === ' ') {
-				this._IsFinish = true;
-			}
 		});
 
 		this._Camera.MoveToVector3(this.GetPosition());

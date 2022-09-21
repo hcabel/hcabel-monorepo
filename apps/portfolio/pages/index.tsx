@@ -16,14 +16,17 @@ export function Index() {
 			</canvas>
 			<main className={Style.HtmlPageContent}>
 				<ProjectSection
+					id="UVCHProject"
 					className={Style.ProjectUVCHDescription}
 					title="Unreal VsCode Helper"
 				/>
 				<ProjectSection
+					id="HugoMeetProject"
 					className={Style.ProjectHugoMeetDescription}
 					title="HugoMeet"
 				/>
 				<ProjectSection
+					id="ProceTerrainProject"
 					className={Style.ProjectProceTerrainDescription}
 					title="Procedural Terrain Generator"
 				/>

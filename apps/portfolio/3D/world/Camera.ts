@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 import Canvas3D from "../Canvas3D";
 import Sizes from '@3D/utils/Sizes';
-import Control from './controls/ControlsManager';
+import Control from './controls/Controls';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export interface ILerp3d {
@@ -91,15 +91,12 @@ class Camera {
 		// Update smooth rotation
 		this._RotationLerp.current.slerp(this._RotationLerp.target, this._RotationLerp.speed);
 		this._PerspectiveCamera.rotation.setFromQuaternion(this._RotationLerp.current);
-
-		this._Controls.Update();
 	}
 
 	/* LOCATION **************************************************************/
 
 	public MoveTo(x: number, y: number, z: number, teleport = false)
 	{
-		console.log(`update Loc {${x}, ${y}, ${z}}`);
 		if (teleport) {
 			this._PerspectiveCamera.position.set(x, y, z);
 			this._PositionLerp.current.set(x, y, z);
@@ -125,7 +122,6 @@ class Camera {
 
 	public RotateTo(rot: THREE.Quaternion, teleport = false)
 	{
-		console.log(`update Rot`, rot);
 		if (teleport) {
 			this._PerspectiveCamera.rotation.setFromQuaternion(rot);
 			this._RotationLerp.current.copy(rot);
