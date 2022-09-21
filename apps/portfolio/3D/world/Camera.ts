@@ -27,8 +27,8 @@ class Camera {
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
 	private _Controls: Control;
 
-	private _PositionLerp: ILerp3d = { current: new THREE.Vector3(0), target: new THREE.Vector3(0), speed: 0.05 };
-	private _RotationLerp: ILerpQuad = { current: new THREE.Quaternion(0), target: new THREE.Quaternion(0), speed: 0.05 };
+	private _PositionLerp: ILerp3d = { current: new THREE.Vector3(0), target: new THREE.Vector3(0), speed: .25 };
+	private _RotationLerp: ILerpQuad = { current: new THREE.Quaternion(0), target: new THREE.Quaternion(0), speed: .25 };
 
 	private _OrbitControls: OrbitControls | undefined;
 
