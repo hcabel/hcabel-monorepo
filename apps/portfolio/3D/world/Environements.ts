@@ -24,8 +24,8 @@ class Environements {
 		this._Scene.add(directionalLight);
 
 		// show shadow debug
-		const helper = new THREE.CameraHelper(directionalLight.shadow.camera);
-		this._Scene.add(helper);
+		// const helper = new THREE.CameraHelper(directionalLight.shadow.camera);
+		// this._Scene.add(helper);
 
 		// Add ambient light (for the shadows)
 		const ambiantLight = new THREE.AmbientLight("#ffffff", 1);

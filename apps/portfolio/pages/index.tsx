@@ -2,7 +2,7 @@ import Style from '@styles/pages/index.module.scss';
 import { useEffect } from 'react';
 
 import Canvas3D from '@3D/Canvas3D';
-import ProjectSection from '@Components/ProjectSection';
+import ProjectFirstImpression from '@Components/ProjectFirstImpression';
 
 export function Index() {
 
@@ -14,20 +14,26 @@ export function Index() {
 		<div className="Page">
 			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}></canvas>
 			<main id="HtmlGridContent" className={Style.HtmlPageContent}>
-				<ProjectSection
-					id="UVCHProject"
-					className={Style.ProjectUVCHDescription}
-					title="Unreal VsCode Helper"
+				<ProjectFirstImpression
+					projectName="Unreal VsCode Helper"
+					projectDescription="is a VSCode extension that provides a set of tools to help you develop Unreal Engine projects inside VsCode."
+					onMoreClicked={() => {
+						alert("I'm sorry, this page is not yet implemented.");
+					}}
 				/>
-				<ProjectSection
-					id="HugoMeetProject"
-					className={Style.ProjectHugoMeetDescription}
-					title="HugoMeet"
+				<ProjectFirstImpression
+					projectName="Hugo Meet"
+					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
+					onMoreClicked={() => {
+						alert("I'm sorry, this page is not yet implemented.");
+					}}
 				/>
-				<ProjectSection
-					id="ProceTerrainProject"
-					className={Style.ProjectProceTerrainDescription}
-					title="Procedural Terrain Generator"
+				<ProjectFirstImpression
+					projectName="Procedural Terrain Generator"
+					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
+					onMoreClicked={() => {
+						alert("I'm sorry, this page is not yet implemented.");
+					}}
 				/>
 			</main>
 		</div>
