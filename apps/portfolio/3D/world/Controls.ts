@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import Camera from "../Camera";
+import Camera from "./Camera";
 
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import GSAP from 'gsap';
@@ -9,10 +9,6 @@ class Controls
 {
 	// Quick access
 	private _Camera: Camera;
-
-	// Own properties
-	private _StepIndex: number;
-	private _StartPosition: THREE.Vector3;
 
 	constructor(InCamera: Camera)
 	{
@@ -26,7 +22,7 @@ class Controls
 		GSAP.registerPlugin(ScrollTrigger);
 		ScrollTrigger.create({
 			trigger: '#HtmlGridContent',
-			markers: true,
+			markers: false,
 			start: 'top top',
 			end: 'bottom bottom',
 			onUpdate: (e: ScrollTrigger) => {
