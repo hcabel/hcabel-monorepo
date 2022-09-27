@@ -1,10 +1,9 @@
 
 import Style from '@styles/components/ProjectFirstImpression.module.scss';
-import GithubIcon from '@Images/Github/GithubIcon.svg';
-import ForkIcon from '@Images/Github/ForkIcon.svg';
-import StarIcon from '@Images/Github/StarIcon.svg';
+
 import VsCodeIcon from '@Images/VsCodeIcon.svg';
 import YoutubeIcon from '@Images/YoutubeIcon.svg';
+import GithubStats from '@Components/ProjectStats/GithubStats';
 
 export interface IProjectFirstImpressionProps {
 	id?: string;
@@ -51,21 +50,7 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 							</div>
 						</div>
 					</div>
-					<div className={Style.StatContainer}>
-						<GithubIcon />
-						<div className={Style.StatValues}>
-							<div>
-								<StarIcon className={Style.StatIcon} />
-								<span className={Style.StatValue}>25</span>
-								<span> stars</span>
-							</div>
-							<div>
-								<ForkIcon className={Style.StatIcon} />
-								<span className={Style.StatValue}>4</span>
-								<span> forks</span>
-							</div>
-						</div>
-					</div>
+					<GithubStats />
 				</div>
 			</div>
 		</article>
