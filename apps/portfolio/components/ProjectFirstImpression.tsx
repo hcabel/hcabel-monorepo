@@ -2,8 +2,8 @@
 import Style from '@styles/components/ProjectFirstImpression.module.scss';
 
 import VsCodeIcon from '@Images/VsCodeIcon.svg';
-import YoutubeIcon from '@Images/YoutubeIcon.svg';
 import GithubStats from '@Components/ProjectStats/GithubStats';
+import YoutubeStats from './ProjectStats/YoutubeStats';
 
 export interface IProjectFirstImpressionProps {
 	id?: string;
@@ -32,27 +32,19 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 					</a>
 				}
 			</div>
-			<div>
-				<div className={Style.ProjectStats}>
-					<div className={Style.StatContainer}>
-						<YoutubeIcon />
-						<div className={Style.StatValues}>
-							<span>Views</span>
-							<span className={Style.StatValue}>92.2k</span>
+			<div className={Style.ProjectStats}>
+				<YoutubeStats />
+				<div className={Style.StatContainer}>
+					<VsCodeIcon />
+					<div className={Style.StatValues}>
+						<div>
+							<span className={Style.StatValue}>900</span>
+							<span> installs</span>
 						</div>
 					</div>
-					<div className={Style.StatContainer}>
-						<VsCodeIcon />
-						<div className={Style.StatValues}>
-							<div>
-								<span className={Style.StatValue}>900</span>
-								<span> installs</span>
-							</div>
-						</div>
-					</div>
-					<GithubStats />
 				</div>
-			</div>
+				<GithubStats />
+				</div>
 		</article>
 	);
 }
