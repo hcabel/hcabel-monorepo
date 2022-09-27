@@ -31,12 +31,18 @@ export function Index() {
 					className={Style.ProjectHugoMeet}
 					projectName="Hugo Meet"
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
-					/>
+				>
+					<VsCodeStats />
+					<GithubStats />
+				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectProceduralTerrain}
 					projectName="Procedural Terrain"
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
-				/>
+				>
+					<VsCodeStats />
+					<GithubStats />
+				</ProjectFirstImpression>
 			</main>
 		</section>
 	);
