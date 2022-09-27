@@ -8,7 +8,7 @@ export interface IProjectFirstImpressionProps {
 
 	projectName: string;
 	projectDescription: string;
-	onMoreClicked: () => void;
+	onMoreClicked?: () => void;
 }
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
@@ -21,9 +21,11 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 			<figcaption className={Style.ProjectDescription}>
 				{props.projectDescription}
 			</figcaption>
-			<a className={Style.ProjectMoreButton} onClick={props.onMoreClicked}>
-				More details
-			</a>
+			{props.onMoreClicked &&
+				<a className={Style.ProjectMoreButton} onClick={props.onMoreClicked}>
+					More details
+				</a>
+			}
 		</article>
 	);
 }
