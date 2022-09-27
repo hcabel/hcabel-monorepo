@@ -32,7 +32,7 @@ export function Index() {
 					projectName="Hugo Meet"
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
-					<VsCodeStats />
+					<YoutubeStats />
 					<GithubStats />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
@@ -40,7 +40,7 @@ export function Index() {
 					projectName="Procedural Terrain"
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
-					<VsCodeStats />
+					<YoutubeStats />
 					<GithubStats />
 				</ProjectFirstImpression>
 			</main>
