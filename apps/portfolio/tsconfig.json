@@ -16,7 +16,8 @@
     "paths": {
       "@styles/*": ["styles/*"],
       "@3D/*": ["3D/*"],
-      "@Components/*": ["components/*"]
+      "@Components/*": ["components/*"],
+      "@Images/*": ["assets/images/*"],
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", "**/*.glsl"],
