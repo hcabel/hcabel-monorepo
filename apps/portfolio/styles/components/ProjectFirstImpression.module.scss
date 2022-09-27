@@ -1,19 +1,26 @@
 @import "@styles/colors.scss";
 
+.ProjectFirstImpression {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
 .ProjectName {
 	width: fit-content;
 
 	// text
 	font-family: 'Inter var', sans-serif;
 	font-size: 100%;
-	font-size: 4vw;
+	font-size: 3.584vw;
 	font-weight: bold;
+	letter-spacing: -0.035em;
 }
 
 .ProjectDescription {
 	width: 75%;
 
-	font-family: 'Inter var';
+	font-family: 'Inter var', sans-serif;
 	font-size: 1.75vw;
 
 	color: $PrimaryTextColor;
@@ -25,7 +32,7 @@
 	width: fit-content;
 	cursor: pointer;
 
-	font-family: 'Inter var';
+	font-family: 'Inter var', sans-serif;
 	font-size: 0.75vw;
 
 	// add underline
@@ -33,4 +40,35 @@
 	text-decoration-color: $MoreButtonColor;
 
 	color: $MoreButtonColor;
+}
+
+.ProjectStats {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+
+	.StatValues {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+
+		margin-left: 8px;
+
+		color: $SecondaryTextColor;
+		font-family: "Roboto", sans-serif;
+
+		.StatIcon {
+			margin-right: 8px;
+		}
+		.StatValue {
+			font-weight: bold;
+		}
+	}
+
+	.StatContainer {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 }
