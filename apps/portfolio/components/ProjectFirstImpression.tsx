@@ -1,13 +1,10 @@
 import Style from '@styles/components/ProjectFirstImpression.module.scss';
 
-import GithubStats from '@Components/ProjectStats/GithubStats';
-import YoutubeStats from './ProjectStats/YoutubeStats';
-import VsCodeStats from './ProjectStats/VsCodeStats';
-
 export interface IProjectFirstImpressionProps {
 	id?: string;
 	className?: string;
 	style?: React.CSSProperties;
+	children?: React.ReactElement[] | React.ReactElement;
 
 	projectName: string;
 	projectDescription: string;
@@ -16,6 +13,16 @@ export interface IProjectFirstImpressionProps {
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
 {
+	let children = props.children || [];
+	children =
+		Array.from(Array.isArray(children) ? children : [children])
+			.filter((child) => {
+				const componentName = (child.type as any).name;
+				return componentName === 'GithubStats'
+					|| componentName === 'YoutubeStats'
+					|| componentName === 'VsCodeStats';
+			});
+
 	return (
 		<article id={props.id || ""} className={`${Style.ProjectFirstImpression} ${props.className || ""}`} style={props.style || {}}>
 			<div>
@@ -32,9 +39,7 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 				}
 			</div>
 			<div className={Style.ProjectStats}>
-				<YoutubeStats />
-				<VsCodeStats />
-				<GithubStats />
+				{children}
 			</div>
 		</article>
 	);

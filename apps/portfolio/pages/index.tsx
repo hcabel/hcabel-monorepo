@@ -4,6 +4,10 @@ import { useEffect } from 'react';
 import Canvas3D from '@3D/Canvas3D';
 import ProjectFirstImpression from '@Components/ProjectFirstImpression';
 
+import GithubStats from '@Components/ProjectStats/GithubStats';
+import YoutubeStats from '@Components/ProjectStats/YoutubeStats';
+import VsCodeStats from '@Components/ProjectStats/VsCodeStats';
+
 export function Index() {
 
 	useEffect(() => {
@@ -18,7 +22,11 @@ export function Index() {
 					className={Style.ProjectUVCH}
 					projectName="Unreal VsCode Helper"
 					projectDescription="is a VSCode extension that provides a set of tools to help you develop Unreal Engine projects inside VsCode."
-				/>
+				>
+					<YoutubeStats />
+					<VsCodeStats />
+					<GithubStats />
+				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectHugoMeet}
 					projectName="Hugo Meet"
