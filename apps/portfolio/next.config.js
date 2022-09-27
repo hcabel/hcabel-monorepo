@@ -9,8 +9,13 @@ const nextConfig = {
 	webpack: (config, options) => {
 
 		config.module.rules.push({
-			test: /\.(glsl)$/,
+			test: /\.glsl$/,
 			use: ['raw-loader', 'glslify-loader'],
+		});
+
+		config.module.rules.push({
+			test: /\.svg$/,
+			use: ["@svgr/webpack"]
 		});
 
 		return config;
