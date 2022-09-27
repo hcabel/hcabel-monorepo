@@ -1,3 +1,4 @@
+@import "@styles/colors.scss";
 
 .ThreeJsCanvas3D {
 	position: fixed;
@@ -27,20 +28,39 @@
 	grid-template-rows: ($gapR / 2) 1fr $gapR 1fr $gapR 1fr ($gapR / 2);
 }
 
-.ProjectUVCHDescription {
-	grid-column: 2 / 3;
+.ProjectUVCH {
+	grid-column: 2 / 4;
 	grid-row: 2 / 3;
-	background: linear-gradient(340deg, #202033 0%, #4CC8C8 100%);
+
+	figure {
+		background: $grad-Midnight;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
 }
 
-.ProjectHugoMeetDescription {
-	grid-column: 2 / 3;
+.ProjectHugoMeet {
+	grid-column: 2 / 4;
 	grid-row: 4 / 5;
-	background: linear-gradient(340deg, #F6D365 0%, #FDA085 100%);
+
+	figure {
+		background: $grad-Sunset;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
 }
 
-.ProjectProceTerrainDescription {
-	grid-column: 2 / 3;
+.ProjectProceduralTerrain {
+	grid-column: 2 / 4;
 	grid-row: 6 / 7;
-	background: linear-gradient(340deg, #F18271 0%, #CC6B8E 33%, #8F6AAE 66%, #3F51B1 99%);
+
+
+	figure {
+		background: $grad-SunToOcean;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
 }

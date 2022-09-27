@@ -1,4 +1,6 @@
 
+import Style from '@styles/components/ProjectFirstImpression.module.scss';
+
 export interface IProjectFirstImpressionProps {
 	id?: string;
 	className?: string;
@@ -13,9 +15,15 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 {
 	return (
 		<article id={props.id || ""} className={props.className || ""} style={props.style || {}}>
-			<figure>{props.projectName}</figure>
-			<figcaption>{props.projectDescription}</figcaption>
-			<a onClick={props.onMoreClicked}>More details</a>
+			<figure className={Style.ProjectName}>
+				{props.projectName}
+			</figure>
+			<figcaption className={Style.ProjectDescription}>
+				{props.projectDescription}
+			</figcaption>
+			<a className={Style.ProjectMoreButton} onClick={props.onMoreClicked}>
+				More details
+			</a>
 		</article>
 	);
 }

@@ -1,0 +1,36 @@
+@import "@styles/colors.scss";
+
+.ProjectName {
+	width: fit-content;
+
+	// text
+	font-family: 'Inter var', sans-serif;
+	font-size: 100%;
+	font-size: 4vw;
+	font-weight: bold;
+}
+
+.ProjectDescription {
+	width: 75%;
+
+	font-family: 'Inter var';
+	font-size: 1.75vw;
+
+	color: $PrimaryTextColor;
+}
+
+.ProjectMoreButton {
+	$MoreButtonColor: #505050;
+
+	width: fit-content;
+	cursor: pointer;
+
+	font-family: 'Inter var';
+	font-size: 0.75vw;
+
+	// add underline
+	text-decoration: underline;
+	text-decoration-color: $MoreButtonColor;
+
+	color: $MoreButtonColor;
+}
