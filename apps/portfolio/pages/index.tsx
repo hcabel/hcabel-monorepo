@@ -23,7 +23,7 @@ export function Index() {
 					projectName="Unreal VsCode Helper"
 					projectDescription="is a VSCode extension that provides a set of tools to help you develop Unreal Engine projects inside VsCode."
 				>
-					<YoutubeStats />
+					<YoutubeStats views={92_197} />
 					<VsCodeStats />
 					<GithubStats />
 				</ProjectFirstImpression>
@@ -32,7 +32,7 @@ export function Index() {
 					projectName="Hugo Meet"
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
-					<YoutubeStats />
+					<YoutubeStats views={1_154 + 218} />
 					<GithubStats />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
@@ -40,7 +40,7 @@ export function Index() {
 					projectName="Procedural Terrain"
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
-					<YoutubeStats />
+					<YoutubeStats views={7_034} />
 					<GithubStats />
 				</ProjectFirstImpression>
 			</main>
