@@ -5,12 +5,11 @@ import Camera from "@3D/world/Camera";
 import Renderer from '@3D/Renderer';
 import World from '@3D/world/World';
 
-import Stats from "stats.js"
+import Stats from "stats.js";
 
 class Canvas3D {
 	// Singleton instance
 	private static instance: Canvas3D;
-
 
 	// Own properties
 	private _Canvas: HTMLCanvasElement;

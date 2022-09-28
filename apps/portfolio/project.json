@@ -36,6 +36,23 @@
           "hostname": "10.0.0.78"
         }
       }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/portfolio/pages/**/*",
+          "apps/portfolio/components/**/*",
+          "apps/portfolio/styles/**/*",
+          "apps/portfolio/3D/**/*"
+        ]
+      },
+      "configurations": {
+        "test": {},
+        "fix": {
+          "fix": true
+        }
+      }
     }
   },
   "tags": []

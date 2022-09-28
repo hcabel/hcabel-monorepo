@@ -5,17 +5,69 @@
     "next/core-web-vitals",
     "../../.eslintrc.json"
   ],
-  "ignorePatterns": ["!**/*", ".next/**/*"],
+  "ignorePatterns": [
+    "!**/*",
+    "**/.next/**/*",
+    "*.glsl",
+    "*.scss"
+  ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@next/next/no-html-link-for-pages": ["error", "apps/portfolio/pages"]
+        "@next/next/no-html-link-for-pages": ["error", "apps/portfolio/pages"],
+        "indent": ["error", "tab"],
+        "@typescript-eslint/semi": "error",
+        "no-var": "error",
+        "prefer-const": "warn",
+        "keyword-spacing": "warn",
+        "semi-spacing": "error",
+        "space-before-function-paren": [2, "never"],
+        "prefer-template": "warn",
+        "no-dupe-class-members": "error",
+        "no-const-assign": "error",
+        "no-new-require": "error",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["warn"],
+        "@typescript-eslint/no-explicit-any": ["off"],
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "yoda": "warn",
+        "radix": [2, "as-needed"],
+        "no-shadow": "error",
+        "no-void": "error",
+        "no-self-assign": "error",
+        "no-self-compare": "error",
+        "no-new-func": "error",
+        "no-new": "off",
+        "curly": "error",
+        "dot-notation": "error",
+        "eqeqeq": "error",
+        "no-else-return": "error",
+        "no-empty-pattern": "error",
+        "no-eq-null": "error",
+        "no-floating-decimal": "error",
+        "no-redeclare": "error",
+        "no-return-assign": "error",
+        "no-lone-blocks": "error",
+        "no-multi-spaces": "error",
+        "no-native-reassign": "error",
+        "no-throw-literal": "error",
+        "no-unused-expressions": "error",
+        "no-useless-concat": "error",
+        "no-unmodified-loop-condition": "error",
+        "no-multiple-empty-lines": ["error", {"max": 1}],
+        "no-implied-eval": "error",
+        "semi": "error",
+        "global-require": "error"
       }
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "rules": {}
+      "rules": {
+
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

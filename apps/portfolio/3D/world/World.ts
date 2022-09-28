@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 import Environements from '@3D/world/Environements';
 import GLTFAsset from './GLTFAsset';
-import Canvas3D from '@3D/Canvas3D';
 
 import m_terrainV from '@3D/world/materials/TerrainVertex.glsl';
 import m_terrainF from '@3D/world/materials/TerrainFragment.glsl';
@@ -24,23 +23,22 @@ class World {
 		this._Assets = [
 			new GLTFAsset("models/scene.glb")
 				.on("loaded", (asset: GLTFAsset) => {
+					if (!asset.Meshs || !asset.Scene) {
+						return;
+					}
+
 					asset.Scene.scale.set(0.1, 0.1, 0.1);
 					asset.Scene.position.set(0, 5, 0);
 
-					const generator = new THREE.PMREMGenerator(new Canvas3D().Renderer.WebGLRenderer);
-					const cubemap = generator.fromScene(this._Scene, 0, 5, 20).texture;
-
 					for (const [name, mesh] of asset.Meshs) {
+						// if single material wrap it in an array
+						const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
 
-						mesh.material.roughness = 0;
-						mesh.material.metalness = 0;
-
-						// If material name start with "glass", add reflection and transparency
-						if (/glass/i.test(mesh.material.name)) {
-							mesh.material.roughness = 0;
-							mesh.material.reflectivity = 1;
-							mesh.material.envMap = cubemap;
-							mesh.material.opacity = 0.5;
+						for (const material of materials) {
+							if (material instanceof THREE.MeshStandardMaterial) {
+								material.roughness = 0;
+								material.metalness = 0;
+							}
 						}
 
 						// Enable shadow
@@ -59,8 +57,8 @@ class World {
 								vertexShader: m_terrainV,
 								fragmentShader: m_terrainF,
 								uniforms: {
-									tHeightMap: { value: heightmap, type: "sampler2D" },
-									vOffset: { value: new THREE.Vector2(0, 0), type: "v2" },
+									tHeightMap: { value: heightmap },
+									vOffset: { value: new THREE.Vector2(0, 0) },
 								}
 							});
 						}
@@ -96,15 +94,18 @@ class World {
 	public Update()
 	{
 		// Update GroundTerrainTop displacecment map offset
-		const ground = this._Assets[0].Meshs.get("GroundTerrain");
+		const ground = this._Assets[0].Meshs?.get("GroundTerrain");
 		if (ground) {
-			const offset = ground.material.uniforms.vOffset.value;
+			const material = (Array.isArray(ground.material) ? ground.material[0] : ground.material) as THREE.ShaderMaterial;
 
-			const speed = 0.0005;
+			if (material) {
+				const offset = material.uniforms.vOffset.value;
+				const speed = 0.0005;
 
-			// Offset the texture
-			offset.x = (offset.x + speed) % 1;
-			offset.y = (offset.y + speed) % 2;
+				// Offset the texture
+				offset.x = (offset.x + speed) % 1;
+				offset.y = (offset.y + speed) % 2;
+			}
 		}
 	}
 }

@@ -1,9 +1,9 @@
 
-import EventEmitter from "events";
-import * as THREE from "three";
+import EventEmitter from 'events';
+import * as THREE from 'three';
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 class GLTFAsset extends EventEmitter {
 
@@ -11,11 +11,12 @@ class GLTFAsset extends EventEmitter {
 		if (depth >= 10) {
 			throw new Error("Too much depth in your scene");
 		}
+
 		for (const child of scene.children) {
-			if (child.isMesh === true) {
+			if (child instanceof THREE.Mesh) {
 				callback(child);
 			}
-			else if (child.isGroup === true) {
+			else if (child instanceof THREE.Group) {
 				GLTFAsset.TraverseMeshs(child, callback, depth + 1);
 			}
 		}
@@ -51,7 +52,7 @@ class GLTFAsset extends EventEmitter {
 
 	public StartLoading()
 	{
-		GLTFAsset._GLTFLoader.load(this._FilePath, (content) => {
+		GLTFAsset._GLTFLoader.load(this._FilePath, (content: any) => {
 			this._Content = content;
 
 			// Store all mesh in the map for quick access

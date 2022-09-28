@@ -3,7 +3,6 @@ import Style from '@styles/components/ProjectStats.module.scss';
 import VsCodeIcon from '@Images/VsCodeIcon.svg';
 import { useEffect, useState } from 'react';
 
-
 export interface IVsCodeStatsProps {
 	name: string;
 }

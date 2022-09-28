@@ -11,7 +11,7 @@ import VsCodeStats from '@Components/ProjectStats/VsCodeStats';
 export function Index() {
 	useEffect(() => {
 		new Canvas3D(document.getElementById("Canvas3D") as HTMLCanvasElement);
-	}, [])
+	}, []);
 
 	return (
 		<section className="Page">
