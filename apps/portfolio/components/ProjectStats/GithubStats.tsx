@@ -27,28 +27,32 @@ export default function GithubStats(props: IGithubStatsProps)
 	return (
 		<div className={Style.StatContainer}>
 			<GithubIcon />
-			{_GithubStats &&
-				<div className={Style.StatValues}>
-					{!props.hideStars &&
-						<div>
-							<StarIcon className={Style.StatIcon} />
-							<span className={Style.StatValue}>
-								{_GithubStats.watchers.toLocaleString("en", {notation: "compact"})}
-							</span>
-							<span> stars</span>
-						</div>
-					}
-					{!props.hideForks &&
-						<div>
-							<ForkIcon className={Style.StatIcon} />
-							<span className={Style.StatValue}>
-								{_GithubStats.forks.toLocaleString("en", {notation: "compact"})}
-							</span>
-							<span> forks</span>
-						</div>
-					}
-				</div>
-			}
+			<div className={Style.StatValues}>
+				{_GithubStats ?
+					<>
+						{!props.hideStars &&
+							<div>
+								<StarIcon className={Style.StatIcon} />
+								<span className={Style.StatValue}>
+									{_GithubStats.watchers.toLocaleString("en", {notation: "compact"})}
+								</span>
+								<span> stars</span>
+							</div>
+						}
+						{!props.hideForks &&
+							<div>
+								<ForkIcon className={Style.StatIcon} />
+								<span className={Style.StatValue}>
+									{_GithubStats.forks.toLocaleString("en", {notation: "compact"})}
+								</span>
+								<span> forks</span>
+							</div>
+						}
+					</>
+					:
+					<div className={Style.Loading}>Loading...</div>
+				}
+			</div>
 		</div>
 	);
 }
