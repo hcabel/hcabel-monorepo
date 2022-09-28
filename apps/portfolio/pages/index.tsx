@@ -25,7 +25,7 @@ export function Index() {
 				>
 					<YoutubeStats views={92_197} />
 					<VsCodeStats installs={911}/>
-					<GithubStats />
+					<GithubStats stars={25} forks={4} />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectHugoMeet}
@@ -33,7 +33,7 @@ export function Index() {
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
 					<YoutubeStats views={1_154 + 218} />
-					<GithubStats />
+					<GithubStats stars={10} forks={3} />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectProceduralTerrain}
@@ -41,7 +41,6 @@ export function Index() {
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
 					<YoutubeStats views={7_034} />
-					<GithubStats />
 				</ProjectFirstImpression>
 			</main>
 		</section>
