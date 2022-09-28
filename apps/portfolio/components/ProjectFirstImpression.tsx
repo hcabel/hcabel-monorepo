@@ -13,16 +13,6 @@ export interface IProjectFirstImpressionProps {
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
 {
-	let children = props.children || [];
-	children =
-		Array.from(Array.isArray(children) ? children : [children])
-			.filter((child) => {
-				const componentName = (child?.type as any)?.name;
-				return componentName === 'GithubStats'
-					|| componentName === 'YoutubeStats'
-					|| componentName === 'VsCodeStats';
-			});
-
 	return (
 		<article id={props.id || ""} className={`${Style.ProjectFirstImpression} ${props.className || ""}`} style={props.style || {}}>
 			<div>
@@ -38,9 +28,7 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 					</a>
 				}
 			</div>
-			<div className={Style.ProjectStats}>
-				{children}
-			</div>
+			{props.children}
 		</article>
 	);
 }

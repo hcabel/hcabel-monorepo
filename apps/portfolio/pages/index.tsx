@@ -22,24 +22,30 @@ export function Index() {
 					projectName="Unreal VsCode Helper"
 					projectDescription="is a VSCode extension that provides a set of tools to help you develop Unreal Engine projects inside VsCode."
 				>
-					<YoutubeStats views={92_197} />
-					<VsCodeStats name="HugoCabel.uvch"/>
-					<GithubStats repoUrl="https://github.com/hcabel/UnrealVsCodeHelper" />
+					<div className={Style.ProjectStats}>
+						<YoutubeStats views={92_197} />
+						<VsCodeStats name="HugoCabel.uvch"/>
+						<GithubStats repoUrl="https://github.com/hcabel/UnrealVsCodeHelper" />
+					</div>
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectHugoMeet}
 					projectName="Hugo Meet"
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
-					<YoutubeStats views={1_154 + 218} />
-					<GithubStats repoUrl="https://github.com/hcabel/HugoMeet" />
+					<div className={Style.ProjectStats}>
+						<YoutubeStats views={1_154 + 218} />
+						<GithubStats repoUrl="https://github.com/hcabel/HugoMeet" />
+					</div>
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectProceduralTerrain}
 					projectName="Procedural Terrain"
 					projectDescription="This is a Unreal Engine actor who's gonna generate infinite terrain in any of your game. (Like Minecraft)"
 				>
-					<YoutubeStats views={7_034} />
+					<div className={Style.ProjectStats}>
+						<YoutubeStats views={7_034} />
+					</div>
 				</ProjectFirstImpression>
 			</main>
 		</section>
