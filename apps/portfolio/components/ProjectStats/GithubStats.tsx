@@ -17,7 +17,7 @@ export default function GithubStats(props: IGithubStatsProps)
 
 	useEffect(() => {
 		const githubApiUrl =
-			props.repoUrl.includes('api.github.com') ? props.repoUrl : props.repoUrl.replace('github.com', 'api.github.com/repos');
+			props.repoUrl.includes("api.github.com") ? props.repoUrl : props.repoUrl.replace("github.com", "api.github.com/repos");
 
 		fetch(githubApiUrl)
 			.then((response) => response.json())

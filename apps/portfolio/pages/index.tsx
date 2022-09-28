@@ -1,5 +1,5 @@
 import Style from '@styles/pages/index.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Canvas3D from '@3D/Canvas3D';
 import ProjectFirstImpression from '@Components/ProjectFirstImpression';
@@ -10,7 +10,7 @@ import VsCodeStats from '@Components/ProjectStats/VsCodeStats';
 
 export function Index() {
 	useEffect(() => {
-		new Canvas3D(document.getElementById('Canvas3D') as HTMLCanvasElement);
+		new Canvas3D(document.getElementById("Canvas3D") as HTMLCanvasElement);
 	}, [])
 
 	return (
@@ -50,7 +50,7 @@ export function Index() {
 						</a>
 					</div>
 				</ProjectFirstImpression>
-				{/* PROCEDURAL TERRAIn */}
+				{/* PROCEDURAL TERRAIN */}
 				<ProjectFirstImpression
 					className={Style.ProjectProceduralTerrain}
 					projectName="Procedural Terrain"

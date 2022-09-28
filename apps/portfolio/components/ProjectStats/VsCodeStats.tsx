@@ -44,7 +44,7 @@ export default function VsCodeStats(props: IVsCodeStatsProps)
 					set_InstallsCount(installsCount);
 				}
 			});
-	}, []);
+	}, [props.name]);
 
 	return (
 		<div className={Style.StatContainer}>
