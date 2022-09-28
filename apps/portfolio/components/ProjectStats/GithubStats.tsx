@@ -16,7 +16,10 @@ export default function GithubStats(props: IGithubStatsProps)
 	const [_GithubStats, set_GithubStats] = useState<GithubResponce | undefined>(undefined);
 
 	useEffect(() => {
-		fetch(props.repoUrl)
+		const githubApiUrl =
+			props.repoUrl.includes('api.github.com') ? props.repoUrl : props.repoUrl.replace('github.com', 'api.github.com/repos');
+
+		fetch(githubApiUrl)
 			.then((response) => response.json())
 			.then((data) => set_GithubStats(data));
 	}, [props.repoUrl]);

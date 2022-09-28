@@ -24,7 +24,7 @@ export function Index() {
 				>
 					<YoutubeStats views={92_197} />
 					<VsCodeStats installs={911}/>
-					<GithubStats repoUrl="https://api.github.com/repos/hcabel/UnrealVsCodeHelper" />
+					<GithubStats repoUrl="https://github.com/hcabel/UnrealVsCodeHelper" />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectHugoMeet}
@@ -32,7 +32,7 @@ export function Index() {
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
 					<YoutubeStats views={1_154 + 218} />
-					<GithubStats repoUrl="https://api.github.com/repos/hcabel/HugoMeet" />
+					<GithubStats repoUrl="https://github.com/hcabel/HugoMeet" />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectProceduralTerrain}
