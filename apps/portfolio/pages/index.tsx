@@ -23,7 +23,7 @@ export function Index() {
 					projectDescription="is a VSCode extension that provides a set of tools to help you develop Unreal Engine projects inside VsCode."
 				>
 					<YoutubeStats views={92_197} />
-					<VsCodeStats installs={911}/>
+					<VsCodeStats name="HugoCabel.uvch"/>
 					<GithubStats repoUrl="https://github.com/hcabel/UnrealVsCodeHelper" />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
