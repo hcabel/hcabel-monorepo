@@ -17,7 +17,7 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 	children =
 		Array.from(Array.isArray(children) ? children : [children])
 			.filter((child) => {
-				const componentName = (child.type as any).name;
+				const componentName = (child?.type as any)?.name;
 				return componentName === 'GithubStats'
 					|| componentName === 'YoutubeStats'
 					|| componentName === 'VsCodeStats';

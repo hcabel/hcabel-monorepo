@@ -1,5 +1,5 @@
 import Style from '@styles/pages/index.module.scss';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Canvas3D from '@3D/Canvas3D';
 import ProjectFirstImpression from '@Components/ProjectFirstImpression';
@@ -9,7 +9,6 @@ import YoutubeStats from '@Components/ProjectStats/YoutubeStats';
 import VsCodeStats from '@Components/ProjectStats/VsCodeStats';
 
 export function Index() {
-
 	useEffect(() => {
 		new Canvas3D(document.getElementById('Canvas3D') as HTMLCanvasElement);
 	}, [])
@@ -25,7 +24,7 @@ export function Index() {
 				>
 					<YoutubeStats views={92_197} />
 					<VsCodeStats installs={911}/>
-					<GithubStats stars={25} forks={4} />
+					<GithubStats repoUrl="https://api.github.com/repos/hcabel/UnrealVsCodeHelper" />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectHugoMeet}
@@ -33,7 +32,7 @@ export function Index() {
 					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
 				>
 					<YoutubeStats views={1_154 + 218} />
-					<GithubStats stars={10} forks={3} />
+					<GithubStats repoUrl="https://api.github.com/repos/hcabel/HugoMeet" />
 				</ProjectFirstImpression>
 				<ProjectFirstImpression
 					className={Style.ProjectProceduralTerrain}
