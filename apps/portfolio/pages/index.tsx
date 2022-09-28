@@ -37,7 +37,7 @@ export function Index() {
 				<ProjectFirstImpression
 					className={Style.ProjectProceduralTerrain}
 					projectName="Procedural Terrain"
-					projectDescription="is a video meeting platform, that I made to learn how to use WebRTC and video/audio streaming."
+					projectDescription="This is a Unreal Engine actor who's gonna generate infinite terrain in any of your game. (Like Minecraft)"
 				>
 					<YoutubeStats views={7_034} />
 				</ProjectFirstImpression>
