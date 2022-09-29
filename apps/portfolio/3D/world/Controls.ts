@@ -97,6 +97,7 @@ class Controls
 }
 
 // Export this class has default for additional debug information
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class ControlsDebug extends Controls
 {
 	constructor(InCamera: Camera)
