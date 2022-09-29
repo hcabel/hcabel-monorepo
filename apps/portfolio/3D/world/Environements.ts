@@ -32,7 +32,7 @@ class Environements {
 		this._Scene.add(ambiantLight);
 
 		// Add background plane
-		const planeGeometry = new THREE.PlaneGeometry(20, 20);
+		const planeGeometry = new THREE.PlaneGeometry(40, 30);
 		const planeMaterial = new THREE.MeshStandardMaterial({
 			color: "#ffffff",
 		});
