@@ -1,9 +1,11 @@
 @import "@styles/colors.scss";
+@import "@styles/responsive.scss";
 
 .StatValues {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	white-space: nowrap;
 
 	margin-left: 8px;
 
@@ -26,4 +28,17 @@
 
 .Loading {
 	font-style: italic;
+}
+
+@media (max-width: $breakpoint-tablet) {
+	.StatContainer {
+		flex-direction: column;
+	}
+	.StatValues {
+		margin-left: 0px;
+		margin-top: 8px;
+	}
+	.StatIcon {
+		margin-right: 0px;
+	}
 }

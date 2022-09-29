@@ -8,7 +8,7 @@ import Canvas3D from '@3D/Canvas3D';
 
 class Controls
 {
-	public static _ProjectFocusBoxSize = new THREE.Vector3(3, 3, 3);
+	public static _ProjectFocusBoxSize = new THREE.Vector3(3.5, 3, 1);
 
 	// Quick access
 	protected _Camera: Camera;
@@ -53,10 +53,11 @@ class Controls
 		const z = this.GetFocusZDistance();
 
 		// calculate x position where the cube should be in the middle of the screen on mobile and on the left on desktop
-		const x = window.innerWidth > 768 ? this.GetXFocusDistance(z) : 0;
+		const x = window.innerWidth > 920 ? this.GetXFocusDistance(z) : 0;
 
 		// Move camera to new location
 		this._Camera.MoveTo(x, this._Camera.PerspectiveCamera.position.y, z, true);
+		this._ScrollTrigger.refresh();
 	}
 
 	/**
@@ -104,6 +105,8 @@ class ControlsDebug extends Controls
 	{
 		super(InCamera);
 
+		// kill previous scroll trigger to create a new one with markers on
+		this._ScrollTrigger.kill();
 		this.CreateScrollTrigger(true);
 
 		for (const y of [5, 0, -5]) {

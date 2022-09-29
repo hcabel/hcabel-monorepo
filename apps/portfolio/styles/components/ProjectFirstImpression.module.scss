@@ -1,4 +1,5 @@
 @import "@styles/colors.scss";
+@import "@styles/responsive.scss";
 
 .ProjectFirstImpression {
 	display: flex;
@@ -38,4 +39,30 @@
 	text-decoration-color: $MoreButtonColor;
 
 	color: $MoreButtonColor;
+}
+
+@media (max-width: $breakpoint-tablet) {
+	.ProjectName {
+		font-size: 9vw;
+		width: 100%;
+		text-align: center;
+	}
+	.ProjectDescription {
+		font-size: 3vw;
+	}
+	.ProjectMoreButton {
+		font-size: 1vw;
+	}
+}
+
+@media (max-width: $breakpoint-mobile) {
+	.ProjectName {
+		font-size: 5vh;
+	}
+	.ProjectDescription {
+		font-size: 2vh;
+	}
+	.ProjectMoreButton {
+		font-size: 1vh;
+	}
 }
