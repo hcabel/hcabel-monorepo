@@ -72,6 +72,10 @@ class Camera {
 	{
 		this._PerspectiveCamera.aspect = this._Sizes.Aspect;
 		this._PerspectiveCamera.updateProjectionMatrix();
+
+		if (!this._OrbitControls) {
+			this._Controls.Resize();
+		}
 	}
 
 	public Update()
@@ -109,7 +113,7 @@ class Camera {
 		this.MoveTo(pos.x, pos.y, pos.z, teleport);
 	}
 
-	public OffsetPosition(x: number, y: number, z: number, teleport = false)
+	public OffsetPosition(x: number, y = 0, z = 0, teleport = false)
 	{
 		this.MoveTo(
 			this._PerspectiveCamera.position.x + x,
