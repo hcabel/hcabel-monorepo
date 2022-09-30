@@ -8,7 +8,7 @@ import Canvas3D from '@3D/Canvas3D';
 
 class Controls
 {
-	public static _ProjectFocusBoxSize = new THREE.Vector3(3.5, 3, 1);
+	public static _ProjectFocusBoxSize = new THREE.Vector3(3.5, 3.5, 3.5);
 
 	// Quick access
 	protected _Camera: Camera;
