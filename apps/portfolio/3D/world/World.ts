@@ -45,7 +45,7 @@ class World {
 						mesh.castShadow = true;
 						mesh.receiveShadow = true;
 
-						if (name === "GroundTerrain" || name === "GroundTerrainCUbe") {
+						if (name === "GroundTerrain") {
 
 							// Load terrain height map
 							const heightmap = new THREE.TextureLoader().load("images/terrain.png");
@@ -67,7 +67,7 @@ class World {
 								lights: true,
 								vertexShader: THREE.ShaderChunk.meshphysical_vert
 									.replace('void main() {', m_terrainV)
-									// .replace('#include <defaultnormal_vertex>', "vec3 transformedNormal = displacedNormal;")
+									.replace('#include <defaultnormal_vertex>', "vec3 transformedNormal = displacedNormal;")
 									.replace('#include <displacementmap_vertex>', "transformed = displacedPosition;"),
 								fragmentShader: THREE.ShaderChunk.meshphysical_frag
 									.replace('void main() {', m_terrainF)
@@ -77,7 +77,8 @@ class World {
 									tHeightMap: { value: heightmap },
 									vOffset: { value: new THREE.Vector2(0, 0) },
 
-									diffuse: { value: new THREE.Color('#ffffff') },
+									boundingBoxMin: { value: mesh.geometry.boundingBox.min },
+									boundingBoxMax: { value: mesh.geometry.boundingBox.max },
 								},
 							});
 						}
@@ -119,11 +120,11 @@ class World {
 
 			if (material) {
 				const offset = material.uniforms.vOffset.value;
-				const speed = 0.00025;
+				const speed = 0.001;
 
 				// Offset the texture
 				offset.x = (offset.x + speed) % 1;
-				offset.y = (offset.y + speed) % 2;
+				offset.y = (offset.y + -speed) % 2;
 			}
 		}
 	}

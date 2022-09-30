@@ -1,6 +1,4 @@
-varying vec2 vUv;
 varying vec3 vPos;
-varying vec3 vNorm;
 
 uniform sampler2D tHeightMap;
 uniform vec2 vOffset;
@@ -12,23 +10,20 @@ vec3 orthogonal(vec3 v)
 
 vec3 displace(vec3 point)
 {
-	vec2 textureCoord = (point.xz / 10.0) + vOffset;
+	vec2 textureCoord = (point.xz / 50.0) + vOffset;
 	vec4 heightMap = texture2D(tHeightMap, textureCoord);
-	vec3 displacementValue = vec3(0.0, heightMap.r * 1.0 * color.r, 0.0);
+	vec3 displacementValue = vec3(0.0, heightMap.r * 5.0 * color.r, 0.0);
 	return displacementValue;
 }
 
 void main()
 {
-	vUv = uv;
-	vPos = position;
-	vNorm = normal;
-
 	vec3 displacedValue = displace(position);
 	vec3 displacedPosition = position + displacedValue;
+	vPos = displacedPosition;
 
 
-	float offset = 0.5;
+	float offset = 0.001;
 	vec3 tangent = orthogonal(normal);
 	vec3 bitangent = normalize(cross(normal, tangent));
 	vec3 neighbour1 = position + tangent * offset;
@@ -42,5 +37,4 @@ void main()
 
 	// https://upload.wikimedia.org/wikipedia/commons/d/d2/Right_hand_rule_cross_product.svg
 	vec3 displacedNormal = normalize(cross(displacedTangent, displacedBitangent));
-	vNorm = displacedNormal;
 
