@@ -21,6 +21,8 @@ class Environements {
 		directionalLight.shadow.camera.top = 10;
 		directionalLight.shadow.camera.bottom = -10;
 
+		directionalLight.intensity = 7.5;
+
 		this._Scene.add(directionalLight);
 
 		// show shadow debug

@@ -45,21 +45,40 @@ class World {
 						mesh.castShadow = true;
 						mesh.receiveShadow = true;
 
-						if (name === "GroundTerrain") {
+						if (name === "GroundTerrain" || name === "GroundTerrainCUbe") {
 
 							// Load terrain height map
 							const heightmap = new THREE.TextureLoader().load("images/terrain.png");
 							heightmap.wrapS = THREE.RepeatWrapping;
 							heightmap.wrapT = THREE.MirroredRepeatWrapping; // This is because I messed up the tilling in the texture (on the Y axis)
 
+							// https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders
 							mesh.material = new THREE.ShaderMaterial({
-								vertexColors: true,
-								vertexShader: m_terrainV,
-								fragmentShader: m_terrainF,
+								extensions: {
+									derivatives: true,
+								},
+
+								defines: {
+									STANDARD: '',
+									PHYSICAL: '',
+									USE_COLOR: '',
+									FLAT_SHADED: '',
+								},
+								lights: true,
+								vertexShader: THREE.ShaderChunk.meshphysical_vert
+									.replace('void main() {', m_terrainV)
+									// .replace('#include <defaultnormal_vertex>', "vec3 transformedNormal = displacedNormal;")
+									.replace('#include <displacementmap_vertex>', "transformed = displacedPosition;"),
+								fragmentShader: THREE.ShaderChunk.meshphysical_frag
+									.replace('void main() {', m_terrainF)
+									.replace('#include <color_fragment>', "diffuseColor.rgb = fragment_color;"),
 								uniforms: {
+									...THREE.ShaderLib.physical.uniforms,
 									tHeightMap: { value: heightmap },
 									vOffset: { value: new THREE.Vector2(0, 0) },
-								}
+
+									diffuse: { value: new THREE.Color('#ffffff') },
+								},
 							});
 						}
 					}
@@ -100,7 +119,7 @@ class World {
 
 			if (material) {
 				const offset = material.uniforms.vOffset.value;
-				const speed = 0.0005;
+				const speed = 0.00025;
 
 				// Offset the texture
 				offset.x = (offset.x + speed) % 1;
