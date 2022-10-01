@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@hcabel/rest-api-utils": ["libs/rest-api-utils/src/index.ts"]
+      "@hcabel/rest-api-utils": ["./libs/rest-api-utils/src/index.ts"]
     },
     "noImplicitAny": true,
     "strict": true

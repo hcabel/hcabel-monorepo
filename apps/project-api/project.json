@@ -12,20 +12,14 @@
         "compiler": "tsc",
         "outputPath": "dist/apps/project-api",
         "main": "apps/project-api/src/main.ts",
-        "tsConfig": "apps/project-api/tsconfig.app.json",
+        "tsConfig": "apps/project-api/tsconfig.json",
         "assets": ["apps/project-api/src/assets"]
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/project-api/src/environments/environment.ts",
-              "with": "apps/project-api/src/environments/environment.prod.ts"
-            }
-          ]
+          "inspect": false
         }
       }
     },
