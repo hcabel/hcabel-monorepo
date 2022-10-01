@@ -13,13 +13,18 @@
 			"name": "Apps/Portfolio/e2e",
 		},
 		{
+			"path": "./libs/rest-api-utils",
+			"name": "Libs/RestApiUtils",
+		},
+		{
 			"path": ".",
 			"name": "/"
 		}
 	],
 	"settings": {
 		"files.exclude": {
-			"apps": true
+			"apps": true,
+			"libs": true,
 		},
 		"search.exclude": {
 			"apps": true,
