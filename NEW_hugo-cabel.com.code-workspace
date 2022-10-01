@@ -5,12 +5,12 @@
 			"name": "Apps/Portfolio"
 		},
 		{
-			"path": "./apps/project-api",
-			"name": "Apps/ProjectApi"
-		},
-		{
 			"path": "./apps/portfolio-e2e",
 			"name": "Apps/Portfolio/e2e",
+		},
+		{
+			"path": "./apps/project-api",
+			"name": "Apps/ProjectApi"
 		},
 		{
 			"path": "./libs/rest-api-utils",
