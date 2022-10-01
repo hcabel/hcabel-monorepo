@@ -9,16 +9,20 @@ const app = express();
 const router = GenerateRouterFromRoutingTree(RouteTree);
 app.use('/', router);
 
-const dbUri = process.env.NX_MONGO_URI;
+const dbUri = process.env.MONGO_URI;
 mongoose.connect(dbUri || "", {
-	w: "majority",
-	appName: "ProjectApi",
-}, () => {
-	console.log('Mongo ready');
+		w: "majority",
+		appName: "ProjectApi",
+	})
+	.then(() => {
+		console.log('Mongo ready');
 
-	const port = process.env.port || 3333;
-	const server = app.listen(port, () => {
-		console.log(`Listening at ${process.env.PROJECTAPI_ENDPOINT}`);
+		const port = process.env.port || 3333;
+		const server = app.listen(port, async () => {
+			console.log(`Listening at ${process.env.PROJECTAPI_ENDPOINT}`);
+		});
+		server.on("error", console.error);
+	})
+	.catch((err: any) => {
+		console.error(err);
 	});
-	server.on("error", console.error);
-});
