@@ -1,5 +1,6 @@
 
-import { Request, Response, NextFunction, RequestHandler, Router } from 'express';
+import { Request, Response, NextFunction, Router, RequestHandler as ExpressRequestHandler } from 'express';
+import { RequestHandler } from './request';
 
 export type RequestMethod = "get" | "post" | "put" | "delete" | "patch" | "options" | "head";
 
@@ -7,11 +8,11 @@ export type RequestMethod = "get" | "post" | "put" | "delete" | "patch" | "optio
  * An interface to represent a leaf of your tree of routes.
  */
 export interface IRouteLeaf {
-	get?: RequestHandler,
-	post?: RequestHandler,
-	put?: RequestHandler,
-	patch?: RequestHandler,
-	delete?: RequestHandler,
+	get?: ExpressRequestHandler,
+	post?: ExpressRequestHandler,
+	put?: ExpressRequestHandler,
+	patch?: ExpressRequestHandler,
+	delete?: ExpressRequestHandler,
 }
 
 /**
@@ -19,14 +20,17 @@ export interface IRouteLeaf {
  * @param callee The function that will be called when the route is accessed
  * @returns A function that will be called by express
  */
-export function useRoute(callee: RequestHandler): RequestHandler
+export function useRoute(callee: RequestHandler): ExpressRequestHandler
 {
 	return (req: Request, res: Response, next: NextFunction) => {
 		try {
-			callee(req, res, next);
+			const result = callee(req);
+			res.status(result.status).json(result.json);
+			next();
 		}
 		catch {
-			console.log('error');
+			console.error(`${req.route.path}: CRASHED`);
+			res.status(500).json({ message: "Internal server error" });
 		}
 	};
 }
