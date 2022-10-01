@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import Project, { IMProject } from "../models/projects";
+import Project, { IMProject } from "../models/project";
 
 /**
  * Create new project in db
