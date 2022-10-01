@@ -1,10 +1,11 @@
 import * as express from "express";
 import RouteTree from "./routes/routes";
-import { GenerateAppRoutesFromTree } from "@hcabel/rest-api-utils";
+import { GenerateRouterFromRoutingTree } from "@hcabel/rest-api-utils";
 
 const app = express();
 
-GenerateAppRoutesFromTree(app, RouteTree);
+const router = GenerateRouterFromRoutingTree(RouteTree);
+app.use('/', router);
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {

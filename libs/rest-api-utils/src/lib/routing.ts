@@ -1,12 +1,12 @@
 
-import { Express, Request, Response, NextFunction, RequestHandler, Router } from 'express';
+import { Request, Response, NextFunction, RequestHandler, Router } from 'express';
 
-export type RequestMethod = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
+export type RequestMethod = "get" | "post" | "put" | "delete" | "patch" | "options" | "head";
 
 /**
  * An interface to represent a leaf of your tree of routes.
  */
-interface IRouteLeaf {
+export interface IRouteLeaf {
 	get?: RequestHandler,
 	post?: RequestHandler,
 	put?: RequestHandler,
@@ -32,30 +32,10 @@ export function useRoute(callee: RequestHandler): RequestHandler
 }
 
 /**
- * This wrapper convert your leaf and all his handler in a router that can be used by express.
- * @param leaf The leaf of the route tree
- * @returns The router of the leaf
- */
-export function useLeaf(leaf: IRouteLeaf)
-{
-	const router: Router = Router();
-
-	for (const key in leaf) {
-		const method = key as keyof IRouteLeaf;
-		const handler = leaf[method];
-		if (handler) {
-			router[method as RequestMethod]('/', handler);
-		}
-	}
-
-	return (router);
-}
-
-/**
  * This interface represent a branch of your tree of routes.
  * technically the stump if the first branch of your tree.
  */
-export type IRoutesTreeBranch = { [name: string]: IRoutesTreeBranch | Router };
+export type IRoutingTreeBranch = { [name: string]: IRoutingTreeBranch | IRouteLeaf };
 
 /**
  * This function will generate all the routes from a tree of routes.
@@ -63,28 +43,39 @@ export type IRoutesTreeBranch = { [name: string]: IRoutesTreeBranch | Router };
  * @param branchNode The branch of the tree of routes
  * @param path The starting path of the branch, '' by default
  */
-export function GenerateAppRoutesFromTree(app: Express, treeBranch: IRoutesTreeBranch, path = '')
+export function GenerateRouterFromRoutingTree(RoutingTree: IRoutingTreeBranch): Router
 {
-	// for each branches which is leaving this node
-	for (const branchName in treeBranch) {
-		// get one of the branches
-		const branch = treeBranch[branchName];
+	const router: Router = Router();
 
-		// if the branch got other branches, dive into this branch
-		if (typeof(branch) === "object") {
-			GenerateAppRoutesFromTree(app, branch, `${path}/${branchName}`);
-		}
-		// else branch is in fact a leaf(route), so added it to the express app
-		else {
-			// if branchName is self this mean that sould be the route of treeBranch
-			if (branchName === "__self__") {
-				app.use(path, branch);
-				console.log(`+ ${path}/`);
+	function GenerateRoutesFromBranch(RoutingBranch: IRoutingTreeBranch, path: string)
+	{
+		// for each branches of RoutingBranch
+		for (const branchName in RoutingBranch) {
+			// get the branch value
+			const branchValue = RoutingBranch[branchName];
+
+			// if branchName is a method, it's the end of this branch, branchValue = RequestHandler
+			if (["get", "post", "put", "delete", "patch", "options", "head"].includes(branchName)) {
+
+				if (branchValue) {
+					router[branchName as RequestMethod](path, branchValue as RequestHandler);
+				}
+				else {
+					throw Error(`No RequestHandler for ${branchName} at ${path}!`);
+				}
 			}
+			// Self is the object where are the RequestHandler for the current path
+			else if (branchName === "__self__") {
+				// Dive deeper but without incrementing the path
+				GenerateRoutesFromBranch(branchValue as IRoutingTreeBranch, path);
+			}
+			// Otherwise the branch continue, add current branchName to the path and dive deeper
 			else {
-				app.use(`${path}/${branchName}`, branch);
-				console.log(`+ ${path}/${branchName}`);
+				GenerateRoutesFromBranch(branchValue as IRoutingTreeBranch, `${path}/${branchName}`);
 			}
 		}
 	}
+	GenerateRoutesFromBranch(RoutingTree, '');
+
+	return (router);
 }
