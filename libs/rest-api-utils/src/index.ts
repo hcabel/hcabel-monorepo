@@ -1,1 +1,1 @@
-export * from "./lib/rest-api-utils";
+export * from "./lib/routing";
