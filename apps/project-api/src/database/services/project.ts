@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import Project, { IMProject } from "../models/project";
+import ProjectModel, { IProjectModel } from "../models/project";
 
 /**
  * Create new project in db
@@ -8,10 +8,10 @@ import Project, { IMProject } from "../models/project";
  * @param stats id of the stats of the project (optional)
  * @returns the new project
  */
-export function CreateNewProject(name: string, desc: string): Promise<IMProject>
+export function CreateNewProject(name: string, desc: string): Promise<IProjectModel>
 {
 	return (
-		Project.create({
+		ProjectModel.create({
 			name: name,
 			description: desc
 		})
@@ -23,10 +23,10 @@ export function CreateNewProject(name: string, desc: string): Promise<IMProject>
  * @param name name of the project
  * @returns the project with the given name
  */
-export function GetProjectByName(name: string): Promise<IMProject | null>
+export function GetProjectByName(name: string): Promise<IProjectModel | null>
 {
 	return (
-		Project.findOne({ name: name }).exec()
+		ProjectModel.findOne({ name: name }).exec()
 	);
 }
 
@@ -35,10 +35,10 @@ export function GetProjectByName(name: string): Promise<IMProject | null>
  * @param id id of the project
  * @returns the project with the given id
  */
-export function GetProjectById(id: Types.ObjectId): Promise<IMProject | null>
+export function GetProjectById(id: Types.ObjectId): Promise<IProjectModel | null>
 {
 	return (
-		Project.findById(id).exec()
+		ProjectModel.findById(id).exec()
 	);
 }
 
@@ -50,7 +50,7 @@ export function GetProjectById(id: Types.ObjectId): Promise<IMProject | null>
 export function RemoveProject(projectName: string): Promise<boolean>
 {
 	return (
-		Project.deleteOne({ name: projectName }).exec()
+		ProjectModel.deleteOne({ name: projectName }).exec()
 			.then((res) => {
 				return (res.deletedCount === 1);
 			})
@@ -65,7 +65,7 @@ export function RemoveProject(projectName: string): Promise<boolean>
 export function RemoveProjectById(projectId: Types.ObjectId): Promise<boolean>
 {
 	return (
-		Project.deleteOne({ _id: projectId }).exec()
+		ProjectModel.deleteOne({ _id: projectId }).exec()
 			.then((res) => {
 				return (res.deletedCount === 1);
 			})
@@ -78,10 +78,10 @@ export function RemoveProjectById(projectId: Types.ObjectId): Promise<boolean>
  * @param newName new name of the project
  * @returns the project updated
  */
-export function UpdateProjectName(projectName: string, newName: string): Promise<IMProject | null>
+export function UpdateProjectName(projectName: string, newName: string): Promise<IProjectModel | null>
 {
 	return (
-		Project.findOneAndUpdate({ name: projectName }, { name: newName }, { new: true }).exec()
+		ProjectModel.findOneAndUpdate({ name: projectName }, { name: newName }, { new: true }).exec()
 	);
 }
 
@@ -93,19 +93,8 @@ export function UpdateProjectName(projectName: string, newName: string): Promise
  */
 export function UpdateProjectNameById(projectId: Types.ObjectId, newName: string)
 {
-	return (Project.findByIdAndUpdate(projectId, { name: newName }));
-}
-
-/**
- * Update the description of a project
- * @param projectId id of the project
- * @param newDesc new description of the project
- * @returns the project updated
- */
-export function UpdateProjectDescription(projectName: string, newDesc: string): Promise<IMProject | null>
-{
 	return (
-		Project.findOneAndUpdate({ name: projectName }, { description: newDesc }, { new: true }).exec()
+		ProjectModel.findByIdAndUpdate(projectId, { name: newName })
 	);
 }
 
@@ -115,9 +104,22 @@ export function UpdateProjectDescription(projectName: string, newDesc: string): 
  * @param newDesc new description of the project
  * @returns the project updated
  */
-export function UpdateProjectDescriptionById(projectId: Types.ObjectId, newDesc: string): Promise<IMProject | null>
+export function UpdateProjectDescription(projectName: string, newDesc: string): Promise<IProjectModel | null>
 {
 	return (
-		Project.findByIdAndUpdate(projectId, { description: newDesc }, { new: true }).exec()
+		ProjectModel.findOneAndUpdate({ name: projectName }, { description: newDesc }, { new: true }).exec()
+	);
+}
+
+/**
+ * Update the description of a project
+ * @param projectId id of the project
+ * @param newDesc new description of the project
+ * @returns the project updated
+ */
+export function UpdateProjectDescriptionById(projectId: Types.ObjectId, newDesc: string): Promise<IProjectModel | null>
+{
+	return (
+		ProjectModel.findByIdAndUpdate(projectId, { description: newDesc }, { new: true }).exec()
 	);
 }
