@@ -23,6 +23,9 @@ node_modules
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+# ignore workspace to allow people to have their own variation
+# but it's still is on the repo and will be updated every time we create a new lib/app
+*.code-workspace
 
 # misc
 /.sass-cache
