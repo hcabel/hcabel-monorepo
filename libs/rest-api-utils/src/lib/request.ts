@@ -5,4 +5,4 @@ export interface IRequestResponse {
 	json: any;
 }
 
-export type RequestHandler = (req: Request) => IRequestResponse;
+export type RequestHandler = (req: Request) => IRequestResponse | Promise<IRequestResponse>;

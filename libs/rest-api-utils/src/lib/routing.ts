@@ -22,9 +22,10 @@ export interface IRouteLeaf {
  */
 export function useRoute(callee: RequestHandler): ExpressRequestHandler
 {
-	return (req: Request, res: Response, next: NextFunction) => {
+	// we wrap the function, so we can catch errors, facilitate the function, assure some behavior, etc.
+	return async (req: Request, res: Response, next: NextFunction) => {
 		try {
-			const result = callee(req);
+			const result = await callee(req);
 			res.status(result.status).json(result.json);
 			next();
 		}
