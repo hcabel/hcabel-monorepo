@@ -1,9 +1,10 @@
-import {Schema, Types, model} from 'mongoose';
+import { Schema, model } from 'mongoose';
+import { IModel } from './models';
 
-// Project interface Schemat
-export interface ISProject {
-	name: string,
-	description: string,
+// Project model interface
+export interface IProjectModel extends IModel{
+	name: string,			// The name of the project
+	description: string,	// A short description of the project
 }
 
 const ProjectSchema = new Schema({
@@ -17,11 +18,5 @@ const ProjectSchema = new Schema({
 	}
 });
 
-// Project interface model (because by default mongo add a _id field)
-export interface IMProject extends ISProject {
-	_id: Types.ObjectId,
-}
-
-export const Project = model<IMProject>("Project", ProjectSchema);
-
-export default Project;
+export const ProjectModel = model<IProjectModel>("Project", ProjectSchema);
+export default ProjectModel;
