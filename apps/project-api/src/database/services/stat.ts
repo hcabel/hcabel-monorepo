@@ -13,8 +13,8 @@ import StatModel, { IStatModel } from '../models/stat';
  */
 export function CreateNewStat(
 	project_id: Types.ObjectId,
-	name: string,
 	platform: string,
+	name: string,
 	value: number,
 	url: string): Promise<IStatModel>
 {
@@ -90,12 +90,12 @@ export function GetAllProjectStatsFromPlatform(project_id: Types.ObjectId, platf
  */
 export function UpdateStatValue(
 	project_id: Types.ObjectId,
-	statName: string,
 	platform: string,
+	statName: string,
 	newValue: number): Promise<boolean>
 {
 	return (
-		StatModel.updateOne({ project_id: project_id, name: statName, platform: platform }, { value: newValue }).exec()
+		StatModel.updateOne({ project_id: project_id, platform: platform, name: statName }, { value: newValue }).exec()
 			.then((res) => {
 				// if it matched one, we assume it updated it, so we return true
 				return (res.matchedCount === 1);
@@ -113,12 +113,12 @@ export function UpdateStatValue(
  */
 export function UpdateStatUrl(
 	project_id: Types.ObjectId,
-	statName: string,
 	platform: string,
+	statName: string,
 	newUrl: string): Promise<boolean>
 {
 	return (
-		StatModel.updateOne({ project_id: project_id, name: statName, platform: platform }, { url: newUrl }).exec()
+		StatModel.updateOne({ project_id: project_id, platform: platform, name: statName }, { url: newUrl }).exec()
 			.then((res) => {
 				// if it matched one, we assume it updated it, so we return true
 				return (res.matchedCount === 1);
@@ -133,10 +133,10 @@ export function UpdateStatUrl(
  * @param platform platform of the stat (youtube, github, ...)
  * @returns true if stat has been deleted, false otherwise
  */
-export function RemoveStat(project_id: Types.ObjectId, statName: string, platform: string): Promise<boolean>
+export function RemoveStat(project_id: Types.ObjectId, platform: string, statName: string): Promise<boolean>
 {
 	return (
-		StatModel.deleteOne({ project_id: project_id, name: statName, platform: platform }).exec()
+		StatModel.deleteOne({ project_id: project_id, platform: platform, name: statName }).exec()
 			.then((res) => {
 				return (res.deletedCount === 1);
 			})
