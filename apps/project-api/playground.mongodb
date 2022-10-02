@@ -1,0 +1,81 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select a database to use
+const DB_NAME = "hcabel_dev";
+
+use(DB_NAME);
+
+function ClearDB()
+{
+	db.Projects.drop();
+	db.Stats.drop();
+}
+
+function DuplicateCollection(collectionSourceName, collectionTargetName, dbTargetName = DB_NAME)
+{
+	const collectionSource = db.getCollection(collectionSourceName);
+	const collectionTarget = db.getSiblingDB(dbTargetName).getCollection(collectionTargetName);
+
+	return (
+		collectionSource.find()
+			.forEach(function (doc) {
+				collectionTarget.insert(doc);
+			})
+	)
+}
+
+function DuplicateDB(dbSourceName, dbTargetName)
+{
+	const dbSource = db.getSiblingDB(dbSourceName);
+
+	const collections = dbSource.getCollectionNames();
+	collections.forEach((collectionName) => {
+		DuplicateCollection(collectionName, collectionName, dbTargetName);
+	});
+}
+
+function AddProject(projectName, ProjectDescription)
+{
+	return (
+		db.Projects.insertOne({
+			"name": projectName,
+			"description": ProjectDescription
+		})
+	);
+}
+
+function deleteProject(projectName)
+{
+	return (
+		db.Projects.deleteOne({
+			"name": projectName
+		})
+	);
+}
+
+function AddStat(projectName, platform, statName, statValue, statUrl)
+{
+	// get project id
+	const project = db.Projects.findOne({"name": projectName});
+
+	// add stat
+	return (
+		db.Stats.insertOne({
+			"project_id": project._id,
+			"platform": platform,
+			"name": statName,
+			"value": statValue,
+			"url": statUrl
+		})
+	);
+}
+
+// AddProject("Name", "Description");
+// deleteProject("Name");
+// AddStat("Name", "Platform", "StatName", "StatValue", "StatUrl");
+
+// DuplicateCollection("Projects", "Projects", "hcabel_prod");
+// DuplicateDB("hcabel_dev", "hcabel_prod");
