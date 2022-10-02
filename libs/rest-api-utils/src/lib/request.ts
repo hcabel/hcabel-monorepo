@@ -1,8 +1,12 @@
 import { Request } from "express";
 
-export interface IRequestResponse {
+export interface IRequestError {
+	message: string;
+}
+
+export interface IRequestResponse<T = any> {
 	status: number;
-	json: any;
+	json: T | IRequestError;
 }
 
 export type RequestHandler = (req: Request) => IRequestResponse | Promise<IRequestResponse>;
