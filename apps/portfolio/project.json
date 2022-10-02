@@ -6,10 +6,12 @@
     "build": {
       "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
+      "nextConfig": "apps/portfolio/next.config.js",
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/portfolio",
-        "outputPath": "dist/apps/portfolio"
+        "outputPath": "dist/apps/portfolio",
+        "assets": "apps/portfolio/assets"
       },
       "configurations": {
         "development": {
