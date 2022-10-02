@@ -20,5 +20,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["shared", "types", "library"]
 }
