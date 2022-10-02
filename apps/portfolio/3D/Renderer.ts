@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-import Canvas3D from "@3D/Canvas3D";
-import Camera from '@3D/world/Camera';
-import Sizes from '@3D/utils/Sizes';
+import Canvas3D from '3D/Canvas3D';
+import Camera from '3D/world/Camera';
+import Sizes from '3D/utils/Sizes';
 
 class Renderer {
 	private _Canvas3D: Canvas3D;

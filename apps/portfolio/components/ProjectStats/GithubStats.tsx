@@ -1,8 +1,8 @@
-import Style from '@styles/components/ProjectStats.module.scss';
+import Style from 'Styles/components/ProjectStats.module.scss';
 
-import GithubIcon from '@Images/Github/GithubIcon.svg';
-import ForkIcon from '@Images/Github/ForkIcon.svg';
-import StarIcon from '@Images/Github/StarIcon.svg';
+import GithubIcon from 'Images/Github/GithubIcon.svg';
+import ForkIcon from 'Images/Github/ForkIcon.svg';
+import StarIcon from 'Images/Github/StarIcon.svg';
 import { useEffect, useState } from 'react';
 
 export interface IGithubStatsProps {

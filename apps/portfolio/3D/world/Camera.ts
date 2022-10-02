@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 
-import Canvas3D from "../Canvas3D";
-import Sizes from '@3D/utils/Sizes';
-import Control from './Controls';
+import Canvas3D from '3D/Canvas3D';
+import Sizes from '3D/utils/Sizes';
+import Control from '3D/world/Controls';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 export interface ILerp3d {

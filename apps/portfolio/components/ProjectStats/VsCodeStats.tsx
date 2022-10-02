@@ -1,7 +1,8 @@
-import Style from '@styles/components/ProjectStats.module.scss';
-
-import VsCodeIcon from '@Images/VsCodeIcon.svg';
 import { useEffect, useState } from 'react';
+
+import Style from 'Styles/components/ProjectStats.module.scss';
+
+import VsCodeIcon from 'Images/VsCodeIcon.svg';
 
 export interface IVsCodeStatsProps {
 	name: string;

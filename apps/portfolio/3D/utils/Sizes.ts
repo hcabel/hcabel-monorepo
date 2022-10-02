@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events';
 
 class Sizes extends EventEmitter {
 	private _Width: number;

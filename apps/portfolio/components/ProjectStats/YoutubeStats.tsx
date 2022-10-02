@@ -1,6 +1,6 @@
-import Style from "@styles/components/ProjectStats.module.scss";
+import Style from 'Styles/components/ProjectStats.module.scss';
 
-import YoutubeIcon from '@Images/YoutubeIcon.svg';
+import YoutubeIcon from 'Images/YoutubeIcon.svg';
 
 export interface IYoutubeStatsProps {
 	views: number;

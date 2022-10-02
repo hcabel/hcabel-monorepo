@@ -1,4 +1,4 @@
-import Style from '@styles/components/ProjectFirstImpression.module.scss';
+import Style from 'Styles/components/ProjectFirstImpression.module.scss';
 
 export interface IProjectFirstImpressionProps {
 	id?: string;

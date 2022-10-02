@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events';
 
 class Clock extends EventEmitter {
 	private _Start: number;

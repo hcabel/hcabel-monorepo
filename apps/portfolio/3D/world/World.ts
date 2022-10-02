@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
-import Environements from '@3D/world/Environements';
-import GLTFAsset from './GLTFAsset';
+import Environements from '3D/world/Environements';
+import GLTFAsset from '3D/world/GLTFAsset';
 
-import m_terrainV from '@3D/world/materials/TerrainVertex.glsl';
-import m_terrainF from '@3D/world/materials/TerrainFragment.glsl';
+import m_terrainV from '3D/world/materials/TerrainVertex.glsl';
+import m_terrainF from '3D/world/materials/TerrainFragment.glsl';
 
 class World {
 

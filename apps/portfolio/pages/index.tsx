@@ -1,12 +1,13 @@
-import Style from '@styles/pages/index.module.scss';
 import { useEffect } from 'react';
 
-import Canvas3D from '@3D/Canvas3D';
-import ProjectFirstImpression from '@Components/ProjectFirstImpression';
+import Style from 'Styles/pages/index.module.scss';
 
-import GithubStats from '@Components/ProjectStats/GithubStats';
-import YoutubeStats from '@Components/ProjectStats/YoutubeStats';
-import VsCodeStats from '@Components/ProjectStats/VsCodeStats';
+import Canvas3D from '3D/Canvas3D';
+import ProjectFirstImpression from 'Components/ProjectFirstImpression';
+
+import GithubStats from 'Components/ProjectStats/GithubStats';
+import YoutubeStats from 'Components/ProjectStats/YoutubeStats';
+import VsCodeStats from 'Components/ProjectStats/VsCodeStats';
 
 export function Index() {
 	useEffect(() => {

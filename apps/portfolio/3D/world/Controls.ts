@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
-import Camera from "./Camera";
+import Camera from '3D/world/Camera';
 
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import GSAP from 'gsap';
-import Canvas3D from '@3D/Canvas3D';
+import Canvas3D from '3D/Canvas3D';
 
 class Controls
 {
