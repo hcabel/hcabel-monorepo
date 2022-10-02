@@ -13,6 +13,10 @@
 			"name": "Apps/ProjectApi"
 		},
 		{
+			"path": "./libs/types/types-project-api",
+			"name": "Libs/Types/ProjectApi"
+		},
+		{
 			"path": "./libs/rest-api-utils",
 			"name": "Libs/RestApiUtils",
 		},
