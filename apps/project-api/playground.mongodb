@@ -10,8 +10,8 @@ use(DB_NAME);
 
 function ClearDB()
 {
-	db.Projects.drop();
-	db.Stats.drop();
+	db.projects.drop();
+	db.stats.drop();
 }
 
 function DuplicateCollection(collectionSourceName, collectionTargetName, dbTargetName = DB_NAME)
@@ -40,7 +40,7 @@ function DuplicateDB(dbSourceName, dbTargetName)
 function AddProject(projectName, ProjectDescription)
 {
 	return (
-		db.Projects.insertOne({
+		db.projects.insertOne({
 			"name": projectName,
 			"description": ProjectDescription
 		})
@@ -50,7 +50,7 @@ function AddProject(projectName, ProjectDescription)
 function deleteProject(projectName)
 {
 	return (
-		db.Projects.deleteOne({
+		db.projects.deleteOne({
 			"name": projectName
 		})
 	);
@@ -59,11 +59,11 @@ function deleteProject(projectName)
 function AddStat(projectName, platform, statName, statValue, statUrl)
 {
 	// get project id
-	const project = db.Projects.findOne({"name": projectName});
+	const project = db.projects.findOne({"name": projectName});
 
 	// add stat
 	return (
-		db.Stats.insertOne({
+		db.stats.insertOne({
 			"project_id": project._id,
 			"platform": platform,
 			"name": statName,
@@ -77,5 +77,5 @@ function AddStat(projectName, platform, statName, statValue, statUrl)
 // deleteProject("Name");
 // AddStat("Name", "Platform", "StatName", "StatValue", "StatUrl");
 
-// DuplicateCollection("Projects", "Projects", "hcabel_prod");
-// DuplicateDB("hcabel_dev", "hcabel_prod");
+// DuplicateCollection("collectionA", "collectionB", "dbB");
+// DuplicateDB("dbA", "dbB");

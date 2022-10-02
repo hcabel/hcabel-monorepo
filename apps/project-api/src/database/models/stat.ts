@@ -33,5 +33,5 @@ const StatSchema = new Schema({
 	}
 });
 
-export const StatModel = model<IStatModel>('Stat', StatSchema);
+export const StatModel = model<IStatModel>('stats', StatSchema);
 export default StatModel;
