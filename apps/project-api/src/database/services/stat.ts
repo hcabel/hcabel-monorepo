@@ -36,10 +36,10 @@ export function CreateNewStat(
  * @param platform platform of the stat (youtube, github, ...)
  * @returns the stat
  */
-export function GetStat(project_id: Types.ObjectId, statName: string, platform: string): Promise<IStatModel | null>
+export function GetStat(project_id: Types.ObjectId, platform: string, statName: string): Promise<IStatModel | null>
 {
 	return (
-		StatModel.findOne({ project_id: project_id, name: statName, platform: platform }).exec()
+		StatModel.findOne({ project_id: project_id, platform: platform, name: statName }).exec()
 	);
 }
 
@@ -73,7 +73,7 @@ export function GetAllProjectStats(project_id: Types.ObjectId): Promise<IStatMod
  * @param platform platform of the stat (youtube, github, ...)
  * @returns the stats of the project for the given platform
  */
-export function GetAllProjectStatsFromPlateform(project_id: Types.ObjectId, platform: string): Promise<IStatModel[]>
+export function GetAllProjectStatsFromPlatform(project_id: Types.ObjectId, platform: string): Promise<IStatModel[]>
 {
 	return (
 		StatModel.find({ project_id: project_id, platform: platform }).exec()
