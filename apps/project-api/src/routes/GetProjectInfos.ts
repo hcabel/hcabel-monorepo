@@ -39,7 +39,6 @@ async function GetProjectInfos(req: Request): Promise<IRequestResponse<IGetProje
 		...project,
 		stats: stats
 	};
-
 	return ({
 		status: 200,
 		json: result

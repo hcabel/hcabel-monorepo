@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import ProjectModel from "../models/project";
-import { IProjectModel } from "@hcabel/types/ProjectApi";
+import { IProjectDocument, IProjectModel, IProjectSchema } from "@hcabel/types/ProjectApi";
 
 /**
  * Create new project in db
@@ -12,9 +12,12 @@ import { IProjectModel } from "@hcabel/types/ProjectApi";
 export function CreateNewProject(name: string, desc: string): Promise<IProjectModel>
 {
 	return (
-		ProjectModel.create({
+		ProjectModel.create<IProjectSchema>({
 			name: name,
 			description: desc
+		})
+		.then((project) => {
+			return (project?.toObject<IProjectModel>() || null);
 		})
 	);
 }
@@ -27,7 +30,10 @@ export function CreateNewProject(name: string, desc: string): Promise<IProjectMo
 export function GetProjectByName(name: string): Promise<IProjectModel | null>
 {
 	return (
-		ProjectModel.findOne({ name: name }).exec()
+		ProjectModel.findOne<IProjectDocument>({ name: name }).exec()
+		.then((project) => {
+			return (project?.toObject<IProjectModel>() || null);
+		})
 	);
 }
 
@@ -39,7 +45,10 @@ export function GetProjectByName(name: string): Promise<IProjectModel | null>
 export function GetProjectById(id: Types.ObjectId): Promise<IProjectModel | null>
 {
 	return (
-		ProjectModel.findById(id).exec()
+		ProjectModel.findById<IProjectDocument>(id).exec()
+		.then((project) => {
+			return (project?.toObject<IProjectModel>() || null);
+		})
 	);
 }
 
@@ -52,9 +61,9 @@ export function RemoveProject(projectName: string): Promise<boolean>
 {
 	return (
 		ProjectModel.deleteOne({ name: projectName }).exec()
-			.then((res) => {
-				return (res.deletedCount === 1);
-			})
+		.then((res) => {
+			return (res.deletedCount === 1);
+		})
 	);
 }
 
@@ -67,9 +76,9 @@ export function RemoveProjectById(projectId: Types.ObjectId): Promise<boolean>
 {
 	return (
 		ProjectModel.deleteOne({ _id: projectId }).exec()
-			.then((res) => {
-				return (res.deletedCount === 1);
-			})
+		.then((res) => {
+			return (res.deletedCount === 1);
+		})
 	);
 }
 
@@ -82,7 +91,10 @@ export function RemoveProjectById(projectId: Types.ObjectId): Promise<boolean>
 export function UpdateProjectName(projectName: string, newName: string): Promise<IProjectModel | null>
 {
 	return (
-		ProjectModel.findOneAndUpdate({ name: projectName }, { name: newName }, { new: true }).exec()
+		ProjectModel.findOneAndUpdate<IProjectDocument>({ name: projectName }, { name: newName }, { new: true }).exec()
+		.then((project) => {
+			return (project?.toObject<IProjectModel>() || null);
+		})
 	);
 }
 
@@ -95,7 +107,10 @@ export function UpdateProjectName(projectName: string, newName: string): Promise
 export function UpdateProjectNameById(projectId: Types.ObjectId, newName: string)
 {
 	return (
-		ProjectModel.findByIdAndUpdate(projectId, { name: newName })
+		ProjectModel.findByIdAndUpdate<IProjectDocument>(projectId, { name: newName }, { new: true }).exec()
+		.then((project) => {
+			return (project?.toObject<IProjectModel>() || null);
+		})
 	);
 }
 
@@ -108,7 +123,14 @@ export function UpdateProjectNameById(projectId: Types.ObjectId, newName: string
 export function UpdateProjectDescription(projectName: string, newDesc: string): Promise<IProjectModel | null>
 {
 	return (
-		ProjectModel.findOneAndUpdate({ name: projectName }, { description: newDesc }, { new: true }).exec()
+		ProjectModel.findOneAndUpdate<IProjectDocument>(
+			{ name: projectName },
+			{ description: newDesc },
+			{ new: true }
+		).exec()
+		.then((project) => {
+			return (project?.toObject<IProjectModel>() || null);
+		})
 	);
 }
 
@@ -121,6 +143,9 @@ export function UpdateProjectDescription(projectName: string, newDesc: string): 
 export function UpdateProjectDescriptionById(projectId: Types.ObjectId, newDesc: string): Promise<IProjectModel | null>
 {
 	return (
-		ProjectModel.findByIdAndUpdate(projectId, { description: newDesc }, { new: true }).exec()
+		ProjectModel.findByIdAndUpdate<IProjectDocument>(projectId, { description: newDesc }, { new: true }).exec()
+		.then((project) => {
+			return (project?.toObject<IProjectModel>() || null);
+		})
 	);
 }
