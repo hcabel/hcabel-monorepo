@@ -1,6 +1,6 @@
-
 import { Types } from 'mongoose';
-import StatModel, { IStatModel } from '../models/stat';
+import StatModel from '../models/stat';
+import { IStatModel } from '@hcabel/types/ProjectApi';
 
 /**
  * Create new stat in db
