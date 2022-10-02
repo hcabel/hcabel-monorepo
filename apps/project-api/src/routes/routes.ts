@@ -1,6 +1,6 @@
 import { useRoute, IRoutingTreeBranch } from '@hcabel/rest-api-utils';
 import GetProjectInfos from './GetProjectInfos';
-import { GetAllProjectStatsFromPlatform, GetProjectStat } from './GetProjectStat';
+import { GetAllProjectStats, GetAllProjectStatsFromPlatform, GetProjectStat } from './GetProjectStat';
 
 // Graph of all the routes in the API
 // __self__ allow you to add a leaf to a branch but still be able to extend the branch
@@ -16,6 +16,9 @@ const RouteTree: IRoutingTreeBranch = {
 			get: useRoute(GetProjectInfos),
 		},
 		stats: {
+			__self__: {
+				get: useRoute(GetAllProjectStats),
+			},
 			":platform": {
 				__self__: {
 					get: useRoute(GetAllProjectStatsFromPlatform),
