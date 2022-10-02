@@ -1,1 +1,1 @@
-export * from "./lib/types-types-project-api";
+export * from "./lib/models/models.interface";

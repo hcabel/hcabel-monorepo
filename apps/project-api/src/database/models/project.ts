@@ -1,11 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IModel } from './models';
-
-// Project model interface
-export interface IProjectModel extends IModel{
-	name: string,			// The name of the project
-	description: string,	// A short description of the project
-}
+import { IProjectModel } from '@hcabel/types/ProjectApi';
 
 const ProjectSchema = new Schema({
 	name: {

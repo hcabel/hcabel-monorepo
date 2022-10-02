@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
-import ProjectModel, { IProjectModel } from "../models/project";
+import ProjectModel from "../models/project";
+import { IProjectModel } from "@hcabel/types/ProjectApi";
 
 /**
  * Create new project in db
