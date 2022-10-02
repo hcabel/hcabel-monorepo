@@ -9,6 +9,10 @@ const app = express();
 const router = GenerateRouterFromRoutingTree(RouteTree);
 app.use('/', router);
 
+// This line will add spaces in the json output of every request (using res.json())
+// this will result in more readable json in the browser
+app.set('json spaces', 2);
+
 const dbUri = process.env.MONGO_URI;
 mongoose.connect(dbUri || "", {
 		w: "majority",
