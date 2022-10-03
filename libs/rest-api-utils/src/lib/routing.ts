@@ -1,5 +1,4 @@
-
-import { Request, Response, NextFunction, Router, RequestHandler as ExpressRequestHandler } from 'express';
+import Express from 'express';
 import { RequestHandler } from './request';
 
 export type RequestMethod = "get" | "post" | "put" | "delete" | "patch" | "options" | "head";
@@ -8,11 +7,11 @@ export type RequestMethod = "get" | "post" | "put" | "delete" | "patch" | "optio
  * An interface to represent a leaf of your tree of routes.
  */
 export interface IRouteLeaf {
-	get?: ExpressRequestHandler,
-	post?: ExpressRequestHandler,
-	put?: ExpressRequestHandler,
-	patch?: ExpressRequestHandler,
-	delete?: ExpressRequestHandler,
+	get?: Express.RequestHandler,
+	post?: Express.RequestHandler,
+	put?: Express.RequestHandler,
+	patch?: Express.RequestHandler,
+	delete?: Express.RequestHandler,
 }
 
 /**
@@ -20,10 +19,10 @@ export interface IRouteLeaf {
  * @param callee The function that will be called when the route is accessed
  * @returns A function that will be called by express
  */
-export function useRoute(callee: RequestHandler): ExpressRequestHandler
+export function useRoute(callee: RequestHandler): Express.RequestHandler
 {
 	// we wrap the function, so we can catch errors, facilitate the function, assure some behavior, etc.
-	return async (req: Request, res: Response, next: NextFunction) => {
+	return async(req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
 		try {
 			const result = await callee(req);
 			res.status(result.status).json(result.json);
@@ -48,9 +47,9 @@ export type IRoutingTreeBranch = { [name: string]: IRoutingTreeBranch | IRouteLe
  * @param branchNode The branch of the tree of routes
  * @param path The starting path of the branch, '' by default
  */
-export function GenerateRouterFromRoutingTree(RoutingTree: IRoutingTreeBranch): Router
+export function GenerateRouterFromRoutingTree(RoutingTree: IRoutingTreeBranch): Express.Router
 {
-	const router: Router = Router();
+	const router = Express.Router();
 
 	function GenerateRoutesFromBranch(RoutingBranch: IRoutingTreeBranch, path: string)
 	{

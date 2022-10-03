@@ -5,9 +5,18 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/types/types-project-api/**/*.ts"]
+        "eslintConfig": ".eslintrc.json",
+        "lintFilePatterns": [
+          "apps/portfolio-e2e/src/**/*"
+        ]
+      },
+      "defaultConfiguration": "test",
+      "configurations": {
+        "test": {},
+        "fix": {
+          "fix": true
+        }
       }
     }
   },

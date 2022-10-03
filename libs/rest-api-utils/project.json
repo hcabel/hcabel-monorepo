@@ -6,9 +6,18 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/rest-api-utils/**/*.ts"]
+        "eslintConfig": ".eslintrc.json",
+        "lintFilePatterns": [
+          "libs/rest-api-utils/src/**/*"
+        ]
+      },
+      "defaultConfiguration": "test",
+      "configurations": {
+        "test": {},
+        "fix": {
+          "fix": true
+        }
       }
     }
   },

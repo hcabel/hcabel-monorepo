@@ -1,4 +1,4 @@
-import { Request } from "express";
+import Express from 'express';
 
 export interface IRequestError {
 	message: string;
@@ -9,4 +9,4 @@ export interface IRequestResponse<T = any> {
 	json: T | IRequestError;
 }
 
-export type RequestHandler = (req: Request) => IRequestResponse | Promise<IRequestResponse>;
+export type RequestHandler = (req: Express.Request) => IRequestResponse | Promise<IRequestResponse>;
