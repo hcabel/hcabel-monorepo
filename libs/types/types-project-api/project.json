@@ -8,7 +8,7 @@
       "options": {
         "eslintConfig": ".eslintrc.json",
         "lintFilePatterns": [
-          "apps/portfolio-e2e/src/**/*"
+          "libs/types/types-project-api/src/**/*"
         ]
       },
       "defaultConfiguration": "test",
