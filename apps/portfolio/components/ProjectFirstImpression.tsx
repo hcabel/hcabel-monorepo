@@ -22,19 +22,10 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 {
 	const [_Project, set_Project] = useState<IGetProjectInfos | undefined>(undefined);
 
-	const YoutubeViews = (_Project ? ReduceStats(_Project.stats, "youtube", "views") : undefined);
-	const VsCodeInstalls = (_Project ? ReduceStats(_Project.stats, "vscode marketplace", "installs") : undefined);
-	const GithubStars = (_Project ? ReduceStats(_Project.stats, "github", "stars") : undefined);
-	const GithubForks = (_Project ? ReduceStats(_Project.stats, "github", "forks") : undefined);
-
-	function	ReduceStats(stats: IStatModel[], platform: string, name: string)
-	{
-		const statOfName = stats.filter((stat) => stat.platform === platform && stat.name === name);
-		if (statOfName.length === 0) {
-			return (undefined);
-		}
-		return (statOfName.reduce((acc, stat) => acc + stat.value, 0));
-	}
+	// @TODO: Convert stats from array to hash table (with platform as key)
+	const githubStats = _Project?.stats.filter((stat) => stat.platform === "github") || [];
+	const youtubeStats = _Project?.stats.filter((stat) => stat.platform === "youtube") || [];
+	const vscodeStats = _Project?.stats.filter((stat) => stat.platform === "vscode marketplace") || [];
 
 	useEffect(() => {
 		fetch(`api/projects/${props.projectName}`)
@@ -63,22 +54,14 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 				}
 			</div>
 			<div className={Style.ProjectStats}>
-				{YoutubeViews &&
-					<a href="https://www.youtube.com/watch?v=_usDZ6osnR4">
-						<YoutubeStats
-							views={YoutubeViews}
-						/>
-					</a>
+				{youtubeStats.length > 0 &&
+					<YoutubeStats stats={youtubeStats}/>
 				}
-				{VsCodeInstalls &&
-					<a href="https://marketplace.visualstudio.com/items?itemName=HugoCabel.uvch">
-						<VsCodeStats installs={VsCodeInstalls} />
-					</a>
+				{vscodeStats.length > 0 &&
+					<VsCodeStats stats={vscodeStats}/>
 				}
-				{(GithubStars || GithubForks) &&
-					<a href="https://github.com/hcabel/UnrealVsCodeHelper">
-						<GithubStats stars={GithubStars} forks={GithubForks} />
-					</a>
+				{githubStats.length > 0 &&
+					<GithubStats stats={githubStats}/>
 				}
 			</div>
 		</article>

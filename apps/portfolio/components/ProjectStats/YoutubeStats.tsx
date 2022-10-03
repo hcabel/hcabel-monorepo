@@ -1,21 +1,24 @@
 import Style from 'Styles/components/ProjectStats.module.scss';
 
 import YoutubeIcon from 'Images/YoutubeIcon.svg';
+import { IStatModel } from '@hcabel/types/ProjectApi';
+import StatField from './StatField';
 
 export interface IYoutubeStatsProps {
-	views: number;
+	stats: IStatModel[];
 }
 
 export default function YoutubeStats(props: IYoutubeStatsProps)
 {
-	const viewsCount = props.views.toLocaleString("en", {notation: "compact"});
-
 	return (
-		<div className={Style.StatContainer}>
+		<div className={Style.StatsContainer}>
 			<YoutubeIcon />
-			<div className={Style.StatValues}>
-				<span>Views</span>
-				<span className={Style.StatValue}>{viewsCount}</span>
+			<div className={Style.Stats}>
+				{props.stats.map((stat) => {
+					return (
+						<StatField key={`${stat.platform}-${stat.name}`} name={stat.name} value={stat.value} />
+					);
+				})}
 			</div>
 		</div>
 	);

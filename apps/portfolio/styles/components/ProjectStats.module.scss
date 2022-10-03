@@ -1,7 +1,7 @@
 @import "Styles/colors.scss";
 @import "Styles/responsive.scss";
 
-.StatValues {
+.Stats {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -12,15 +12,25 @@
 	color: $SecondaryTextColor;
 	font-family: "Roboto", sans-serif;
 
-	.StatIcon {
-		margin-right: 8px;
-	}
-	.StatValue {
-		font-weight: bold;
+	.StatField {
+		display: flex;
+		flex-direction: row;
+
+		cursor: pointer;
+
+		.StatIcon {
+			margin-right: 8px;
+		}
+		.StatValue {
+			font-weight: bold;
+		}
+		.StatName {
+			margin-left: 0.25em;
+		}
 	}
 }
 
-.StatContainer {
+.StatsContainer {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -31,10 +41,10 @@
 }
 
 @media (max-width: $breakpoint-tablet) {
-	.StatContainer {
+	.StatsContainer {
 		flex-direction: column;
 	}
-	.StatValues {
+	.Stats {
 		margin-left: 0px;
 		margin-top: 8px;
 	}

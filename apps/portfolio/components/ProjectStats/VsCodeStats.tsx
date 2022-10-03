@@ -1,24 +1,24 @@
 import Style from 'Styles/components/ProjectStats.module.scss';
 
 import VsCodeIcon from 'Images/VsCodeIcon.svg';
+import { IStatModel } from '@hcabel/types/ProjectApi';
+import StatField from './StatField';
 
 export interface IVsCodeStatsProps {
-	installs: number;
+	stats: IStatModel[];
 }
 
 export default function VsCodeStats(props: IVsCodeStatsProps)
 {
-
 	return (
-		<div className={Style.StatContainer}>
+		<div className={Style.StatsContainer}>
 			<VsCodeIcon />
-			<div className={Style.StatValues}>
-				<div>
-					<span className={Style.StatValue}>
-						{props.installs.toLocaleString("en", {notation: "compact"})}
-					</span>
-					<span> installs</span>
-				</div>
+			<div className={Style.Stats}>
+				{props.stats.map((stat) => {
+					return (
+						<StatField key={`${stat.platform}-${stat.name}`} name={stat.name} value={stat.value} />
+					);
+				})}
 			</div>
 		</div>
 	);

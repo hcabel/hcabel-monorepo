@@ -1,44 +1,37 @@
 import Style from 'Styles/components/ProjectStats.module.scss';
 
+import { IStatModel } from '@hcabel/types/ProjectApi';
+
 import GithubIcon from 'Images/Github/GithubIcon.svg';
 import ForkIcon from 'Images/Github/ForkIcon.svg';
 import StarIcon from 'Images/Github/StarIcon.svg';
+import StatField from './StatField';
 
 export interface IGithubStatsProps {
-	stars?: number,
-	forks?: number,
+	stats: IStatModel[];
 }
 
 export default function GithubStats(props: IGithubStatsProps)
 {
 	return (
-		<div className={Style.StatContainer}>
+		<div className={Style.StatsContainer}>
 			<GithubIcon />
-			<div className={Style.StatValues}>
-				{(props.stars || props.forks) ?
-					<>
-						{props.stars &&
-							<div>
-								<StarIcon className={Style.StatIcon} />
-								<span className={Style.StatValue}>
-									{props.stars.toLocaleString("en", {notation: "compact"})}
-								</span>
-								<span> stars</span>
-							</div>
-						}
-						{!props.forks &&
-							<div>
-								<ForkIcon className={Style.StatIcon} />
-								<span className={Style.StatValue}>
-									{props.forks.toLocaleString("en", {notation: "compact"})}
-								</span>
-								<span> forks</span>
-							</div>
-						}
-					</>
-					:
-					<div className={Style.Loading}>Loading...</div>
-				}
+			<div className={Style.Stats}>
+				{props.stats.map((stat) => {
+					return (
+						<StatField
+							key={`${stat.platform}-${stat.name}`}
+							name={stat.name}
+							value={stat.value}
+							url={stat.url}
+							icon={
+								stat.name === "forks" ? <ForkIcon /> :
+									stat.name === "stars" ? <StarIcon /> :
+										undefined
+							}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);
