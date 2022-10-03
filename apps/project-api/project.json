@@ -36,9 +36,17 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/project-api/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/project-api/src/**/*"
+        ]
+      },
+      "defaultConfiguration": "test",
+      "configurations": {
+        "test": {},
+        "fix": {
+          "fix": true
+        }
       }
     }
   },

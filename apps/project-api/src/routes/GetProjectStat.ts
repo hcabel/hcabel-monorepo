@@ -1,9 +1,9 @@
 import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { Request } from "express";
+import Express from "express";
 import * as ProjectServices from "../database/services/project";
 import * as StatServices from "../database/services/stat";
 
-export async function GetAllProjectStatsFromPlatform(req: Request): Promise<IRequestResponse>
+export async function GetAllProjectStatsFromPlatform(req: Express.Request): Promise<IRequestResponse>
 {
 	const projectName = req.params.projectname;
 	const statPlatform = req.params.platform;
@@ -40,7 +40,7 @@ export async function GetAllProjectStatsFromPlatform(req: Request): Promise<IReq
 	});
 }
 
-export async function GetProjectStat(req: Request): Promise<IRequestResponse>
+export async function GetProjectStat(req: Express.Request): Promise<IRequestResponse>
 {
 	const projectName = req.params.projectname;
 	const statPlatform = req.params.platform;
@@ -76,10 +76,10 @@ export async function GetProjectStat(req: Request): Promise<IRequestResponse>
 	return {
 		status: 200,
 		json: stat
-	}
+	};
 }
 
-export async function GetAllProjectStats(req: Request): Promise<IRequestResponse>
+export async function GetAllProjectStats(req: Express.Request): Promise<IRequestResponse>
 {
 	const projectName = req.params.projectname;
 
@@ -90,7 +90,6 @@ export async function GetAllProjectStats(req: Request): Promise<IRequestResponse
 			json: { message: "Bad request" }
 		});
 	}
-
 
 	// find project from his name
 	const project = await ProjectServices.GetProjectByName(projectName);

@@ -3,9 +3,11 @@
   "ignorePatterns": [
     "!**/*",
     "**/.next/**/*",
+    "**/dist/**/*",
     "*.glsl",
     "*.scss",
-    "*.json"
+    "*.json",
+    ".gitkeep"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

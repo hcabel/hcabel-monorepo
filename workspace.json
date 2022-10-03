@@ -5,7 +5,7 @@
     "portfolio": "apps/portfolio",
     "portfolio-e2e": "apps/portfolio-e2e",
     "project-api": "apps/project-api",
-    "rest-api-utils": "libs/rest-api-utils",
-    "types-project-api": "libs/types/types-project-api"
+    "types-project-api": "libs/types/types-project-api",
+    "rest-api-utils": "libs/rest-api-utils"
   }
 }

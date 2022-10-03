@@ -26,9 +26,9 @@ export function CreateNewStat(
 			value: value,
 			url: url
 		})
-		.then((stat) => {
-			return (stat?.toObject<IStatModel>() || null);
-		})
+			.then((stat) => {
+				return (stat?.toObject<IStatModel>() || null);
+			})
 	);
 }
 
@@ -43,9 +43,9 @@ export function GetStat(project_id: Types.ObjectId, platform: string, statName: 
 {
 	return (
 		StatModel.findOne({ project_id: project_id, platform: platform, name: statName }).exec()
-		.then((stat) => {
-			return (stat?.toObject<IStatModel>() || null);
-		})
+			.then((stat) => {
+				return (stat?.toObject<IStatModel>() || null);
+			})
 	);
 }
 
@@ -58,9 +58,9 @@ export function GetStatById(id: Types.ObjectId): Promise<IStatModel | null>
 {
 	return (
 		StatModel.findById(id).exec()
-		.then((stat) => {
-			return (stat?.toObject<IStatModel>() || null);
-		})
+			.then((stat) => {
+				return (stat?.toObject<IStatModel>() || null);
+			})
 	);
 }
 
@@ -73,9 +73,9 @@ export function GetAllProjectStats(project_id: Types.ObjectId): Promise<IStatMod
 {
 	return (
 		StatModel.find({ project_id: project_id }).exec()
-		.then((stats) => {
-			return (stats?.map((stat) => stat.toObject<IStatModel>()) || null);
-		})
+			.then((stats) => {
+				return (stats?.map((stat) => stat.toObject<IStatModel>()) || null);
+			})
 	);
 }
 
@@ -89,9 +89,9 @@ export function GetAllProjectStatsFromPlatform(project_id: Types.ObjectId, platf
 {
 	return (
 		StatModel.find<IStatDocument>({ project_id: project_id, platform: platform }).exec()
-		.then((stats) => {
-			return (stats?.map((stat) => stat.toObject<IStatModel>()) || null);
-		})
+			.then((stats) => {
+				return (stats?.map((stat) => stat.toObject<IStatModel>()) || null);
+			})
 	);
 }
 
@@ -111,10 +111,10 @@ export function UpdateStatValue(
 {
 	return (
 		StatModel.updateOne<IStatDocument>({ project_id: project_id, platform: platform, name: statName }, { value: newValue }).exec()
-		.then((res) => {
-			// if it matched one, we assume it updated it, so we return true
-			return (res.matchedCount === 1);
-		})
+			.then((res) => {
+				// if it matched one, we assume it updated it, so we return true
+				return (res.matchedCount === 1);
+			})
 	);
 }
 
@@ -134,10 +134,10 @@ export function UpdateStatUrl(
 {
 	return (
 		StatModel.updateOne<IStatDocument>({ project_id: project_id, platform: platform, name: statName }, { url: newUrl }).exec()
-		.then((res) => {
-			// if it matched one, we assume it updated it, so we return true
-			return (res.matchedCount === 1);
-		})
+			.then((res) => {
+				// if it matched one, we assume it updated it, so we return true
+				return (res.matchedCount === 1);
+			})
 	);
 }
 
@@ -152,9 +152,9 @@ export function RemoveStat(project_id: Types.ObjectId, platform: string, statNam
 {
 	return (
 		StatModel.deleteOne({ project_id: project_id, platform: platform, name: statName }).exec()
-		.then((res) => {
-			return (res.deletedCount === 1);
-		})
+			.then((res) => {
+				return (res.deletedCount === 1);
+			})
 	);
 }
 
@@ -167,8 +167,8 @@ export function RemoveStatById(id: Types.ObjectId): Promise<boolean>
 {
 	return (
 		StatModel.deleteOne({ _id: id }).exec()
-		.then((res) => {
-			return (res.deletedCount === 1);
-		})
+			.then((res) => {
+				return (res.deletedCount === 1);
+			})
 	);
 }

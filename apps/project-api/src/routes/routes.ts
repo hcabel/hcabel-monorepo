@@ -8,7 +8,7 @@ import { GetAllProjectStats, GetAllProjectStatsFromPlatform, GetProjectStat } fr
 const RouteTree: IRoutingTreeBranch = {
 	__self__: {
 		get: useRoute(() => {
-			return ({ status: 200, json: { message: "ProjectApi is running." } })
+			return ({ status: 200, json: { message: "ProjectApi is running." } });
 		})
 	},
 	":projectname": {

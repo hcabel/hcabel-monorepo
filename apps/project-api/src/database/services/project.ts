@@ -16,9 +16,9 @@ export function CreateNewProject(name: string, desc: string): Promise<IProjectMo
 			name: name,
 			description: desc
 		})
-		.then((project) => {
-			return (project?.toObject<IProjectModel>() || null);
-		})
+			.then((project) => {
+				return (project?.toObject<IProjectModel>() || null);
+			})
 	);
 }
 
@@ -31,9 +31,9 @@ export function GetProjectByName(name: string): Promise<IProjectModel | null>
 {
 	return (
 		ProjectModel.findOne<IProjectDocument>({ name: name }).exec()
-		.then((project) => {
-			return (project?.toObject<IProjectModel>() || null);
-		})
+			.then((project) => {
+				return (project?.toObject<IProjectModel>() || null);
+			})
 	);
 }
 
@@ -46,9 +46,9 @@ export function GetProjectById(id: Types.ObjectId): Promise<IProjectModel | null
 {
 	return (
 		ProjectModel.findById<IProjectDocument>(id).exec()
-		.then((project) => {
-			return (project?.toObject<IProjectModel>() || null);
-		})
+			.then((project) => {
+				return (project?.toObject<IProjectModel>() || null);
+			})
 	);
 }
 
@@ -61,9 +61,9 @@ export function RemoveProject(projectName: string): Promise<boolean>
 {
 	return (
 		ProjectModel.deleteOne({ name: projectName }).exec()
-		.then((res) => {
-			return (res.deletedCount === 1);
-		})
+			.then((res) => {
+				return (res.deletedCount === 1);
+			})
 	);
 }
 
@@ -76,9 +76,9 @@ export function RemoveProjectById(projectId: Types.ObjectId): Promise<boolean>
 {
 	return (
 		ProjectModel.deleteOne({ _id: projectId }).exec()
-		.then((res) => {
-			return (res.deletedCount === 1);
-		})
+			.then((res) => {
+				return (res.deletedCount === 1);
+			})
 	);
 }
 
@@ -92,9 +92,9 @@ export function UpdateProjectName(projectName: string, newName: string): Promise
 {
 	return (
 		ProjectModel.findOneAndUpdate<IProjectDocument>({ name: projectName }, { name: newName }, { new: true }).exec()
-		.then((project) => {
-			return (project?.toObject<IProjectModel>() || null);
-		})
+			.then((project) => {
+				return (project?.toObject<IProjectModel>() || null);
+			})
 	);
 }
 
@@ -108,9 +108,9 @@ export function UpdateProjectNameById(projectId: Types.ObjectId, newName: string
 {
 	return (
 		ProjectModel.findByIdAndUpdate<IProjectDocument>(projectId, { name: newName }, { new: true }).exec()
-		.then((project) => {
-			return (project?.toObject<IProjectModel>() || null);
-		})
+			.then((project) => {
+				return (project?.toObject<IProjectModel>() || null);
+			})
 	);
 }
 
@@ -128,9 +128,9 @@ export function UpdateProjectDescription(projectName: string, newDesc: string): 
 			{ description: newDesc },
 			{ new: true }
 		).exec()
-		.then((project) => {
-			return (project?.toObject<IProjectModel>() || null);
-		})
+			.then((project) => {
+				return (project?.toObject<IProjectModel>() || null);
+			})
 	);
 }
 
@@ -144,8 +144,8 @@ export function UpdateProjectDescriptionById(projectId: Types.ObjectId, newDesc:
 {
 	return (
 		ProjectModel.findByIdAndUpdate<IProjectDocument>(projectId, { description: newDesc }, { new: true }).exec()
-		.then((project) => {
-			return (project?.toObject<IProjectModel>() || null);
-		})
+			.then((project) => {
+				return (project?.toObject<IProjectModel>() || null);
+			})
 	);
 }

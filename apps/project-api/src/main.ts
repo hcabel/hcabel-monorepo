@@ -15,14 +15,14 @@ app.set('json spaces', 2);
 
 const dbUri = process.env.MONGO_URI;
 mongoose.connect(dbUri || "", {
-		w: "majority",
-		appName: "ProjectApi",
-	})
+	w: "majority",
+	appName: "ProjectApi",
+})
 	.then(() => {
 		console.log('Mongo ready');
 
 		const port = process.env.port || 3333;
-		const server = app.listen(port, async () => {
+		const server = app.listen(port, async() => {
 			console.log(`Listening at ${process.env.PROJECTAPI_ENDPOINT}`);
 		});
 		server.on("error", console.error);
