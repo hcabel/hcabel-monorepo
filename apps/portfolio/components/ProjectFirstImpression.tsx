@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Style from 'Styles/components/ProjectFirstImpression.module.scss';
 
-import { IGetProjectInfos } from '@hcabel/types/ProjectApi';
+import { IGetProjectInfos, IStatModel } from '@hcabel/types/ProjectApi';
 
 import GithubStats from 'Components/ProjectStats/GithubStats';
 import VsCodeStats from 'Components/ProjectStats/VsCodeStats';
@@ -21,6 +21,20 @@ export interface IProjectFirstImpressionProps {
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
 {
 	const [_Project, set_Project] = useState<IGetProjectInfos | undefined>(undefined);
+
+	const YoutubeViews = (_Project ? ReduceStats(_Project.stats, "youtube", "views") : undefined);
+	const VsCodeInstalls = (_Project ? ReduceStats(_Project.stats, "vscode marketplace", "installs") : undefined);
+	const GithubStars = (_Project ? ReduceStats(_Project.stats, "github", "stars") : undefined);
+	const GithubForks = (_Project ? ReduceStats(_Project.stats, "github", "forks") : undefined);
+
+	function	ReduceStats(stats: IStatModel[], platform: string, name: string)
+	{
+		const statOfName = stats.filter((stat) => stat.platform === platform && stat.name === name);
+		if (statOfName.length === 0) {
+			return (undefined);
+		}
+		return (statOfName.reduce((acc, stat) => acc + stat.value, 0));
+	}
 
 	useEffect(() => {
 		fetch(`api/projects/${props.projectName}`)
@@ -49,24 +63,23 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 				}
 			</div>
 			<div className={Style.ProjectStats}>
-				<a href="https://www.youtube.com/watch?v=_usDZ6osnR4">
-					<YoutubeStats
-						views={_Project.stats
-							.filter((stat) => {
-								return stat.platform === "youtube";
-							})
-							.reduce((acc, stat) => {
-								return acc + (stat.name === "views" ? stat.value : 0);
-							}, 0)
-						}
-					/>
-				</a>
-				<a href="https://marketplace.visualstudio.com/items?itemName=HugoCabel.uvch">
-					<VsCodeStats name="HugoCabel.uvch"/>
-				</a>
-				<a href="https://github.com/hcabel/UnrealVsCodeHelper">
-					<GithubStats repoUrl="https://github.com/hcabel/UnrealVsCodeHelper" />
-				</a>
+				{YoutubeViews &&
+					<a href="https://www.youtube.com/watch?v=_usDZ6osnR4">
+						<YoutubeStats
+							views={YoutubeViews}
+						/>
+					</a>
+				}
+				{VsCodeInstalls &&
+					<a href="https://marketplace.visualstudio.com/items?itemName=HugoCabel.uvch">
+						<VsCodeStats installs={VsCodeInstalls} />
+					</a>
+				}
+				{(GithubStars || GithubForks) &&
+					<a href="https://github.com/hcabel/UnrealVsCodeHelper">
+						<GithubStats stars={GithubStars} forks={GithubForks} />
+					</a>
+				}
 			</div>
 		</article>
 	);
