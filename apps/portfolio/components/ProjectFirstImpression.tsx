@@ -36,10 +36,10 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 	return (
 		<article id={props.id || ""} className={`${Style.ProjectFirstImpression} ${props.className || ""}`} style={props.style || {}}>
 			<div>
-				<figure className={Style.ProjectName}>
+				<figure className={Style.ProjectName} data-cy={`Project-${props.projectName}-Title`}>
 					{_Project.name}
 				</figure>
-				<figcaption className={Style.ProjectDescription}>
+				<figcaption className={Style.ProjectDescription} data-cy={`Project-${props.projectName}-Description`}>
 					{_Project.description}
 				</figcaption>
 				{props.onMoreClicked &&
