@@ -3,47 +3,34 @@ import Style from 'Styles/components/ProjectStats.module.scss';
 import GithubIcon from 'Images/Github/GithubIcon.svg';
 import ForkIcon from 'Images/Github/ForkIcon.svg';
 import StarIcon from 'Images/Github/StarIcon.svg';
-import { useEffect, useState } from 'react';
 
 export interface IGithubStatsProps {
-	repoUrl: string,
-	hideStars?: boolean,
-	hideForks?: boolean,
+	stars?: number,
+	forks?: number,
 }
 
 export default function GithubStats(props: IGithubStatsProps)
 {
-	const [_GithubStats, set_GithubStats] = useState<GithubResponce | undefined>(undefined);
-
-	useEffect(() => {
-		const githubApiUrl =
-			props.repoUrl.includes("api.github.com") ? props.repoUrl : props.repoUrl.replace("github.com", "api.github.com/repos");
-
-		fetch(githubApiUrl)
-			.then((response) => response.json())
-			.then((data) => set_GithubStats(data));
-	}, [props.repoUrl]);
-
 	return (
 		<div className={Style.StatContainer}>
 			<GithubIcon />
 			<div className={Style.StatValues}>
-				{_GithubStats ?
+				{(props.stars || props.forks) ?
 					<>
-						{!props.hideStars &&
+						{props.stars &&
 							<div>
 								<StarIcon className={Style.StatIcon} />
 								<span className={Style.StatValue}>
-									{_GithubStats.watchers.toLocaleString("en", {notation: "compact"})}
+									{props.stars.toLocaleString("en", {notation: "compact"})}
 								</span>
 								<span> stars</span>
 							</div>
 						}
-						{!props.hideForks &&
+						{!props.forks &&
 							<div>
 								<ForkIcon className={Style.StatIcon} />
 								<span className={Style.StatValue}>
-									{_GithubStats.forks.toLocaleString("en", {notation: "compact"})}
+									{props.forks.toLocaleString("en", {notation: "compact"})}
 								</span>
 								<span> forks</span>
 							</div>
