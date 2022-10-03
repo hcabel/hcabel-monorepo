@@ -50,6 +50,7 @@
           "apps/portfolio/3D/**/*"
         ]
       },
+      "defaultConfiguration": "test",
       "configurations": {
         "test": {},
         "fix": {
