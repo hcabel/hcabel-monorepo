@@ -18,9 +18,18 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/portfolio-e2e/**/*.{js,ts}"]
+        "eslintConfig": ".eslintrc.json",
+        "lintFilePatterns": [
+          "apps/portfolio-e2e/src/**/*"
+        ]
+      },
+      "defaultConfiguration": "test",
+      "configurations": {
+        "test": {},
+        "fix": {
+          "fix": true
+        }
       }
     }
   },
