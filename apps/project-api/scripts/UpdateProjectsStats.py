@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from utils.github_api_utils import get_github_repo_data
 from utils.vscode_marketplace_api_utils import get_vscode_marketplace_data
 from utils.youtube_api_utils import get_youtube_video_data
@@ -33,9 +34,10 @@ def update_uvch_stats_info(db) -> None:
 
 def main():
 	# connect to db
-	db = Connect()
+	db = Connect("hcabel_dev")
 
 	update_uvch_stats_info(db)
 
 if (__name__ == "__main__"):
+	load_dotenv()
 	main()

@@ -180,7 +180,10 @@ def youtube_authenticate_oauth():
 def youtube_authenticate_apikey():
 	api_service_name = "youtube"
 	api_version = "v3"
-	return build(api_service_name, api_version, developerKey="OUPS I ALMOST MADE THIS MISTAKE XD")
+	api_key = os.environ["YOUTUBE_API_KEY"]
+	if (not api_key):
+		raise Exception("No API key provided")
+	return build(api_service_name, api_version, developerKey=api_key)
 
 def get_channel_details(youtube, **kwargs):
 	return youtube.channels().list(
