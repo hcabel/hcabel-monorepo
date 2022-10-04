@@ -12,10 +12,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": [
-      "./tsconfig.base.json",
-      "./apps/*/tsconfig.*?.json",
-      "./libs/*/tsconfig.*?.json",
-      "./libs/*/*/tsconfig.*?.json"
+      "../../tsconfig.base.json",
+      "./tsconfig.*?.json"
     ],
     "ecmaFeatures": {
       "jsx": true
