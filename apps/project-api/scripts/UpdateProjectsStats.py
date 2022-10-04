@@ -55,12 +55,29 @@ def update_hugomeet_stats_info(db) -> None:
 
 	print("HugoMeet is now up to date!")
 
+def update_procedural_terrain_stats_info(db) -> None:
+	print("Updating Procedural Terrain project stats...")
+
+	# fetch projects info
+	procedural_terrain_youtube_video = get_youtube_video_data("https://www.youtube.com/watch?v=MHB8Tn3zbqM&t=157s")
+
+	# get project info
+	procedural_terrain = db.projects.find_one({"name": "Procedural Terrain"})
+	if (not procedural_terrain):
+		raise Exception("Failed to find project UVHC")
+
+	# update youtube stats
+	update_stats(db, procedural_terrain["_id"], "youtube", "views", int(procedural_terrain_youtube_video.items[0].statistics.view_count))
+
+	print("Procedural Terrain is now up to date!")
+
 def main():
 	# connect to db
 	db = Connect("hcabel_dev")
 
 	update_uvch_stats_info(db)
 	update_hugomeet_stats_info(db)
+	update_procedural_terrain_stats_info(db)
 
 if (__name__ == "__main__"):
 	load_dotenv()
