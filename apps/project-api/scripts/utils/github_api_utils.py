@@ -126,7 +126,7 @@ class GithubResponse:
 	archived: bool
 	disabled: bool
 	open_issues_count: int
-	license: License
+	license: License | None
 	allow_forking: bool
 	is_template: bool
 	web_commit_signoff_required: bool
@@ -209,7 +209,7 @@ class GithubResponse:
 		self.archived = dict_github_response['archived']
 		self.disabled = dict_github_response['disabled']
 		self.open_issues_count = dict_github_response['open_issues_count']
-		self.license = License(dict_github_response['license'])
+		self.license = License(dict_github_response['license']) if dict_github_response['license'] else None
 		self.allow_forking = dict_github_response['allow_forking']
 		self.is_template = dict_github_response['is_template']
 		self.web_commit_signoff_required = dict_github_response['web_commit_signoff_required']

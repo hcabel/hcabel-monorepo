@@ -32,11 +32,35 @@ def update_uvch_stats_info(db) -> None:
 
 	print("UVCH is now up to date!")
 
+def update_hugomeet_stats_info(db) -> None:
+	print("Updating HugoMeet project stats...")
+
+	# fetch projects info
+	hugomeet_github_repo = get_github_repo_data("https://api.github.com/repos/hcabel/HugoMeet")
+	hugomeet_youtube_video_fr = get_youtube_video_data("https://www.youtube.com/watch?v=XQ5PZToo1qo")
+	hugomeet_youtube_video_en = get_youtube_video_data("https://www.youtube.com/watch?v=2oupECsHxPU")
+
+	# get project info
+	hugomeet = db.projects.find_one({"name": "HugoMeet"})
+	if (not hugomeet):
+		raise Exception("Failed to find project UVHC")
+
+	# update github stats stars
+	update_stats(db, hugomeet["_id"], "github", "stars", hugomeet_github_repo.stargazers_count)
+	update_stats(db, hugomeet["_id"], "github", "forks", hugomeet_github_repo.forks)
+
+	# update youtube stats
+	update_stats(db, hugomeet["_id"], "youtube", "views - fr", int(hugomeet_youtube_video_fr.items[0].statistics.view_count))
+	update_stats(db, hugomeet["_id"], "youtube", "views - en", int(hugomeet_youtube_video_en.items[0].statistics.view_count))
+
+	print("HugoMeet is now up to date!")
+
 def main():
 	# connect to db
 	db = Connect("hcabel_dev")
 
 	update_uvch_stats_info(db)
+	update_hugomeet_stats_info(db)
 
 if (__name__ == "__main__"):
 	load_dotenv()
