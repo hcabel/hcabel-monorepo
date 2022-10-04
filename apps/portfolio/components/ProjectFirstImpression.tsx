@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Style from 'Styles/components/ProjectFirstImpression.module.scss';
 
-import { IGetProjectInfos, IStatModel } from '@hcabel/types/ProjectApi';
+import { IGetProjectInfos } from '@hcabel/types/ProjectApi';
 
 import GithubStats from 'Components/ProjectStats/GithubStats';
 import VsCodeStats from 'Components/ProjectStats/VsCodeStats';
