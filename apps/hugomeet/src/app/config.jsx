@@ -26,6 +26,6 @@ if (https) {
 const config = {
 	url_front: `${prefix}://${url}${https ? "" : ":3000"}`,
 	url_signaling: `${prefix.replace("http", "ws")}://${ssUrl}${https ? "" : ":8042"}`
-}
+};
 
 export default config;

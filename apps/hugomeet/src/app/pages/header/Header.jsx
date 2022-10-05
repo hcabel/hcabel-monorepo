@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import "./HeaderCSS.css";
 
-import HugoMeetLogo from "./assets/HugoMeetLogo.png"
+import HugoMeetLogo from "./assets/HugoMeetLogo.png";
 
 export default function	Header()
 {
@@ -38,13 +38,13 @@ export default function	Header()
 				set_Date(new Date());
 			}, 60000);
 		}, 60000 - _Date.getSeconds() * 1000 + _Date.getMilliseconds());
-	}, [false])
+	}, [false]);
 
 	function	getHours(date) {
 		const minutes = date.getMinutes();
 		return (`${date.getHours()}:${minutes < 10 ? "0" : ""}${minutes}`);
 	}
-	let hours = getHours(_Date);
+	const hours = getHours(_Date);
 
 	function	getDate(date) {
 		const dayLetter = [
@@ -55,7 +55,7 @@ export default function	Header()
 		];
 		return (`${dayLetter[date.getDay()]}, ${date.getDate()} ${monthLetter[date.getMonth()]}`);
 	}
-	let date = getDate(_Date);
+	const date = getDate(_Date);
 
 	return (
 		<header className="Header">

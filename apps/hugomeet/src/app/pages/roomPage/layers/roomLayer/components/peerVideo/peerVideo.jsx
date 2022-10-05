@@ -24,7 +24,7 @@ export default function PeerVideo(props) {
 		if (videoElement && videoElement.current) {
 			videoElement.current.srcObject = props.stream;
 		}
-	}, [ props.name ])
+	}, [ props.name ]);
 
 	console.log(`PeerVideo_${props.index}:\tRefresh`);
 	return (
@@ -45,7 +45,7 @@ export default function PeerVideo(props) {
 				<div className="RL-VC-P-Name">
 					{props.name}
 				</div>
-			:
+				:
 				<div className="RL-VC-P-NameOverlay">
 					{props.name}
 				</div>
@@ -59,5 +59,5 @@ export default function PeerVideo(props) {
 				</div>
 			}
 		</div>
-	)
+	);
 };

@@ -58,37 +58,37 @@ export default function	RoomPage() {
 		// Request audio & video separatly in case one of them are unvailable but not the other
 		if (audio) {
 			await navigator.mediaDevices.getUserMedia({ audio: true })
-			.then((newAudioStream) => {
-				const video = document.getElementById("LocalStream");
-				if (video) {
-					streamResult = Utils.media.combineStream(streamResult, newAudioStream); // currentStream + newAudioTracks
-					video.srcObject = streamResult;
-				}
-				else {
-					Utils.media.killTracks(newAudioStream.getTracks(), newAudioStream);
-				}
-			})
-			.catch((e) => {
-				set_Audio(false);
-				Utils.media.catchError(e)
-			});
+				.then((newAudioStream) => {
+					const localVideo = document.getElementById("LocalStream");
+					if (localVideo) {
+						streamResult = Utils.media.combineStream(streamResult, newAudioStream); // currentStream + newAudioTracks
+						localVideo.srcObject = streamResult;
+					}
+					else {
+						Utils.media.killTracks(newAudioStream.getTracks(), newAudioStream);
+					}
+				})
+				.catch((e) => {
+					set_Audio(false);
+					Utils.media.catchError(e);
+				});
 		}
 		if (video) {
 			await navigator.mediaDevices.getUserMedia({ video: true })
-			.then((newVideoStream) => {
-				const video = document.getElementById("LocalStream");
-				if (video) {
-					streamResult = Utils.media.combineStream(streamResult, newVideoStream); // currentStream + newVideoTracks
-					video.srcObject = streamResult;
-				}
-				else {
-					Utils.media.killTracks(newVideoStream.getTracks(), newVideoStream);
-				}
-			})
-			.catch((e) => {
-				set_Video(false);
-				Utils.media.catchError(e)
-			});
+				.then((newVideoStream) => {
+					const localVideo = document.getElementById("LocalStream");
+					if (localVideo) {
+						streamResult = Utils.media.combineStream(streamResult, newVideoStream); // currentStream + newVideoTracks
+						localVideo.srcObject = streamResult;
+					}
+					else {
+						Utils.media.killTracks(newVideoStream.getTracks(), newVideoStream);
+					}
+				})
+				.catch((e) => {
+					set_Video(false);
+					Utils.media.catchError(e);
+				});
 		}
 		window.localStream = streamResult;
 		return (streamResult); // return a stream with all the active tracks
@@ -155,7 +155,7 @@ export default function	RoomPage() {
 					video={_Video}
 					selfId={_SelfId}
 				/>
-			:
+				:
 				<RoomLayer
 					onChangeAudioStatus={onChangeAudioStatus}
 					onChangeVideoStatus={onChangeVideoStatus}

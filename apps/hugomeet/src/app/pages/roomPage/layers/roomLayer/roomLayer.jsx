@@ -15,15 +15,15 @@ import {useNavigate, useParams} from "react-router-dom";
 
 import Utils from "../../../../utils/utils";
 import HangUpIcon from "./assets/HandUpIcon.png";
-import NotificationIcon from "./assets/HugoMeetLogo-256x256.png"
+import NotificationIcon from "./assets/HugoMeetLogo-256x256.png";
 
 // Components
 import PeerVideo from "./components/peerVideo/peerVideo";
-import JoiningNotificationElement from "./components/notification/notification";
+import JoiningNotificationElement from "./components/notification/notificationHugoMeet";
 
 import "./roomLayerCSS.css";
 
-let PeersConnection = new Map();
+const PeersConnection = new Map();
 
 export default function	RoomLayer(props) {
 	const [_Peers, set_Peers] = useState([]);
@@ -31,50 +31,6 @@ export default function	RoomLayer(props) {
 
 	const navigate = useNavigate();
 	const { roomId } = useParams();
-
-	///////////////////////////////////////////////////////////////////////////////
-	//	Client Input
-
-	function	handUpCall() {
-		if (window.SignalingSocket && window.SignalingSocket.readyState === 1) {
-			const peersRTCObjs = PeersConnection.values();
-			for (const peerRtcObj of peersRTCObjs) {
-				peerRtcObj.PC.close();
-			}
-			PeersConnection.clear();
-			window.SignalingSocket.close();
-		}
-		history.push("/");
-	}
-
-	function	toggleAudio() {
-		props.onChangeAudioStatus(!props.audio)
-		.then((newStream) => {
-			console.log("Update Audio", newStream);
-		});
-
-		// Send message to inform everyon than I turn off/on my audioChannel
-		sendMessageToEveryoneInTheRoom(JSON.stringify({ type: "audioStateChange", _id: props.selfId, audio: !props.audio }));
-		const peerIndex = Utils.getPeerIndexFrom_Id(props.selfId, _Peers);
-		if (peerIndex !== -1) {
-			const peers = [..._Peers];
-			peers[peerIndex].audio = !props.audio;
-			set_Peers(peers);
-		}
-	}
-
-	function	toggleVideo() {
-		props.onChangeVideoStatus(!props.video)
-		.then((newStream) => {
-			if (!props.video) {
-				PeersConnection.forEach((peerConnection) => {
-					sendStreamsToPeers(peerConnection.PC, newStream);
-				});
-			}
-		});
-
-		sendMessageToEveryoneInTheRoom(JSON.stringify({ type: "videoStateChange", _id: props.selfId, video: !props.video }));
-	}
 
 	///////////////////////////////////////////////////////////////////////////////
 	//	DataChanel
@@ -163,7 +119,7 @@ export default function	RoomLayer(props) {
 			stream.getTracks().forEach((track) => connection.addTrack(track, stream));
 		}
 		else {
-			console.error("Try to update peers with the new stream but peerConnection was not establish")
+			console.error("Try to update peers with the new stream but peerConnection was not establish");
 		}
 	}
 
@@ -175,11 +131,11 @@ export default function	RoomLayer(props) {
 		}
 
 		// When you create a new ice, send it to the peer
-		let descriptor = {
+		const descriptor = {
 			to: peerId,
 			type: "IceCandidate",
 			iceCandidate: e.candidate
-		}
+		};
 		console.log(`WebRTC:\tSend ICE to Client_${peerId}`);
 		window.SignalingSocket.send(JSON.stringify(descriptor));
 	}
@@ -208,19 +164,19 @@ export default function	RoomLayer(props) {
 
 		// Create/Set your own local description
 		connection.createOffer()
-		.then((offer) => {
-			connection.setLocalDescription(offer)
-			.then(() => console.log(`WebRTC:\tLocal description set`));
+			.then((offer) => {
+				connection.setLocalDescription(offer)
+					.then(() => console.log(`WebRTC:\tLocal description set`));
 
-			// send local description to the peer
-			let descriptor = {
-				to: peerId,
-				type: "Offer",
-				offer: offer
-			}
-			console.log(`WebRTC:\tSend Offer to Client_${peerId}`);
-			window.SignalingSocket.send(JSON.stringify(descriptor));
-		})
+				// send local description to the peer
+				const descriptor = {
+					to: peerId,
+					type: "Offer",
+					offer: offer
+				};
+				console.log(`WebRTC:\tSend Offer to Client_${peerId}`);
+				window.SignalingSocket.send(JSON.stringify(descriptor));
+			});
 	}
 
 	function	setRemoteThenLocalDescription(connection, offer, peerId) {
@@ -230,29 +186,29 @@ export default function	RoomLayer(props) {
 		}
 
 		connection.setRemoteDescription(offer)
-		.then(() => console.log(`WebRTC:\tClient_${peerId}:\tRemote description set`));
+			.then(() => console.log(`WebRTC:\tClient_${peerId}:\tRemote description set`));
 
 		connection.createAnswer()
-		.then((answer) => {
-			connection.setLocalDescription(answer)
-			.then(() => console.log(`WebRTC:\tLocal description set`));
+			.then((answer) => {
+				connection.setLocalDescription(answer)
+					.then(() => console.log(`WebRTC:\tLocal description set`));
 
-			// Send your local description to the peer
-			let descriptor = {
-				to: peerId,
-				type: "Answer",
-				answer: answer
-			}
-			console.log(`WebRTC:\tSend Answer to Client_${peerId}`);
-			window.SignalingSocket.send(JSON.stringify(descriptor));
-		});
+				// Send your local description to the peer
+				const descriptor = {
+					to: peerId,
+					type: "Answer",
+					answer: answer
+				};
+				console.log(`WebRTC:\tSend Answer to Client_${peerId}`);
+				window.SignalingSocket.send(JSON.stringify(descriptor));
+			});
 	}
 
 	// When a new client wish to connect with you
 	function	sendAnswerBasedOffer(offer, peerId) {
 		console.log(`WebRTC:\t>>> New peer connection with: Client_${peerId} <<<`);
 
-		let newConnection = new RTCPeerConnection(props.rtcOptions);
+		const newConnection = new RTCPeerConnection(props.rtcOptions);
 		newConnection.onicecandidate = (event) => onIceCandidate(event, peerId);
 		newConnection.ontrack = (event) => onTrack(event, peerId);
 		newConnection.onnegotiationneeded = (event) => onNegotiationNeeded(event.currentTarget, peerId);
@@ -281,7 +237,7 @@ export default function	RoomLayer(props) {
 	function	createNewPeerConnection(peerId) {
 		console.log(`WebRTC:\t>>> Create peer connection with: Client_${peerId} <<<`);
 
-		let newConnection = new RTCPeerConnection(props.rtcOptions);
+		const newConnection = new RTCPeerConnection(props.rtcOptions);
 		newConnection.onicecandidate = (event) => onIceCandidate(event, peerId);
 		newConnection.ontrack = (event) => onTrack(event, peerId);
 		newConnection.onnegotiationneeded = (event) => onNegotiationNeeded(event.currentTarget, peerId);
@@ -291,7 +247,7 @@ export default function	RoomLayer(props) {
 		newConnection.addTransceiver("audio", { direction: "sendrecv" });
 
 		// Create DataChannel
-		let dataChannel = newConnection.createDataChannel(`HugoMeet_${roomId}`);
+		const dataChannel = newConnection.createDataChannel(`HugoMeet_${roomId}`);
 		initDCFunctions(dataChannel, peerId);
 
 		return ({
@@ -324,7 +280,7 @@ export default function	RoomLayer(props) {
 			return;
 		}
 
-		let connection = PeersConnection.get(msg.from);
+		const connection = PeersConnection.get(msg.from);
 		if (!connection) {
 			throw Error(`You receive a RTC message from a undefined peer:\t${msg.type}`);
 		}
@@ -335,7 +291,7 @@ export default function	RoomLayer(props) {
 
 			// set the local description of the remote peer
 			connection.PC.setRemoteDescription(msg.answer)
-			.then(() => console.log(`WebRTC:\tClient_${msg.from} Remote description set`));
+				.then(() => console.log(`WebRTC:\tClient_${msg.from} Remote description set`));
 		}
 		else if (msg.type === "IceCandidate") {
 			if (!msg.iceCandidate) {
@@ -351,7 +307,7 @@ export default function	RoomLayer(props) {
 			// /!\ and you will be DISCONNECTED has soon has it was connected
 			const ice = new RTCIceCandidate(msg.iceCandidate);
 			connection.PC.addIceCandidate(ice)
-			.then(() => console.log(`WebRTC:\tAdd new ICE from Client_${msg.from}\t${ice.type}`));
+				.then(() => console.log(`WebRTC:\tAdd new ICE from Client_${msg.from}\t${ice.type}`));
 		}
 	}
 
@@ -378,6 +334,50 @@ export default function	RoomLayer(props) {
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
+	//	Client Input
+
+	function	handUpCall() {
+		if (window.SignalingSocket && window.SignalingSocket.readyState === 1) {
+			const peersRTCObjs = PeersConnection.values();
+			for (const peerRtcObj of peersRTCObjs) {
+				peerRtcObj.PC.close();
+			}
+			PeersConnection.clear();
+			window.SignalingSocket.close();
+		}
+		navigate("/");
+	}
+
+	function	toggleAudio() {
+		props.onChangeAudioStatus(!props.audio)
+			.then((newStream) => {
+				console.log("Update Audio", newStream);
+			});
+
+		// Send message to inform everyon than I turn off/on my audioChannel
+		sendMessageToEveryoneInTheRoom(JSON.stringify({ type: "audioStateChange", _id: props.selfId, audio: !props.audio }));
+		const peerIndex = Utils.getPeerIndexFrom_Id(props.selfId, _Peers);
+		if (peerIndex !== -1) {
+			const peers = [..._Peers];
+			peers[peerIndex].audio = !props.audio;
+			set_Peers(peers);
+		}
+	}
+
+	function	toggleVideo() {
+		props.onChangeVideoStatus(!props.video)
+			.then((newStream) => {
+				if (!props.video) {
+					PeersConnection.forEach((peerConnection) => {
+						sendStreamsToPeers(peerConnection.PC, newStream);
+					});
+				}
+			});
+
+		sendMessageToEveryoneInTheRoom(JSON.stringify({ type: "videoStateChange", _id: props.selfId, video: !props.video }));
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
 	//	Web Socket
 
 	// If you'r the owner notification of which want to join the room will be send to you
@@ -391,7 +391,7 @@ export default function	RoomLayer(props) {
 			type: "JoinRequestResponce",
 			to: id,
 			approved: approved
-		}))
+		}));
 	}
 
 	async function	WSonMessage(msg) {
@@ -400,9 +400,9 @@ export default function	RoomLayer(props) {
 			msg = JSON.parse(msg.data);
 		} catch (err) {
 			console.error(`Cannot parse message: ${msg.data}\nError: ${err}`);
-			return ;
+			return;
 		}
-		console.log(`--> SS: ${msg.type}`)
+		console.log(`--> SS: ${msg.type}`);
 
 		if (msg.type === "RoomSetupCallback") {
 			// This will initialise the room from your side
@@ -500,7 +500,7 @@ export default function	RoomLayer(props) {
 				peerRTC.DC.onmessage = (msg) => DConMessage(peerRTC._id, msg);
 			}
 		}
-	}, [_Peers])
+	}, [_Peers]);
 
 	///////////////////////////////////////////////////////////////////////////////
 	//	Render
@@ -534,24 +534,24 @@ export default function	RoomLayer(props) {
 			{/* VIDEOS */}
 			<div className="RL-VideoContainer" style={{ gridTemplateColumns: `${"auto ".repeat(numberOfColumns[_Peers.length])}` }}>
 				{_Peers.map((peer, index) => (props.selfId && peer._id === props.selfId ?
-						<PeerVideo key={index} index={index}
-							id="LocalStream"
-							stream={window.localStream}
-							name={peer.name}
-							audio={props.audio}
-							video={props.video}
-							muted
-							mirrored
-						/>
-						:
-						<PeerVideo key={index} index={index}
-							id={`VideoStream_${peer._id}`}
-							stream={PeersConnection.get(peer._id)?.stream}
-							name={peer.name}
-							audio={peer.audio}
-							video={peer.video}
-						/>
-					))
+					<PeerVideo key={index} index={index}
+						id="LocalStream"
+						stream={window.localStream}
+						name={peer.name}
+						audio={props.audio}
+						video={props.video}
+						muted
+						mirrored
+					/>
+					:
+					<PeerVideo key={index} index={index}
+						id={`VideoStream_${peer._id}`}
+						stream={PeersConnection.get(peer._id)?.stream}
+						name={peer.name}
+						audio={peer.audio}
+						video={peer.video}
+					/>
+				))
 				}
 			</div>
 			{/* BUTTONS UNDER VIDEOS */}

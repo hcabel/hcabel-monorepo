@@ -27,24 +27,6 @@ export default function	PreRoomLayer(props) {
 	const navigate = useNavigate();
 	const { roomId } = useParams();
 
-	function	participate() {
-
-		set_Cookie('userName', _Name, {path: '/'});
-		// Connect to the signalling server
-		if (!window.SignalingSocket || window.SignalingSocket.readyState === 3) {
-			connectClient(roomId);
-		}
-		set_State("Connecting");
-	}
-
-	function	toggleAudio() {
-		props.onChangeAudioStatus(!props.audio);
-	}
-
-	function	toggleVideo() {
-		props.onChangeVideoStatus(!props.video);
-	}
-
 	///////////////////////////////////////////////////////////////////////////////
 	//	Web Socket
 
@@ -54,7 +36,7 @@ export default function	PreRoomLayer(props) {
 			msg = JSON.parse(msg.data);
 		} catch (err) {
 			console.error(`Cannot parse message: ${msg.data}\nError: ${err}`);
-			return ;
+			return;
 		}
 		console.log(msg);
 
@@ -86,7 +68,7 @@ export default function	PreRoomLayer(props) {
 		else {
 			console.log(`WS close: ${event.code}${event.reason && ` - ${event.reason}`}`);
 			if (window.location.pathname !== "/") {
-				history.push("/");
+				navigate("/");
 			}
 		}
 	}
@@ -96,17 +78,34 @@ export default function	PreRoomLayer(props) {
 		window.SignalingSocket.close();
 	}
 
-	function	connectClient(roomId) {
+	function	connectClient(roomIdToConnectTo) {
 		if (!window.WebSocket) {
 			alert("FAILED: Your browser's version is too old.");
 		}
 
 		// connect to signalling server
-		window.SignalingSocket = new window.WebSocket(`${config.url_signaling}?roomid=${roomId}&name=${_Name}`);
+		window.SignalingSocket = new window.WebSocket(`${config.url_signaling}?roomid=${roomIdToConnectTo}&name=${_Name}`);
 
 		window.SignalingSocket.onmessage = WSonMessage;
 		window.SignalingSocket.onclose = WSonClose;
 		window.SignalingSocket.onerror = WSonError;
+	}
+
+	function	participate() {
+		set_Cookie('userName', _Name, {path: '/'});
+		// Connect to the signalling server
+		if (!window.SignalingSocket || window.SignalingSocket.readyState === 3) {
+			connectClient(roomId);
+		}
+		set_State("Connecting");
+	}
+
+	function	toggleAudio() {
+		props.onChangeAudioStatus(!props.audio);
+	}
+
+	function	toggleVideo() {
+		props.onChangeVideoStatus(!props.video);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -116,7 +115,7 @@ export default function	PreRoomLayer(props) {
 		// Ask to allow notification from HugoMeet
 		if (window.Notification) {
 			Notification.requestPermission()
-			.catch(() => Notification.requestPermission());
+				.catch(() => Notification.requestPermission());
 		}
 		else {
 			// alert("This browser does not support notifications.");
@@ -161,85 +160,85 @@ export default function	PreRoomLayer(props) {
 										}
 									</div>
 									<div className={`PRP-B-C-S-VS-V-B-VideoButton${props.video ? "On" : "Off"}`} onClick={toggleVideo}>
-											{props.video ?
-												// Logo video On
-												<svg focusable="false" width="24" height="24" viewBox="0 0 24 24">
-													<path d="M18 10.48V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4.48l4 3.98v-11l-4 3.98zm-2-.79V18H4V6h12v3.69z"></path>
-												</svg>
-												:
-												// Logo video Off
-												<svg focusable="false" width="24" height="24" viewBox="0 0 24 24">
-													<path d="M18 10.48V6c0-1.1-.9-2-2-2H6.83l2 2H16v7.17l2 2v-1.65l4 3.98v-11l-4 3.98zM16 16L6 6 4 4 2.81 2.81 1.39 4.22l.85.85C2.09 5.35 2 5.66 2 6v12c0 1.1.9 2 2 2h12c.34 0 .65-.09.93-.24l2.85 2.85 1.41-1.41L18 18l-2-2zM4 18V6.83L15.17 18H4z"></path>
-												</svg>
-											}
+										{props.video ?
+											// Logo video On
+											<svg focusable="false" width="24" height="24" viewBox="0 0 24 24">
+												<path d="M18 10.48V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4.48l4 3.98v-11l-4 3.98zm-2-.79V18H4V6h12v3.69z"></path>
+											</svg>
+											:
+											// Logo video Off
+											<svg focusable="false" width="24" height="24" viewBox="0 0 24 24">
+												<path d="M18 10.48V6c0-1.1-.9-2-2-2H6.83l2 2H16v7.17l2 2v-1.65l4 3.98v-11l-4 3.98zM16 16L6 6 4 4 2.81 2.81 1.39 4.22l.85.85C2.09 5.35 2 5.66 2 6v12c0 1.1.9 2 2 2h12c.34 0 .65-.09.93-.24l2.85 2.85 1.41-1.41L18 18l-2-2zM4 18V6.83L15.17 18H4z"></path>
+											</svg>
+										}
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					{(() => {
-							switch(_State) {
-								case "Connecting":
-									return (
-										<div className="PRP-B-C-Connecting">
-											<div className="PRP-B-C-C-Title">
-												Connecting...
-											</div>
-											<div className="PRP-B-C-C-LoadingAnimation">
-												<div></div>
-												<div></div>
-												<div></div>
-												<div></div>
-											</div>
+						switch (_State) {
+						case "Connecting":
+							return (
+								<div className="PRP-B-C-Connecting">
+									<div className="PRP-B-C-C-Title">
+										Connecting...
+									</div>
+									<div className="PRP-B-C-C-LoadingAnimation">
+										<div></div>
+										<div></div>
+										<div></div>
+										<div></div>
+									</div>
+								</div>
+							);
+						case "Form":
+							return (
+								<div className="PRP-B-C-Form">
+									<div className="PRP-B-C-F-Title">
+										Ready to join?
+									</div>
+									<input className="PRP-B-C-F-Name" name="Name" placeholder="Name" value={_Name} onChange={(e) => set_Name(e.target.value.length >= 30 ? _Name : e.target.value)}/>
+									<div className="PRP-B-C-F-SubmitButtons" onClick={participate}>
+										<div className="PRP-B-C-F-SB-Participate">
+											<span className="PRP-B-C-F-SB-P-Value">
+												Join
+											</span>
 										</div>
-									);
-								case "Form":
-									return (
-										<div className="PRP-B-C-Form">
-											<div className="PRP-B-C-F-Title">
-												Ready to join?
-											</div>
-											<input className="PRP-B-C-F-Name" name="Name" placeholder="Name" value={_Name} onChange={(e) => set_Name(e.target.value.length >= 30 ? _Name : e.target.value)}/>
-											<div className="PRP-B-C-F-SubmitButtons" onClick={participate}>
-												<div className="PRP-B-C-F-SB-Participate">
-													<span className="PRP-B-C-F-SB-P-Value">
-														Join
-													</span>
-												</div>
-											</div>
+									</div>
+								</div>
+							);
+						case "Pending":
+							return (
+								<div className="PRP-B-C-Form">
+									<div className="PRP-B-C-F-Title">
+										Waiting for approval...
+									</div>
+									<div className="PRP-B-C-C-LoadingAnimation">
+										<div></div>
+										<div></div>
+										<div></div>
+										<div></div>
+									</div>
+								</div>
+							);
+						default:
+							return (
+								<div className="PRP-B-C-Form">
+									<div className="PRP-B-C-F-Title" style={{ color: "red" }}>
+										{_State}
+									</div>
+									<div className="PRP-B-C-F-SubmitButtons" onClick={participate}>
+										<div className="PRP-B-C-F-SB-Participate">
+											<span className="PRP-B-C-F-SB-P-Value">
+												retry
+											</span>
 										</div>
-									);
-								case "Pending":
-									return (
-										<div className="PRP-B-C-Form">
-											<div className="PRP-B-C-F-Title">
-												Waiting for approval...
-											</div>
-											<div className="PRP-B-C-C-LoadingAnimation">
-												<div></div>
-												<div></div>
-												<div></div>
-												<div></div>
-											</div>
-										</div>
-									);
-								default:
-									return (
-										<div className="PRP-B-C-Form">
-											<div className="PRP-B-C-F-Title" style={{ color: "red" }}>
-												{_State}
-											</div>
-											<div className="PRP-B-C-F-SubmitButtons" onClick={participate}>
-												<div className="PRP-B-C-F-SB-Participate">
-													<span className="PRP-B-C-F-SB-P-Value">
-														retry
-													</span>
-												</div>
-											</div>
-										</div>
-									);
-							}
-						})() // This create and called the function
+									</div>
+								</div>
+							);
+						}
+					})() // This create and called the function
 					}
 				</div>
 			</div>

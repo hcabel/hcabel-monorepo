@@ -13,13 +13,13 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
-import "./landingPageCSS.css"
+import "./landingPageCSS.css";
 
 import Header from "../header/Header";
 
-import Presentation_1_Img from "./assets/Presentation_1_Img.png"
-import Presentation_2_Img from "./assets/Presentation_2_Img.png"
-import Presentation_3_Img from "./assets/Presentation_3_Img.png"
+import Presentation_1_Img from "./assets/Presentation_1_Img.png";
+import Presentation_2_Img from "./assets/Presentation_2_Img.png";
+import Presentation_3_Img from "./assets/Presentation_3_Img.png";
 
 import Utils from "../../utils/utils";
 
@@ -161,15 +161,15 @@ export default function LandingPage()
 							disabled={(_PresentationIndex >= 2)}
 							onClick={() => set_PresentationIndex(_PresentationIndex + 1)}
 						>
-						<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" className="LP-B-IL-C-BR-Arrow">
-							<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"></path>
-						</svg>
+							<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" className="LP-B-IL-C-BR-Arrow">
+								<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"></path>
+							</svg>
 						</button>
 					</div>
 					<div className="LP-B-IL-IndexList">
-						<div className={"LP-B-IL-IL-Item " + (_PresentationIndex === 0 ? "CurrentItem" : "")}></div>
-						<div className={"LP-B-IL-IL-Item " + (_PresentationIndex === 1 ? "CurrentItem" : "")}></div>
-						<div className={"LP-B-IL-IL-Item " + (_PresentationIndex === 2 ? "CurrentItem" : "")}></div>
+						<div className={`LP-B-IL-IL-Item ${_PresentationIndex === 0 ? "CurrentItem" : ""}`}></div>
+						<div className={`LP-B-IL-IL-Item ${_PresentationIndex === 1 ? "CurrentItem" : ""}`}></div>
+						<div className={`LP-B-IL-IL-Item ${_PresentationIndex === 2 ? "CurrentItem" : ""}`}></div>
 					</div>
 					<div className="LP-B-IL-MoreInfos">
 						<span className="LP-MI-Span">
