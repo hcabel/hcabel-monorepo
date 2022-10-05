@@ -4,9 +4,9 @@ export interface IRequestError {
 	message: string;
 }
 
-export interface IRequestResponse<T = any> {
+export interface IRequestResponse<T> {
 	status: number;
 	json: T | IRequestError;
 }
 
-export type RequestHandler = (req: Express.Request) => IRequestResponse | Promise<IRequestResponse>;
+export type RequestHandler = (req: Express.Request) => IRequestResponse<any> | Promise<IRequestResponse<any>>;

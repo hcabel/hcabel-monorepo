@@ -33,6 +33,7 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 			json: { message: "Stats not found" }
 		});
 	}
+
 	// convert stats to a more readable format (hash table)
 	const statsTable: IStats = {};
 	stats.forEach((stat: IStatModel) => {
@@ -42,7 +43,7 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 
 		// I spread the object to remove all the omitted fields
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { project_id, ...statInfos } = stat;
+		const { _id, __v, project_id, platform, ...statInfos } = stat;
 
 		statsTable[stat.platform].push(statInfos);
 	});
