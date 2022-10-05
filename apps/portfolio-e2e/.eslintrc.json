@@ -1,0 +1,19 @@
+{
+	"extends": [
+		"../../.eslintrc.json",
+		"plugin:cypress/recommended"
+	],
+	"plugins": [
+		"cypress"
+	],
+	"overrides": [
+		{
+			"files": [
+				"*.cy.ts"
+			],
+			"rules": {
+				"no-unused-expressions": "off"
+			}
+		}
+	]
+}

@@ -2,6 +2,7 @@
 describe("The landing page should show all the projects infos", () => {
 	beforeEach(() => {
 		cy.visit("/");
+		// eslint-disable-next-line cypress/no-unnecessary-waiting
 		cy.wait(1000); // @TODO: Remove this when loading animation finished
 	});
 

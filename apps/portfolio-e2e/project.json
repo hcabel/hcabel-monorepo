@@ -20,7 +20,7 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "eslintConfig": ".eslintrc.json",
+        "eslintConfig": "./apps/portfolio-e2e/.eslintrc.json",
         "lintFilePatterns": [
           "apps/portfolio-e2e/src/**/*"
         ]
