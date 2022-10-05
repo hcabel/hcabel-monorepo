@@ -29,4 +29,4 @@ const rooms = new Map(); // <RoomId, ClientArray>
 module.exports = {
 	peerConnectionOptions,
 	rooms
-}
+};

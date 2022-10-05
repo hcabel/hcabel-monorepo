@@ -3,6 +3,12 @@
   "sourceRoot": "apps/hugomeet-signalling-server",
   "projectType": "application",
   "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node apps/hugomeet-signalling-server/signallingServer.js"
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {

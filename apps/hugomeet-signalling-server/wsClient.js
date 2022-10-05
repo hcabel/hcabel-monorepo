@@ -72,8 +72,8 @@ module.exports = async function(socket, req) {
 					// We wait before giving him all the pending notification to give him time to get all previous message
 					setTimeout(() => {
 
-						const peers = Array.from(roomPeers.values());
-						for (const peer of peers) {
+						const peersToNotify = Array.from(roomPeers.values());
+						for (const peer of peersToNotify) {
 							if (peer.role === "Pending") {
 								newOwner.ws.send(JSON.stringify({
 									type: "JoinRequestReceived",
@@ -96,8 +96,8 @@ module.exports = async function(socket, req) {
 		promotePeer(newOwner);
 	}
 
-	function	getRoomOwner(roomId) {
-		const room = globalVariables.rooms.get(roomId);
+	function	getRoomOwner(ownerRoomId) {
+		const room = globalVariables.rooms.get(ownerRoomId);
 		const peers = Array.from(room.values());
 
 		for (const peer of peers) {
@@ -174,9 +174,8 @@ module.exports = async function(socket, req) {
 			target.ws.send(JSON.stringify({ type: "JoinRequestCallback", approved: true }));
 			target.role = "Client";
 
-			const roomPeers = globalVariables.rooms.get(roomId);
 			Utils.sendMsgToAllClientsInTheRoom(
-				roomPeers,
+				globalVariables.rooms.get(roomId),
 				JSON.stringify({
 					type: "clientJoin",
 					newPeer: {...target, ws: undefined},
@@ -186,8 +185,9 @@ module.exports = async function(socket, req) {
 			);
 		}
 		else if (msg.type === "RoomSetup") {
-			const roomPeers = globalVariables.rooms.get(roomId);
-			const peers = Array.from(roomPeers.values()).filter((peer) => {
+			const peers = Array.from(
+				globalVariables.rooms.get(roomId).values()
+			).filter((peer) => {
 				return (peer.role !== "Pending");
 			}).map((value) => {
 				// You can't use `delete value.ws` because it will be erase in `roonPeers` has well
@@ -197,7 +197,7 @@ module.exports = async function(socket, req) {
 			target.ws.send(JSON.stringify({
 				type: "RoomSetupCallback",
 				peers: peers
-			}))
+			}));
 		}
 		else if (msg.type === "Offer") {
 			console.log(`** WS:\t<-- Client ${clientId}:\tOffer`);
@@ -214,7 +214,7 @@ module.exports = async function(socket, req) {
 		else {
 			console.error(`** WS:\tClient ${clientId}:\tUnsuported message type:\t${msg.type}`);
 			ws.close(1008/* Custom kick */, "kicked");
-			return ;
+			return;
 		}
 	}
 
@@ -228,7 +228,6 @@ module.exports = async function(socket, req) {
 		onPlayerDisconnected();
 		socket.close(1006/* abnormal closure */, error);
 	}
-
 
 	///////////////////////////////////////////////////////////////////////////////
 	//	WebSocket Connection

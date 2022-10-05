@@ -15,10 +15,10 @@ const app = express();
 const port = 8042;
 const http = require('http');
 const server = http.createServer(app);
-const WebSocket = require('ws');
+const ws = require('ws');
 
 const onClientConnection = require("./wsClient");
-const clientServer = new WebSocket.Server({ server: server });
+const clientServer = new ws.Server({ server: server });
 clientServer.on('connection', onClientConnection);
 console.log(`WebSocket listening to Client connections on *:${port}`);
 
