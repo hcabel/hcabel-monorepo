@@ -22,11 +22,6 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 {
 	const [_Project, set_Project] = useState<IGetProjectInfos | undefined>(undefined);
 
-	// @TODO: Convert stats from array to hash table (with platform as key)
-	const githubStats = _Project?.stats.filter((stat) => stat.platform === "github") || [];
-	const youtubeStats = _Project?.stats.filter((stat) => stat.platform === "youtube") || [];
-	const vscodeStats = _Project?.stats.filter((stat) => stat.platform === "vscode marketplace") || [];
-
 	useEffect(() => {
 		fetch(`api/projects/${props.projectName}`)
 			.then((response) => response.json())
@@ -54,14 +49,14 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 				}
 			</div>
 			<div className={Style.ProjectStats}>
-				{youtubeStats.length > 0 &&
-					<YoutubeStats stats={youtubeStats}/>
+				{_Project.stats["youtube"] &&
+					<YoutubeStats stats={_Project.stats["youtube"]}/>
 				}
-				{vscodeStats.length > 0 &&
-					<VsCodeStats stats={vscodeStats}/>
+				{_Project.stats["vscode marketplace"] &&
+					<VsCodeStats stats={_Project.stats["vscode marketplace"]}/>
 				}
-				{githubStats.length > 0 &&
-					<GithubStats stats={githubStats}/>
+				{_Project.stats["youtube"] &&
+					<GithubStats stats={_Project.stats["youtube"]}/>
 				}
 			</div>
 		</article>

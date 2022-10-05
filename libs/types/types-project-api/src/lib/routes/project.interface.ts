@@ -1,5 +1,6 @@
-import { IProjectModel, IStatModel } from "../models/models.interface";
+import { IProject } from '../models/project.interface';
+import { IStats } from '../models/stat.interface';
 
-export interface IGetProjectInfos extends IProjectModel {
-	stats: IStatModel[];
+export interface IGetProjectInfos extends IProject {
+	stats: IStats;
 }

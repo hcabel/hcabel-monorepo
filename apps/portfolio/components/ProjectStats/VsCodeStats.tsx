@@ -1,11 +1,11 @@
 import Style from 'Styles/components/ProjectStats.module.scss';
 
 import VsCodeIcon from 'Images/VsCodeIcon.svg';
-import { IStatModel } from '@hcabel/types/ProjectApi';
+import { IStat } from '@hcabel/types/ProjectApi';
 import StatField from './StatField';
 
 export interface IVsCodeStatsProps {
-	stats: IStatModel[];
+	stats: IStat[];
 }
 
 export default function VsCodeStats(props: IVsCodeStatsProps)
@@ -16,7 +16,7 @@ export default function VsCodeStats(props: IVsCodeStatsProps)
 			<div className={Style.Stats}>
 				{props.stats.map((stat) => {
 					return (
-						<StatField key={`${stat.platform}-${stat.name}`} name={stat.name} value={stat.value} />
+						<StatField key={`vscode-${stat.name}`} name={stat.name} value={stat.value} />
 					);
 				})}
 			</div>

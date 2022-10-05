@@ -63,7 +63,7 @@
     "no-new-func": "error",
     "no-new": "off",
     "curly": "error",
-    "dot-notation": "error",
+    "dot-notation": "warn",
     "eqeqeq": "error",
     "no-else-return": "error",
     "no-empty-pattern": "error",

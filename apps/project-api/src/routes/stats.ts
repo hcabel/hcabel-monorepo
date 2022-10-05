@@ -109,8 +109,24 @@ export async function GetAllProjectStats(req: Express.Request): Promise<IRequest
 		});
 	}
 
+	// convert stats to a more readable format (hash table)
+	const statsTable: { [key: string]: { [key: string]: any } } = {};
+	stats.forEach(stat => {
+		if (!statsTable[stat.platform]) {
+			statsTable[stat.platform] = {};
+		}
+		statsTable[stat.platform][stat.name] = {
+			...stat,
+			// remove non necessary fields
+			_id: undefined,
+			project_id: undefined,
+			platform: undefined,
+			name: undefined
+		};
+	});
+
 	return ({
 		status: 200,
-		json: stats
+		json: statsTable
 	});
 }
