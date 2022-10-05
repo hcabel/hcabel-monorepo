@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   notification.jsx                                   :+:      :+:    :+:   */
+/*   notificationHugoMeet.jsx                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hcabel <hcabel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import "./notificationCSS.css";
+import "./notificationHugoMeetCSS.css";
 
-export default function Notification(props) {
+export default function NotificationHugoMeet(props) {
 
 	function formatName(value) {
 		if (value.length > 23) {
-			return (value.slice(0, 20) + "...");
+			return (`${value.slice(0, 20)}...`);
 		}
 		return (value.slice(0, 23));
 	}
