@@ -15,3 +15,11 @@ export type IStatModel = IStatSchema & IModel;
 
 // The interface that is return by the queries
 export type IStatDocument = Mongoose.Document<any, any, IStatModel>;
+
+// Interface when the api is returning a single stat
+export type IStat = Omit<IStatSchema, "project_id" | "platform">;
+
+// Interface when the api is returning multiple stats
+export interface IStats {
+	[platform: string]: IStat[]
+}

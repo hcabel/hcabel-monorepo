@@ -12,3 +12,6 @@ export type IProjectModel = IProjectSchema & IModel;
 
 // The interface that is return by the queries
 export type IProjectDocument = Mongoose.Document<any, any, IProjectModel>;
+
+// Interface when the api is returning a single project
+export type IProject = IProjectSchema;
