@@ -1,9 +1,10 @@
 import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { IRouteGetAllProjectPlatformStats, IRouteGetProjectStat, IRouteGetProjectStats, IStatModel, IStats } from "@hcabel/types/ProjectApi";
+import { IRouteGetAllProjectPlatformStats, IRouteGetProjectStat, IRouteGetProjectStats } from "@hcabel/types/ProjectApi";
 
 import * as ProjectServices from "../database/services/project";
 import * as StatServices from "../database/services/stat";
+import { IStatModelArrayToIStats, IStatModelToIStat } from "./utils/stats";
 
 export async function GetAllProjectPlatformStats(req: Express.Request): Promise<IRequestResponse<IRouteGetAllProjectPlatformStats>>
 {
@@ -39,9 +40,7 @@ export async function GetAllProjectPlatformStats(req: Express.Request): Promise<
 	return ({
 		status: 200,
 		json: platformStats.map((stat) => {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const { _id, __v, project_id, platform, ...statInfo } = stat;
-			return (statInfo);
+			return (IStatModelToIStat(stat));
 		})
 	});
 }
@@ -78,12 +77,9 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { _id, __v, project_id, platform, ...statInfo } = stat;
-
 	return {
 		status: 200,
-		json: statInfo
+		json: IStatModelToIStat(stat)
 	};
 }
 
@@ -117,22 +113,8 @@ export async function GetProjectStats(req: Express.Request): Promise<IRequestRes
 		});
 	}
 
-	// convert stats to a more readable format (hash table)
-	const statsTable: IStats = {};
-	stats.forEach((stat: IStatModel) => {
-		if (!statsTable[stat.platform]) {
-			statsTable[stat.platform] = [];
-		}
-
-		// I spread the object to remove all the omitted fields
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { _id, __v, project_id, platform, ...statInfos } = stat;
-
-		statsTable[stat.platform].push(statInfos);
-	});
-
 	return ({
 		status: 200,
-		json: statsTable
+		json: IStatModelArrayToIStats(stats)
 	});
 }

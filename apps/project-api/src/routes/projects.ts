@@ -1,8 +1,10 @@
-import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { IGetProjectInfos, IStatModel, IStats } from "@hcabel/types/ProjectApi";
 import Express from "express";
+import { IRequestResponse } from "@hcabel/rest-api-utils";
+import { IGetProjectInfos } from "@hcabel/types/ProjectApi";
+
 import * as ProjectService from "../database/services/services";
 import * as StatService from "../database/services/stat";
+import { IStatModelArrayToIStats } from "./utils/stats";
 
 async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<IGetProjectInfos>>
 {
@@ -34,25 +36,11 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 		});
 	}
 
-	// convert stats to a more readable format (hash table)
-	const statsTable: IStats = {};
-	stats.forEach((stat: IStatModel) => {
-		if (!statsTable[stat.platform]) {
-			statsTable[stat.platform] = [];
-		}
-
-		// I spread the object to remove all the omitted fields
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { _id, __v, project_id, platform, ...statInfos } = stat;
-
-		statsTable[stat.platform].push(statInfos);
-	});
-
 	return ({
 		status: 200,
 		json: {
 			...project,
-			stats: statsTable
+			stats: IStatModelArrayToIStats(stats)
 		}
 	});
 }
