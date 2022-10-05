@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-import React, {useEffect} from "react";
-import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import React, {useEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 import LandingPage from "./pages/landingPage/landingPage";
 import RoomPage from "./pages/roomPage/roomPage";
@@ -19,35 +19,36 @@ import Utils from "./utils/utils";
 
 export default function	App()
 {
-	const history = useHistory();
+	const location = useLocation();
 
 	useEffect(() => {
-		return (history.listen((e) => {
-			console.log(e.pathname);
-			// If go on a page that isn't a room page
-			if (!e.pathname.startsWith("/room/")) {
-				// Close signalling WebSocket
-				if (window.SignalingSocket) {
-					window.SignalingSocket.onopen = undefined;
-					window.SignalingSocket.onmessage = undefined;
-					window.SignalingSocket.onerror = undefined;
-					window.SignalingSocket.onclose = undefined;
-					if (window.SignalingSocket.readyState === 0 || window.SignalingSocket.readyState === 1) {
-						window.SignalingSocket.close();
-					}
-					window.SignalingSocket = null;
+		console.log(location.pathname);
+		// If go on a page that isn't a room page
+		if (!location.pathname.startsWith("/room/")) {
+			// Close signalling WebSocket
+			if (window.SignalingSocket) {
+				window.SignalingSocket.onopen = undefined;
+				window.SignalingSocket.onmessage = undefined;
+				window.SignalingSocket.onerror = undefined;
+				window.SignalingSocket.onclose = undefined;
+				if (window.SignalingSocket.readyState === 0 || window.SignalingSocket.readyState === 1) {
+					window.SignalingSocket.close();
 				}
-
-				Utils.media.killTracks(window.localStream?.getTracks(), window.localStream);
+				window.SignalingSocket = null;
 			}
-		}));
-	}, [ history ])
+
+			Utils.media.killTracks(window.localStream?.getTracks(), window.localStream);
+		}
+	}, [ location ]);
 
 	return (
-		<Switch>
-			<Route exact path="/" component={LandingPage} />
-			<Route exact path="/room/:roomId" component={RoomPage} />
-			<Route render={() => <Redirect to="/" />} />
-		</Switch>
+		<Routes>
+			<Route path="/" element={<LandingPage />} />
+			<Route path="/room/:roomId" element={<RoomPage />} />
+			<Route
+				path="*"
+				element={<Navigate to="/" replace />}
+			/>
+		</Routes>
 	);
 }

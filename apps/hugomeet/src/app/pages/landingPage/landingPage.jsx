@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 import React, {useState} from "react";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 import "./landingPageCSS.css"
 
@@ -41,14 +41,14 @@ const	PresentationText = [
 
 export default function LandingPage()
 {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [_PresentationIndex, set_PresentationIndex] = useState(0);
 	const [_Value, set_Value] = useState("");
 	const [_Focused, set_Focused] = useState(false);
 
 	function createNewRoom() {
 		const newRoomId = Utils.idGenerator.generateRoomID(9);
-		history.push("/room/" + newRoomId);
+		navigate(`/room/${newRoomId}`);
 	}
 
 	function joinRoom(roomId) {
@@ -56,7 +56,7 @@ export default function LandingPage()
 			console.warn("RoomID is not valid !");
 			return;
 		}
-		history.push("/room/" + roomId);
+		navigate(`/room/${roomId}`);
 	}
 
 	function	updateInputValue(e) {

@@ -12,7 +12,7 @@
 
 import { useState, useEffect } from "react";
 import { useCookies } from 'react-cookie';
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import "./preRoomLayerCSS.css";
 
@@ -24,7 +24,7 @@ export default function	PreRoomLayer(props) {
 	const [_Name, set_Name] = useState(!_Cookie.userName || _Cookie.userName === "undefined" ? "" : _Cookie.userName);
 	const [_State, set_State] = useState("Form");
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { roomId } = useParams();
 
 	function	participate() {

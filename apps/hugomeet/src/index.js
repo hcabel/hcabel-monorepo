@@ -11,19 +11,19 @@
 /* ************************************************************************** */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import {BrowserRouter as Router} from "react-router-dom";
 import { CookiesProvider } from 'react-cookie';
 
-import App from "./app/app"
+import App from "./app/app";
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+root.render(
 	<React.StrictMode>
 		<Router>
 			<CookiesProvider>
 				<App />
 			</CookiesProvider>
 		</Router>
-	</React.StrictMode>,
-	document.getElementById('root')
+	</React.StrictMode>
 );

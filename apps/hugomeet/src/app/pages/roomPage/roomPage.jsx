@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 import React, {useState, useEffect} from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate , useParams } from "react-router-dom";
 
 import "./roomPageCSS.css";
 
@@ -28,7 +28,7 @@ export default function	RoomPage() {
 	const [_SelfId, set_SelfId] = useState("");
 	const [_RtcOptions, set_RtcOptions] = useState("");
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { roomId } = useParams();
 
 	function	onConnectionCallback(msg) {
@@ -50,7 +50,7 @@ export default function	RoomPage() {
 
 		if (!navigator.mediaDevices) {
 			alert("This site is untrusted we cant access to the camera/or and microphone !");
-			history.push("/");
+			navigate("/");
 			return;
 		}
 

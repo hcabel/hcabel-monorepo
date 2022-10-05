@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 import React, {useState, useEffect} from "react";
-import {useHistory, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 import Utils from "../../../../utils/utils";
 import HangUpIcon from "./assets/HandUpIcon.png";
@@ -29,7 +29,7 @@ export default function	RoomLayer(props) {
 	const [_Peers, set_Peers] = useState([]);
 	const [_PendingInvitation, set_PendingInvitation] = useState([]);
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const { roomId } = useParams();
 
 	///////////////////////////////////////////////////////////////////////////////

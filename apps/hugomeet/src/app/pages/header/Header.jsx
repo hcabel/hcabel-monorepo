@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./HeaderCSS.css";
 
@@ -9,11 +9,11 @@ import HugoMeetLogo from "./assets/HugoMeetLogo.png"
 export default function	Header()
 {
 	const [_Date, set_Date] = useState(new Date());
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	function	goToTheLandingPage() {
 		if (window.location.pathname !== "/") {
-			history.push("/");
+			navigate("/");
 		}
 	}
 
