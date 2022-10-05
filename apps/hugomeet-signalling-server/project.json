@@ -1,0 +1,24 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/hugomeet-signalling-server",
+  "projectType": "application",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/hugomeet-signalling-server/**/*"
+        ]
+      },
+      "defaultConfiguration": "test",
+      "configurations": {
+        "test": {},
+        "fix": {
+          "fix": true
+        }
+      }
+    }
+  },
+  "tags": ["backend"],
+  "implicitDependencies": []
+}

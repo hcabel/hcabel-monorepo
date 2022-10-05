@@ -4,6 +4,8 @@
   "projects": {
     "portfolio": "apps/portfolio",
     "portfolio-e2e": "apps/portfolio-e2e",
+    "hugomeet": "apps/hugomeet",
+    "hugomeet-signalling-server": "apps/hugomeet-signalling-server",
     "project-api": "apps/project-api",
     "types-project-api": "libs/types/types-project-api",
     "rest-api-utils": "libs/rest-api-utils"
