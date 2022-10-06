@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Style from 'Styles/components/ProjectFirstImpression.module.scss';
 
-import { IGetProjectInfos } from '@hcabel/types/ProjectApi';
+import { IRouteGetProjectInfos } from '@hcabel/types/ProjectApi';
 
 import GithubStats from 'Components/ProjectStats/GithubStats';
 import VsCodeStats from 'Components/ProjectStats/VsCodeStats';
@@ -20,12 +20,12 @@ export interface IProjectFirstImpressionProps {
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
 {
-	const [_Project, set_Project] = useState<IGetProjectInfos | undefined>(undefined);
+	const [_Project, set_Project] = useState<IRouteGetProjectInfos | undefined>(undefined);
 
 	useEffect(() => {
 		fetch(`api/projects/${props.projectName}`)
 			.then((response) => response.json())
-			.then((data: IGetProjectInfos) => set_Project(data));
+			.then((data: IRouteGetProjectInfos) => set_Project(data));
 	}, [ props.projectName ]);
 
 	// If we dont have the project infos, we dont render anything

@@ -1,13 +1,13 @@
 import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { IGetProjectInfos } from "@hcabel/types/ProjectApi";
+import { IRouteGetProjectInfos } from "@hcabel/types/ProjectApi";
 
 import * as ProjectService from "../database/services/services";
 import * as StatService from "../database/services/stat";
 import { IStatModelArrayToIStats } from "./utils/stats";
 import { IProjectModelArrayToIProjects } from "./utils/project";
 
-async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<IGetProjectInfos>>
+async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<IRouteGetProjectInfos>>
 {
 	const { params: { projectname }} = req;
 
