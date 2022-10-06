@@ -7,6 +7,7 @@ import { IRouteGetProjectInfos } from '@hcabel/types/ProjectApi';
 import GithubStats from 'Components/ProjectStats/GithubStats';
 import VsCodeStats from 'Components/ProjectStats/VsCodeStats';
 import YoutubeStats from 'Components/ProjectStats/YoutubeStats';
+import Link from 'next/link';
 
 export interface IProjectFirstImpressionProps {
 	id?: string;
@@ -15,7 +16,8 @@ export interface IProjectFirstImpressionProps {
 	children?: React.ReactElement[] | React.ReactElement;
 
 	projectName: string;
-	onMoreClicked?: () => void;
+	moreButtonRedirection?: string;
+	moreTextOverride?: string;
 }
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
@@ -42,10 +44,12 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 				<figcaption className={Style.ProjectDescription} data-cy={`Project-${props.projectName}-Description`}>
 					{_Project.description}
 				</figcaption>
-				{props.onMoreClicked &&
-					<a className={Style.ProjectMoreButton} onClick={props.onMoreClicked}>
-						More details
-					</a>
+				{props.moreButtonRedirection &&
+					<Link href={props.moreButtonRedirection}>
+						<a className={Style.ProjectMoreButton}>
+							{props.moreTextOverride || "More details"}
+						</a>
+					</Link>
 				}
 			</div>
 			<div className={Style.ProjectStats}>

@@ -23,6 +23,8 @@ export function Index() {
 				<ProjectFirstImpression
 					className={Style.ProjectHugoMeet}
 					projectName="HugoMeet"
+					moreButtonRedirection={"/projects/hugomeet"}
+					moreTextOverride="Explore HugoMeet"
 				/>
 				{/* PROCEDURAL TERRAIN */}
 				<ProjectFirstImpression

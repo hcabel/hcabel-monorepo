@@ -19,6 +19,15 @@ const nextConfig = {
 		});
 
 		return config;
+	},
+	redirects: async() => {
+		return [
+			{
+				source: '/projects/hugomeet',
+				destination: 'https://hugomeet.com',
+				permanent: true,
+			},
+		];
 	}
 };
 
