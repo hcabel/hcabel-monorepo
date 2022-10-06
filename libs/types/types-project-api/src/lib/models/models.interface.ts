@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 // (your model interface should extend this interface)
 export interface IModel {
 	_id: Types.ObjectId,
-	__v: number,
+	__v?: number,
 }
 
 export * from './project.interface';

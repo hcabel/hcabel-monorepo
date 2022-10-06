@@ -5,6 +5,7 @@ import { IGetProjectInfos } from "@hcabel/types/ProjectApi";
 import * as ProjectService from "../database/services/services";
 import * as StatService from "../database/services/stat";
 import { IStatModelArrayToIStats } from "./utils/stats";
+import { IProjectModelArrayToIProjects } from "./utils/project";
 
 async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<IGetProjectInfos>>
 {
@@ -39,7 +40,7 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 	return ({
 		status: 200,
 		json: {
-			...project,
+			...IProjectModelArrayToIProjects(project),
 			stats: IStatModelArrayToIStats(stats)
 		}
 	});
