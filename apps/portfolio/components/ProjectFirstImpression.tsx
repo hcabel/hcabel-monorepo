@@ -55,8 +55,8 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 				{_Project.stats["vscode marketplace"] &&
 					<VsCodeStats stats={_Project.stats["vscode marketplace"]}/>
 				}
-				{_Project.stats["youtube"] &&
-					<GithubStats stats={_Project.stats["youtube"]}/>
+				{_Project.stats["github"] &&
+					<GithubStats stats={_Project.stats["github"]}/>
 				}
 			</div>
 		</article>
