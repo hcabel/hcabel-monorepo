@@ -27,6 +27,11 @@ const nextConfig = {
 				destination: 'https://hugomeet.com',
 				permanent: true,
 			},
+			{
+				source: '/projects/unreal-vscode-helper',
+				destination: 'https://marketplace.visualstudio.com/items?itemName=HugoCabel.uvch',
+				permanent: true,
+			}
 		];
 	}
 };

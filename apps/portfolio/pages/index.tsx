@@ -18,6 +18,7 @@ export function Index() {
 				<ProjectFirstImpression
 					className={Style.ProjectUVCH}
 					projectName="Unreal VsCode Helper"
+					moreButtonRedirection="/projects/unreal-vscode-helper"
 				/>
 				{/* HUGO MEET */}
 				<ProjectFirstImpression
