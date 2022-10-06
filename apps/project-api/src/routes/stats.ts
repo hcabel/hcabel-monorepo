@@ -8,11 +8,10 @@ import { IStatModelArrayToIStats, IStatModelToIStat } from "./utils/stats";
 
 export async function GetAllProjectPlatformStats(req: Express.Request): Promise<IRequestResponse<IRouteGetAllProjectPlatformStats>>
 {
-	const projectName = req.params.projectname;
-	const statPlatform = req.params.platform;
+	const { params: { projectname, platform }} = req;
 
 	// Check request inputs
-	if (!projectName || !statPlatform) {
+	if (!projectname || !platform) {
 		return ({
 			status: 400,
 			json: { message: "Bad request" }
@@ -20,7 +19,7 @@ export async function GetAllProjectPlatformStats(req: Express.Request): Promise<
 	}
 
 	// find project from his name
-	const project = await ProjectServices.GetProjectByName(projectName);
+	const project = await ProjectServices.GetProjectByName(projectname);
 	if (!project) {
 		return ({
 			status: 404,
@@ -29,7 +28,7 @@ export async function GetAllProjectPlatformStats(req: Express.Request): Promise<
 	}
 
 	// find all stats of the project from the platform
-	const platformStats = await StatServices.GetAllProjectStatsFromPlatform(project._id, statPlatform);
+	const platformStats = await StatServices.GetAllProjectStatsFromPlatform(project._id, platform);
 	if (!platformStats) {
 		return ({
 			status: 404,
@@ -47,12 +46,10 @@ export async function GetAllProjectPlatformStats(req: Express.Request): Promise<
 
 export async function GetProjectStat(req: Express.Request): Promise<IRequestResponse<IRouteGetProjectStat>>
 {
-	const projectName = req.params.projectname;
-	const statPlatform = req.params.platform;
-	const statName = req.params.statname;
+	const { params: { projectname, platform, statname }} = req;
 
 	// Check request inputs
-	if (!projectName || !statPlatform || !statName) {
+	if (!projectname || !platform || !statname) {
 		return ({
 			status: 400,
 			json: { message: "Bad request" }
@@ -60,7 +57,7 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 	}
 
 	// find project from his name
-	const project = await ProjectServices.GetProjectByName(projectName);
+	const project = await ProjectServices.GetProjectByName(projectname);
 	if (!project) {
 		return ({
 			status: 404,
@@ -69,7 +66,7 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 	}
 
 	// find stat of the project from the platform and the stat name
-	const stat = await StatServices.GetStat(project._id, statPlatform, statName);
+	const stat = await StatServices.GetStat(project._id, platform, statname);
 	if (!stat) {
 		return ({
 			status: 404,
@@ -85,10 +82,10 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 
 export async function GetProjectStats(req: Express.Request): Promise<IRequestResponse<IRouteGetProjectStats>>
 {
-	const projectName = req.params.projectname;
+	const { params: { projectname }} = req;
 
 	// Check request inputs
-	if (!projectName) {
+	if (!projectname) {
 		return ({
 			status: 400,
 			json: { message: "Bad request" }
@@ -96,7 +93,7 @@ export async function GetProjectStats(req: Express.Request): Promise<IRequestRes
 	}
 
 	// find project from his name
-	const project = await ProjectServices.GetProjectByName(projectName);
+	const project = await ProjectServices.GetProjectByName(projectname);
 	if (!project) {
 		return ({
 			status: 404,

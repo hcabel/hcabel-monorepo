@@ -9,10 +9,10 @@ import { IProjectModelArrayToIProjects } from "./utils/project";
 
 async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<IGetProjectInfos>>
 {
-	const projectName = req.params.projectname;
+	const { params: { projectname }} = req;
 
 	// Check request inputs
-	if (!projectName) {
+	if (!projectname) {
 		return ({
 			status: 400,
 			json: { message: "Bad request" }
@@ -20,7 +20,7 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 	}
 
 	// get project
-	const project = await ProjectService.GetProjectByName(projectName);
+	const project = await ProjectService.GetProjectByName(projectname);
 	if (!project) {
 		return ({
 			status: 404,
