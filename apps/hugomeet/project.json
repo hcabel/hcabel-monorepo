@@ -40,7 +40,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "hugomeet:build",
-        "hmr": true
+        "hmr": true,
+        "port": 4201
       },
       "configurations": {
         "development": {
@@ -69,5 +70,6 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["hugomeet-signalling-server"]
 }
