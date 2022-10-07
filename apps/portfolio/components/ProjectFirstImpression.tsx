@@ -18,23 +18,14 @@ export interface IProjectFirstImpressionProps {
 	projectName: string;
 	moreButtonRedirection?: string;
 	moreTextOverride?: string;
+
+	staticProps: IRouteGetProjectInfos;
 }
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
 {
-	const [_Project, set_Project] = useState<IRouteGetProjectInfos | undefined>(undefined);
+	const [_Project] = useState<IRouteGetProjectInfos>(props.staticProps);
 
-	useEffect(() => {
-		fetch(`api/projects/${props.projectName}`)
-			.then((response) => response.json())
-			.then((data: IRouteGetProjectInfos) => set_Project(data));
-	}, [ props.projectName ]);
-
-	// If we dont have the project infos, we dont render anything
-	// @TODO: Implement Client Side Rendering
-	if (!_Project) {
-		return null;
-	}
 	return (
 		<article id={props.id || ""} className={`${Style.ProjectFirstImpression} ${props.className || ""}`} style={props.style || {}}>
 			<div>
