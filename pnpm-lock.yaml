@@ -40,6 +40,7 @@ importers:
       express: ^4.18.1
       glslify-loader: ^2.0.0
       gsap: ^3.11.1
+      helmet: ^6.0.0
       jest: 28.1.1
       jest-environment-jsdom: 28.1.1
       mongoose: ^6.6.3
@@ -67,6 +68,7 @@ importers:
       express: 4.18.1
       glslify-loader: 2.0.0
       gsap: 3.11.3
+      helmet: 6.0.0
       mongoose: 6.6.5
       next: 12.2.5_drkpjgevzdykik2puzxtfkrafi
       raw-loader: 4.0.2
@@ -6808,6 +6810,11 @@ packages:
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+
+  /helmet/6.0.0:
+    resolution: {integrity: sha512-FO9RpR1wNJepH/GbLPQVtkE2eESglXL641p7SdyoT4LngHFJcZheHMoyUcjCZF4qpuMMO1u5q6RK0l9Ux8JBcg==}
+    engines: {node: '>=14.0.0'}
+    dev: false
 
   /hoist-non-react-statics/3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
