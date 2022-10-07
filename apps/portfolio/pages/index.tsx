@@ -70,6 +70,8 @@ export async function getStaticProps()
 		props: {
 			staticProps
 		},
+		// I revalidate every 24 hours because that when my script is updating the ProjectApi database
+		revalidate: 60 * 60 * 24
 	};
 }
 
