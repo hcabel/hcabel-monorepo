@@ -16,7 +16,12 @@ export default function VsCodeStats(props: IVsCodeStatsProps)
 			<div className={Style.Stats}>
 				{props.stats.map((stat) => {
 					return (
-						<StatField key={`vscode-${stat.name}`} name={stat.name} value={stat.value} />
+						<StatField
+							key={`vscode-${stat.name}`}
+							name={stat.name}
+							value={stat.value}
+							url={stat.url}
+						/>
 					);
 				})}
 			</div>

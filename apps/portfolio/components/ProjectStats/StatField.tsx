@@ -3,7 +3,7 @@ import Style from 'Styles/components/ProjectStats.module.scss';
 export interface IStatField {
 	name: string;
 	value: number;
-	url?: string;
+	url: string;
 	icon?: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 }
 

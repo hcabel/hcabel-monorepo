@@ -16,7 +16,12 @@ export default function YoutubeStats(props: IYoutubeStatsProps)
 			<div className={Style.Stats}>
 				{props.stats.map((stat) => {
 					return (
-						<StatField key={`youtube-${stat.name}`} name={stat.name} value={stat.value} />
+						<StatField
+							key={`youtube-${stat.name}`}
+							name={stat.name}
+							value={stat.value}
+							url={stat.url}
+						/>
 					);
 				})}
 			</div>
