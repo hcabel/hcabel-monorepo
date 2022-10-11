@@ -1,18 +1,16 @@
 import * as express from "express";
 import mongoose from "mongoose";
 import helmet from "helmet";
-import cors from "cors";
 
 import RouteTree from "./routes/routes";
 import { GenerateRouterFromRoutingTree } from "@hcabel/rest-api-utils";
 
 const app = express();
 
+app.use(helmet());
+
 const router = GenerateRouterFromRoutingTree(RouteTree);
 app.use('/', router);
-
-app.use(helmet());
-app.use(cors());
 
 // This line will add spaces in the json output of every request (using res.json())
 // this will result in more readable json in the browser
