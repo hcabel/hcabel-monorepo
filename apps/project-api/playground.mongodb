@@ -18,6 +18,9 @@ function DuplicateCollection(collectionSourceName, collectionTargetName, dbTarge
 {
 	const collectionSource = db.getCollection(collectionSourceName);
 	const collectionTarget = db.getSiblingDB(dbTargetName).getCollection(collectionTargetName);
+	if (collectionTarget) {
+		collectionTarget.drop();
+	}
 
 	return (
 		collectionSource.find()
