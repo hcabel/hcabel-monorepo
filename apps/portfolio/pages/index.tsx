@@ -4,6 +4,7 @@ import Style from 'Styles/pages/index.module.scss';
 
 import Canvas3D from '3D/Canvas3D';
 import ProjectFirstImpression from 'Components/ProjectFirstImpression';
+import { IRouteGetProjectInfos } from '@hcabel/types/ProjectApi';
 
 export function Index({ staticProps }: any) {
 	useEffect(() => {
@@ -48,17 +49,29 @@ export async function getStaticProps()
 
 		function MakeAsyncRequest(url: string, key: string)
 		{
-			asyncRequest++;
-			fetch(url)
-				.then((response) => response.json())
-				.then((data) => {
-					staticData[key] = data;
+			asyncRequest += 1;
+			return (
+				fetch(url)
+					.then(async(response) => {
+						const data = await response.json();
+						if (response.ok === false) {
+							return ({
+								name: response.status,
+								description: data.message || response.statusText || "Nothing turned in",
+								stats: []
+							});
+						}
+						return (data);
+					})
+					.then((data: IRouteGetProjectInfos) => {
+						staticData[key] = data;
 
-					asyncRequest--;
-					if (asyncRequest === 0) {
-						resolve(staticData);
-					}
-				});
+						asyncRequest--;
+						if (asyncRequest === 0) {
+							resolve(staticData);
+						}
+					})
+			);
 		}
 
 		MakeAsyncRequest("http://localhost:4200/api/projects/Unreal VsCode Helper", "uvch");
