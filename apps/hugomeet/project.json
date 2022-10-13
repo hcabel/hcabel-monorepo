@@ -59,7 +59,7 @@
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["pm2 start apps/hugomeet/server.js -- 3000"]
+        "commands": ["pm2 start --name HugoMeet apps/hugomeet/server.js -- 3000"]
       }
     },
     "lint": {
