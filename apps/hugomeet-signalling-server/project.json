@@ -6,7 +6,13 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node apps/hugomeet-signalling-server/signallingServer.js"
+        "command": "node apps/hugomeet-signalling-server/src/signallingServer.js"
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pm2 start apps/hugomeet-signalling-server/src/signallingServer.js"
       }
     },
     "lint": {
