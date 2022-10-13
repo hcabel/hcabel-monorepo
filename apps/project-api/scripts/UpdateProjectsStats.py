@@ -73,7 +73,7 @@ def update_procedural_terrain_stats_info(db) -> None:
 
 def main():
 	# connect to db
-	db = Connect("hcabel_dev")
+	db = Connect("dev")
 
 	update_uvch_stats_info(db)
 	update_hugomeet_stats_info(db)

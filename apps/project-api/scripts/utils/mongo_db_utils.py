@@ -12,8 +12,16 @@ def update_stats(db, project_id: str, platform: str, name: str, value: str) -> N
 			"$set": { "value": value }
 		}
 	)
+	# if none has been updated, create a new one
 	if (res.matched_count == 0):
-		raise Exception(f"Could not find stats for project_id: {project_id}, platform: {platform}, name: {name}")\
+		db.stats.insert_one({
+			"project_id": project_id,
+			"platform": platform,
+			"name": name,
+			"value": value,
+			"url": ""
+		})
+
 
 def Connect(db_name):
 	uri = os.environ["MONGO_URI"]

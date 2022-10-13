@@ -1,18 +1,16 @@
 import * as express from "express";
 import mongoose from "mongoose";
 import helmet from "helmet";
-import cors from "cors";
 
 import RouteTree from "./routes/routes";
 import { GenerateRouterFromRoutingTree } from "@hcabel/rest-api-utils";
 
 const app = express();
 
+app.use(helmet());
+
 const router = GenerateRouterFromRoutingTree(RouteTree);
 app.use('/', router);
-
-app.use(helmet());
-app.use(cors());
 
 // This line will add spaces in the json output of every request (using res.json())
 // this will result in more readable json in the browser
@@ -26,7 +24,7 @@ mongoose.connect(dbUri || "", {
 	.then(() => {
 		console.log('Mongo ready');
 
-		const port = process.env.port || 3333;
+		const port = process.env.PROJECTAPI_ENDPOINT?.split(':')[2] || 3333;
 		const server = app.listen(port, async() => {
 			console.log(`Listening at ${process.env.PROJECTAPI_ENDPOINT}`);
 		});
