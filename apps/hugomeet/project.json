@@ -40,17 +40,26 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "hugomeet:build",
-        "hmr": true,
-        "port": 4201
+        "port": 3000
       },
       "configurations": {
         "development": {
-          "buildTarget": "hugomeet:build:development"
+          "buildTarget": "hugomeet:build:development",
+          "hmr": true
         },
         "production": {
           "buildTarget": "hugomeet:build:production",
-          "hmr": false
+          "hmr": false,
+          "watch": false,
+          "liveReload": false,
+          "open": false
         }
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["pm2 start apps/hugomeet/server.js -- 3000"]
       }
     },
     "lint": {
