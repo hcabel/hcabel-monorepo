@@ -58,6 +58,7 @@
     },
     "deploy": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
         "commands": ["pm2 start --name HugoMeet apps/hugomeet/server.js -- 3000"]
       }
