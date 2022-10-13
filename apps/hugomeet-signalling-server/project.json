@@ -12,7 +12,7 @@
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pm2 start apps/hugomeet-signalling-server/src/signallingServer.js"
+        "command": "pm2 delete HugoMeet-SS || : && pm2 start --name HugoMeet-SS apps/hugomeet-signalling-server/src/signallingServer.js"
       }
     },
     "lint": {
