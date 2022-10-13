@@ -10,22 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-const https = false;
-
-let url = "localhost";
-
-let prefix = "http";
-let ssUrl = url;
-
-if (https) {
-	prefix = "https";
-	url = "hugomeet.com";
-	ssUrl = `signalling.${url}`;
+function GetEnv(key)
+{
+	const val = process.env[key];
+	if (!val) {
+		throw new Error(`ENV ${key} is not valid`);
+	}
+	return (val);
 }
 
+console.log(process.env)
+
 const config = {
-	url_front: `${prefix}://${url}${https ? "" : ":3000"}`,
-	url_signaling: `${prefix.replace("http", "ws")}://${ssUrl}${https ? "" : ":8042"}`
+	url_front: GetEnv("NX_HUGOMEET_ENDPOINT"),
+	url_signaling: GetEnv("NX_HUGOMEET_SS_ENDPOINT")
 };
 
 export default config;
