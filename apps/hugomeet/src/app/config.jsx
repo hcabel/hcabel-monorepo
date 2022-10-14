@@ -19,8 +19,6 @@ function GetEnv(key)
 	return (val);
 }
 
-console.log(process.env)
-
 const config = {
 	url_front: GetEnv("NX_HUGOMEET_ENDPOINT"),
 	url_signaling: GetEnv("NX_HUGOMEET_SS_ENDPOINT")
