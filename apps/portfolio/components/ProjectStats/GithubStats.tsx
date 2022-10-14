@@ -2,9 +2,9 @@ import Style from 'Styles/components/ProjectStats.module.scss';
 
 import { IStat } from '@hcabel/types/ProjectApi';
 
-import GithubIcon from 'Images/Github/GithubIcon.svg';
-import ForkIcon from 'Images/Github/ForkIcon.svg';
-import StarIcon from 'Images/Github/StarIcon.svg';
+import GithubIcon from 'Images/github/GithubIcon.svg';
+import ForkIcon from 'Images/github/ForkIcon.svg';
+import StarIcon from 'Images/github/StarIcon.svg';
 import StatField from './StatField';
 
 export interface IGithubStatsProps {
