@@ -12,7 +12,7 @@
 
 const express = require('express');
 const app = express();
-const port = 8042;
+const port = process.env.NX_HUGOMEET_SS_ENDPOINT.match(/:[0-9]{4}/)[0].slice(1);
 const http = require('http');
 const server = http.createServer(app);
 const ws = require('ws');
