@@ -24,9 +24,9 @@ mongoose.connect(dbUri || "", {
 	.then(() => {
 		console.log('Mongo ready');
 
-		const port = process.env.PROJECTAPI_ENDPOINT?.split(':')[2] || 3333;
+		const port = process.env.NX_PROJECT_API_ENDPOINT?.split(':')[2] || 3333;
 		const server = app.listen(port, async() => {
-			console.log(`Listening at ${process.env.PROJECTAPI_ENDPOINT}`);
+			console.log(`Listening at ${process.env.NX_PROJECT_API_ENDPOINT}`);
 		});
 		server.on("error", console.error);
 	})

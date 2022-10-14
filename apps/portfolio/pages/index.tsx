@@ -74,9 +74,9 @@ export async function getStaticProps()
 			);
 		}
 
-		MakeAsyncRequest("http://localhost:4200/api/projects/Unreal VsCode Helper", "uvch");
-		MakeAsyncRequest("http://localhost:4200/api/projects/HugoMeet", "hugomeet");
-		MakeAsyncRequest("http://localhost:4200/api/projects/Procedural Terrain", "procedural_terrain");
+		MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/Unreal VsCode Helper`, "uvch");
+		MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/HugoMeet`, "hugomeet");
+		MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/Procedural Terrain`, "procedural_terrain");
 	});
 
 	return {

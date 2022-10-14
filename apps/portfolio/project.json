@@ -25,7 +25,6 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "portfolio:build",
-        "proxyConfig": "apps/portfolio/proxy.conf.json",
         "dev": true
       },
       "configurations": {
@@ -38,6 +37,13 @@
           "dev": false,
           "hostname": "10.0.0.78"
         }
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["build"],
+      "options": {
+        "commands": ["pm2 start --name Portfolio next -- start -p 4200"]
       }
     },
     "lint": {
