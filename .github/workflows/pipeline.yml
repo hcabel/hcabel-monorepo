@@ -4,16 +4,13 @@ on:
     - PROD
 
 jobs:
-  HM_check_lint:
+  main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - uses: nrwl/nx-set-shas@v3
+      - run: npm install -g pnpm
       - name: Install packages
         run: pnpm install --frozen-lockfile
-      - name: Install NX
-        run: pnpm install -w nx
-      - run: nx run hugomeet:lint:test
+        
+      - run: npx nx run hugomeet:lint:test
