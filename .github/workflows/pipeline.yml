@@ -4,7 +4,7 @@ on:
     - PROD
 
 jobs:
-  DEV:
+  Hugomeet-LINT:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,3 +18,17 @@ jobs:
         run: pnpm install -w nx
         
       - run: npx nx run hugomeet:lint:test
+  Hugomeet-Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install packages
+        run: pnpm install --frozen-lockfile
+      - name: Install NX
+        run: pnpm install -w nx
+        
+      - run: npx nx run hugomeet:build:production
