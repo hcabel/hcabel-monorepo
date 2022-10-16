@@ -4,31 +4,44 @@ on:
     - PROD
 
 jobs:
-  Hugomeet-LINT:
+  install-deps:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-      - name: Install pnpm
-        run: npm install -g pnpm
-      - name: Install packages
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - name: pnpm install deps
+        if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-      - name: Install NX
-        run: pnpm install -w nx
-        
-      - run: npx nx run hugomeet:lint:test
-  Hugomeet-Build:
+
+  distributed-task:
     runs-on: ubuntu-latest
+    needs: install-deps
+    strategy:
+      matrix:
+        target: ['lint', 'build']
+        jobIndex: [1, 2, 3, 4]
+    env:
+      jobCount: 4
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-      - name: Install pnpm
-        run: npm install -g pnpm
-      - name: Install packages
-        run: pnpm install --frozen-lockfile
-      - name: Install NX
-        run: pnpm install -w nx
-        
-      - run: npx nx run hugomeet:build:production
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - name: Cache Nx
+        uses: actions/cache@v2
+        with:
+          path: node_modules/.cache/nx
+          key: cache-nx-${{ hashFiles('pnpm-lock.yml') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-${{ github.sha }}
+          restore-keys: |
+            cache-nx-${{ hashFiles('pnpm-lock.yml') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
+            cache-nx-${{ hashFiles('pnpm-lock.yml') }}-
+      - run: git fetch --no-tags --prune --depth=1 origin master
+      - name: nx run-many:${{ matrix.target }}
+        run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }} $GITHUB_REF

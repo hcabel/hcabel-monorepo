@@ -2,41 +2,50 @@
 	"folders": [
 		{
 			"path": "./apps/portfolio",
-			"name": "Apps/Portfolio"
+			"name": "Apps - Portfolio"
 		},
 		{
 			"path": "./apps/portfolio-e2e",
-			"name": "Apps/Portfolio/e2e",
+			"name": "Apps - Portfolio - e2e",
 		},
 		{
 			"path": "./apps/hugomeet",
-			"name": "Apps/HugoMeet"
+			"name": "Apps - HugoMeet"
 		},
 		{
 			"path": "./apps/hugomeet-signalling-server",
-			"name": "Apps/HugoMeet-SS"
+			"name": "Apps - HugoMeet-SS"
 		},
 		{
 			"path": "./apps/project-api",
-			"name": "Apps/ProjectApi"
+			"name": "Apps - ProjectApi"
 		},
 		{
 			"path": "./libs/types/types-project-api",
-			"name": "Libs/Types/ProjectApi"
+			"name": "Libs - Types - ProjectApi"
 		},
 		{
 			"path": "./libs/rest-api-utils",
-			"name": "Libs/RestApiUtils",
+			"name": "Libs - RestApiUtils",
 		},
 		{
 			"path": ".",
 			"name": "/"
+		},
+		{
+			"path": "./tools/scripts",
+			"name": "Tools - Script"
+		},
+		{
+			"path": "./tools/generators",
+			"name": "Tools - Generators"
 		}
 	],
 	"settings": {
 		"files.exclude": {
 			"apps": true,
 			"libs": true,
+			"tools": true,
 		},
 		"search.exclude": {
 			"apps": true,
