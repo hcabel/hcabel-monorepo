@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IProjectModel } from '@hcabel/types/ProjectApi';
+import { I18nTextSchema } from '../schema/i18ntext';
 
 const ProjectSchema = new Schema({
 	name: {
@@ -7,7 +8,7 @@ const ProjectSchema = new Schema({
 		required: true
 	},
 	description: {
-		type: String,
+		type: I18nTextSchema,
 		required: true
 	}
 });

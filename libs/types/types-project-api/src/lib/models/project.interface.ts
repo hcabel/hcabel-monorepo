@@ -1,10 +1,11 @@
 import Mongoose from 'mongoose';
+import { II18nText } from '../i18n';
 import { IModel } from './models.interface';
 
 // The interface that I want
 export interface IProjectSchema {
-	name: string,			// The name of the project
-	description: string,	// A short description of the project
+	name: string,				// The name of the project
+	description: II18nText		// A short description of the project
 }
 
 // The interface that is stored in the database

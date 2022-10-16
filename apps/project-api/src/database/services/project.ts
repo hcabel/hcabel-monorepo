@@ -9,12 +9,15 @@ import { IProjectDocument, IProjectModel, IProjectSchema } from "@hcabel/types/P
  * @param stats id of the stats of the project (optional)
  * @returns the new project
  */
-export function CreateNewProject(name: string, desc: string): Promise<IProjectModel>
+export function CreateNewProject(name: string, desc: string, descFr = ""): Promise<IProjectModel>
 {
 	return (
 		ProjectModel.create<IProjectSchema>({
 			name: name,
-			description: desc
+			description: {
+				en: desc,
+				fr: descFr
+			}
 		})
 			.then((project) => {
 				return (project?.toObject<IProjectModel>() || null);
