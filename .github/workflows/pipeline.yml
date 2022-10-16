@@ -42,6 +42,6 @@ jobs:
           restore-keys: |
             cache-nx-${{ hashFiles('pnpm-lock.yml') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
             cache-nx-${{ hashFiles('pnpm-lock.yml') }}-
-      - run: git fetch --no-tags --prune --depth=1 origin master
+      - run: git fetch --no-tags --prune --depth=1 origin $GITHUB_REF
       - name: nx run-many:${{ matrix.target }}
         run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }} $GITHUB_REF
