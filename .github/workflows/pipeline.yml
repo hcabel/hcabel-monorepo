@@ -2,6 +2,7 @@ on:
   pull_request:
     branches:
     - PROD
+
 jobs:
   HM_check_lint:
     runs-on: ubuntu-latest
