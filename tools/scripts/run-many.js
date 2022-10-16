@@ -1,5 +1,7 @@
 const execSync = require('child_process').execSync;
 
+console.log(1, process.argv);
+console.log(1, process.argv[5],process.argv[6]);
 const target = process.argv[2];
 const jobIndex = Number(process.argv[3]);
 const jobCount = Number(process.argv[4]);
