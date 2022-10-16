@@ -16,6 +16,5 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Install NX
         run: pnpm install -w nx
-      - run: nx run hugomeet:lint:test
         
       - run: npx nx run hugomeet:lint:test
