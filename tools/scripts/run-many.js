@@ -3,8 +3,8 @@ const execSync = require('child_process').execSync;
 const target = process.argv[2];
 const jobIndex = Number(process.argv[3]);
 const jobCount = Number(process.argv[4]);
-const isMaster = process.argv[5] === 'refs/heads/master';
-const baseSha = isMaster ? 'origin/master~1' : 'origin/master';
+const isMaster = process.argv[5] === 'refs/heads/prod';
+const baseSha = isMaster ? 'origin/prod~1' : 'origin/prod';
 
 const affected = execSync(
 	`npx nx print-affected --base=${baseSha} --target=${target}`
