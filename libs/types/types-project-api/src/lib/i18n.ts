@@ -7,4 +7,4 @@ export type II18nObj<T> = {
 };
 
 // Type for text that can be translated in multiple languages
-export type II18nText = II18nObj<String>;
+export type II18nText = II18nObj<string>;
