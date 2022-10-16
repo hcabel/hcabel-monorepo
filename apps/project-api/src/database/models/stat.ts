@@ -1,5 +1,6 @@
 import { Types, Schema, model } from 'mongoose';
 import { IStatModel } from '@hcabel/types/ProjectApi';
+import { I18nTextSchema } from '../schema/i18ntext';
 
 const StatSchema = new Schema({
 	project_id: {
@@ -11,7 +12,7 @@ const StatSchema = new Schema({
 		required: true
 	},
 	name: {
-		type: String,
+		type: I18nTextSchema,
 		required: true
 	},
 	value: {

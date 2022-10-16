@@ -15,13 +15,17 @@ export function CreateNewStat(
 	project_id: Types.ObjectId,
 	platform: string,
 	name: string,
+	nameFr = "",
 	value: number,
 	url: string): Promise<IStatModel>
 {
 	return (
 		StatModel.create<IStatSchema>({
 			project_id: project_id,
-			name: name,
+			name: {
+				en: name,
+				fr: nameFr
+			},
 			platform: platform,
 			value: value,
 			url: url
