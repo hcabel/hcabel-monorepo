@@ -4,7 +4,7 @@ on:
     - PROD
 
 jobs:
-  main:
+  DEV:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
