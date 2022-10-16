@@ -1,0 +1,16 @@
+on:
+  pull_request:
+    branches:
+    - PROD
+jobs:
+  HM_check_lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+      - name: Install packages
+        run: pnpm ci
+      - name: Install NX
+        run: pnpm install -g nx
+      - run: nx run hugomeet:lint:test
