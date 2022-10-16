@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import ProjectModel from "../models/project";
+import { ProjectModel } from "../models";
 import { IProjectDocument, IProjectModel, IProjectSchema } from "@hcabel/types/ProjectApi";
 
 /**

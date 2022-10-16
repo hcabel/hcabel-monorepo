@@ -2,8 +2,8 @@ import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
 import { IRouteGetProjectInfos } from "@hcabel/types/ProjectApi";
 
-import * as ProjectService from "../database/services/services";
-import * as StatService from "../database/services/stat";
+import { ProjectServices } from "../database/services";
+import { StatServices } from "../database/services";
 import { IStatModelArrayToIStats } from "./utils/stats";
 import { IProjectModelArrayToIProjects } from "./utils/project";
 
@@ -20,7 +20,7 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 	}
 
 	// get project
-	const project = await ProjectService.GetProjectByName(projectname);
+	const project = await ProjectServices.GetProjectByName(projectname);
 	if (!project) {
 		return ({
 			status: 404,
@@ -29,7 +29,7 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 	}
 
 	// get projects stats
-	const stats = await StatService.GetAllProjectStats(project._id);
+	const stats = await StatServices.GetAllProjectStats(project._id);
 	if (!stats) {
 		return ({
 			status: 404,

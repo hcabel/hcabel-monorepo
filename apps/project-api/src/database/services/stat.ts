@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import StatModel from '../models/stat';
+import { StatModel } from '../models';
 import { IStatDocument, IStatModel, IStatSchema } from '@hcabel/types/ProjectApi';
 
 /**
