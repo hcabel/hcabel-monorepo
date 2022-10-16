@@ -12,7 +12,7 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
       - name: Install packages
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
       - name: Install NX
         run: pnpm install -g nx
       - run: nx run hugomeet:lint:test
