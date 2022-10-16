@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router';
+
 import Style from 'Styles/components/ProjectStats.module.scss';
 
-import { IStat } from '@hcabel/types/ProjectApi';
+import { IStat, Locales } from '@hcabel/types/ProjectApi';
 
 import GithubIcon from 'Images/github/GithubIcon.svg';
 import ForkIcon from 'Images/github/ForkIcon.svg';
@@ -13,6 +15,8 @@ export interface IGithubStatsProps {
 
 export default function GithubStats(props: IGithubStatsProps)
 {
+	const { locale } = useRouter();
+
 	return (
 		<div className={Style.StatsContainer}>
 			<GithubIcon />
@@ -20,13 +24,13 @@ export default function GithubStats(props: IGithubStatsProps)
 				{props.stats.map((stat) => {
 					return (
 						<StatField
-							key={`github-${stat.name}`}
-							name={stat.name}
+							key={`github-${stat.name.en}`}
+							name={stat.name[locale as Locales]}
 							value={stat.value}
 							url={stat.url}
 							icon={
-								stat.name === "forks" ? <ForkIcon /> :
-									stat.name === "stars" ? <StarIcon /> :
+								stat.name.en === "forks" ? <ForkIcon /> :
+									stat.name.en === "stars" ? <StarIcon /> :
 										undefined
 							}
 						/>
