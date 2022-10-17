@@ -30,6 +30,8 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - name: install pnpm
+        run: npm install -g pnpm
       - uses: mansagroup/nrwl-nx-action@v2
         with:
           targets: lint
