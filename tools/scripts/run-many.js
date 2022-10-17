@@ -1,15 +1,11 @@
 const execSync = require('child_process').execSync;
 
-console.log(1, process.argv);
-console.log(1, process.argv[5],process.argv[6]);
 const target = process.argv[2];
 const jobIndex = Number(process.argv[3]);
 const jobCount = Number(process.argv[4]);
-const isMaster = process.argv[5] === 'refs/heads/PROD';
-const baseSha = isMaster ? 'origin/PROD~1' : 'origin/PROD';
 
 const affected = execSync(
-	`npx nx print-affected --base=${baseSha} --target=${target}`
+	`npx nx print-affected --base=${process.argv[5]} --target=${target}`
 ).toString('utf-8');
 const array = JSON.parse(affected)
 	.tasks.map((t) => t.target.project)
