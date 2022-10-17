@@ -1,7 +1,9 @@
+import { useRouter } from 'next/router';
+
 import Style from 'Styles/components/ProjectStats.module.scss';
 
 import YoutubeIcon from 'Images/YoutubeIcon.svg';
-import { IStat } from '@hcabel/types/ProjectApi';
+import { IStat, Locales } from '@hcabel/types/ProjectApi';
 import StatField from './StatField';
 
 export interface IYoutubeStatsProps {
@@ -10,6 +12,8 @@ export interface IYoutubeStatsProps {
 
 export default function YoutubeStats(props: IYoutubeStatsProps)
 {
+	const { locale } = useRouter();
+
 	return (
 		<div className={Style.StatsContainer}>
 			<YoutubeIcon />
@@ -17,8 +21,8 @@ export default function YoutubeStats(props: IYoutubeStatsProps)
 				{props.stats.map((stat) => {
 					return (
 						<StatField
-							key={`youtube-${stat.name}`}
-							name={stat.name}
+							key={`youtube-${stat.name.en}`}
+							name={stat.name[locale as Locales]}
 							value={stat.value}
 							url={stat.url}
 						/>

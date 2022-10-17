@@ -24,11 +24,12 @@ mongoose.connect(dbUri || "", {
 	.then(() => {
 		console.log('Mongo ready');
 
-		const port = process.env.NX_PROJECT_API_ENDPOINT?.split(':')[2] || 3333;
-		const server = app.listen(port, async() => {
-			console.log(`Listening at ${process.env.NX_PROJECT_API_ENDPOINT}`);
-		});
-		server.on("error", console.error);
+		const port = process.env.NX_PROJECT_API_ENDPOINT!.match(/:(\d+)/)?.[1];
+		app.listen({ port: parseInt(port!), },
+			async() => {
+				console.log(`Running at ${process.env.NX_PROJECT_API_ENDPOINT}`);
+			})
+			.on("error", console.error);
 	})
 	.catch((err: any) => {
 		console.error(err);

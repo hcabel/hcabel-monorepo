@@ -1,0 +1,48 @@
+on:
+  pull_request:
+    branches:
+    - PROD
+  push:
+    branches:
+    - DEV
+
+jobs:
+  install-deps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - name: install pnpm
+        run: npm install -g pnpm
+      - name: pnpm install deps
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - run: npx nx -- affected --target=lint --base=${baseSha} --head=${headSha} --parallel
+
+  build:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - run: npx nx -- affected --target=build --base=${baseSha} --head=${headSha} --parallel
