@@ -30,10 +30,4 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
-      - name: install pnpm
-        run: npm install -g pnpm
-      - uses: mansagroup/nrwl-nx-action@v2
-        with:
-          targets: lint
-          parallel: 'true'
-          maxParallel: 4
+      - run: nx affected --parallel --maxParallel=4 --target=lint --base=${{ github.event.pull_request.base.ref }} --head=${{ github.event.pull_request.head.ref }}
