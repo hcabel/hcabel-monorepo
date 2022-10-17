@@ -1,6 +1,6 @@
 import Mongoose from 'mongoose';
-import { II18nText } from '../i18n';
-import { IModel } from './models.interface';
+import { II18nText } from '../i18n.interface';
+import { IModel } from '.';
 
 // The interface that I want
 export interface IProjectSchema {

@@ -1,3 +1,3 @@
-export * from "./lib/i18n";
-export * from "./lib/models/models.interface";
-export * from "./lib/routes/routes.interface";
+export * from "./lib/i18n.interface";
+export * from "./lib/models";
+export * from "./lib/routes";
