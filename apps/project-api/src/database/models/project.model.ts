@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IProjectModel } from '@hcabel/types/ProjectApi';
-import { I18nTextSchema } from '../schema/i18ntext.schema';
+import { I18nTextSchema } from '../schema';
 
 const ProjectSchema = new Schema({
 	name: {
