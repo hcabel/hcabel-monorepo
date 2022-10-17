@@ -23,12 +23,6 @@ jobs:
   distributed-task:
     runs-on: ubuntu-latest
     needs: install-deps
-    strategy:
-      matrix:
-        target: ['lint:test']
-        jobIndex: [1, 2, 3, 4]
-    env:
-      jobCount: 4
     steps:
       - uses: actions/checkout@v3
       - name: Cache node modules
@@ -36,14 +30,8 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
-      - name: Cache Nx
-        uses: actions/cache@v2
+      - uses: mansagroup/nrwl-nx-action@v2
         with:
-          path: node_modules/.cache/nx
-          key: cache-nx-${{ hashFiles('pnpm-lock.yml') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-${{ github.sha }}
-          restore-keys: |
-            cache-nx-${{ hashFiles('pnpm-lock.yml') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
-            cache-nx-${{ hashFiles('pnpm-lock.yml') }}-
-      - run: git fetch --no-tags --prune --depth=1 origin PROD
-      - name: nx run-many:${{ matrix.target }}
-        run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }} origin/PROD
+          targets: lint
+          parallel: true
+          maxParallel: 4
