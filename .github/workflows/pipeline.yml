@@ -25,7 +25,7 @@ jobs:
     needs: install-deps
     strategy:
       matrix:
-        target: ['lint']
+        target: ['lint:test']
         jobIndex: [1, 2, 3, 4]
     env:
       jobCount: 4
