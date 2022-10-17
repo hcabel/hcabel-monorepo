@@ -2,7 +2,7 @@ import * as express from "express";
 import mongoose from "mongoose";
 import helmet from "helmet";
 
-import RouteTree from "./routes/routes";
+import RouteTree from "./routes/tree";
 import { GenerateRouterFromRoutingTree } from "@hcabel/rest-api-utils";
 
 const app = express();
