@@ -1,5 +1,7 @@
 const execSync = require('child_process').execSync;
 
+console.log(1, process.argv);
+
 const target = process.argv[2];
 const jobIndex = Number(process.argv[3]);
 const jobCount = Number(process.argv[4]);
@@ -16,6 +18,8 @@ const projects =
 	jobIndex < jobCount
 		? array.slice(sliceSize * (jobIndex - 1), sliceSize * jobIndex)
 		: array.slice(sliceSize * (jobIndex - 1));
+
+console.log(2, projects);
 
 if (projects.length > 0) {
 	execSync(
