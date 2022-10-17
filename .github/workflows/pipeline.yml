@@ -30,4 +30,4 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
-      - run: pnpm nx affected --parallel --maxParallel=4 --target=lint --base=${{ github.event.pull_request.base.sha }} --head=${{ github.event.pull_request.head.sha }}
+      - run: node ./tools/github/workflow/pipeline lint ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
