@@ -30,4 +30,7 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
-      - run: node ./tools/scripts/github/workflow/pipeline.js lint ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+      - name: install pnpm
+        run: npm install -g pnpm
+      - run: pnpm run nx -- affected --target=${target} --base=${baseSha} --head=${headSha} --parallel
+      # - run: node ./tools/scripts/github/workflow/pipeline.js lint ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
