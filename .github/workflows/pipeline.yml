@@ -20,7 +20,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
 
-  distributed-task:
+  lint:
     runs-on: ubuntu-latest
     needs: install-deps
     steps:
@@ -32,5 +32,18 @@ jobs:
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
       - name: install pnpm
         run: npm install -g pnpm
-      - run: npx nx -- affected --target=${target} --base=${baseSha} --head=${headSha} --parallel
-      # - run: node ./tools/scripts/github/workflow/pipeline.js lint ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+      - run: npx nx -- affected --target=lint --base=${baseSha} --head=${headSha} --parallel
+
+  build:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - name: install pnpm
+        run: npm install -g pnpm
+      - run: npx nx -- affected --target=build --base=${baseSha} --head=${headSha} --parallel
