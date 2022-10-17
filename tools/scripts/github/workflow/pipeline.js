@@ -1,3 +1,5 @@
+const execSync = require('child_process').execSync;
+
 const target = process.argv[2];
 const baseSha = process.argv[3];
 const headSha = process.argv[4];
