@@ -1,2 +1,2 @@
-export * as ProjectServices from './project';
-export * as StatServices from './stat';
+export * as ProjectServices from './project.services';
+export * as StatServices from './stat.services';
