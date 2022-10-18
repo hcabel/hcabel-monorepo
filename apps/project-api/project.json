@@ -12,8 +12,7 @@
         "compiler": "tsc",
         "outputPath": "dist/apps/project-api",
         "main": "apps/project-api/src/main.ts",
-        "tsConfig": "apps/project-api/tsconfig.json",
-        "assets": ["apps/project-api/src/assets"]
+        "tsConfig": "apps/project-api/tsconfig.json"
       },
       "configurations": {
         "production": {
