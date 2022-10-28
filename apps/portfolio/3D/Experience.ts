@@ -1,23 +1,25 @@
 import Sizes from '3D/utils/Sizes';
 import Clock from '3D/utils/Clock';
 
-import Camera from '3D/world/Camera';
-import Renderer from '3D/Renderer';
 import World from '3D/world/World';
 
 import Stats from 'stats.js';
+import Resources from './utils/Resources';
+import IWindowExperience from '../interfaces/ExperienceWindow.interface';
 
-class Canvas3D {
+declare const window: IWindowExperience;
+
+class Experience
+{
 	// Singleton instance
-	private static instance: Canvas3D;
+	private static instance: Experience;
 
 	// Own properties
 	private _Canvas: HTMLCanvasElement;
 	private _Clock: Clock;
 	private _Sizes: Sizes;
+	private _Resources: Resources;
 	private _World: World;
-	private _Camera: Camera;
-	private _Renderer: Renderer;
 
 	private _Stats: Stats;
 
@@ -25,58 +27,60 @@ class Canvas3D {
 	get Canvas(): HTMLCanvasElement { return this._Canvas; }
 	get Clock(): Clock { return this._Clock; }
 	get Sizes(): Sizes { return this._Sizes; }
+	get Resources(): Resources { return this._Resources; }
 	get World(): World { return this._World; }
-	get Camera(): Camera { return this._Camera; }
-	get Renderer(): Renderer { return this._Renderer; }
 
 	constructor(canvas: HTMLCanvasElement | undefined = undefined)
 	{
 		// init/check singleton
-		if (Canvas3D.instance) {
-			return (Canvas3D.instance);
+		if (Experience.instance) {
+			return (Experience.instance);
 		}
-		Canvas3D.instance = this;
+		Experience.instance = this;
+
+		// Expose singleton in global scope
+		window.experience = this;
 
 		if (!canvas) {
-			throw new Error("Canvas3D need a canvas element at initialization");
+			throw new Error("Experience need a canvas element at initialization");
 		}
+
+		// Init experience properties
 		this._Canvas = canvas;
 		this._Clock = new Clock();
 		this._Sizes = new Sizes();
+		this._Resources = new Resources();
 		this._World = new World();
-		this._Camera = new Camera();
-		this._Renderer = new Renderer();
 
-		this._Clock.on('tick', () => {
-			this.Update();
+		this._Resources.on('ready', () => {
+			this._Clock.on('tick', () => {
+				this.Update();
+			});
+			this._Sizes.on('resize', () => {
+				this.Resize();
+			});
 		});
 
-		this._Sizes.on('resize', () => {
-			this.Resize();
-		});
-
+		// Performances stats
 		this._Stats = new Stats();
 		this._Stats.showPanel(0);
 		document.body.appendChild(this._Stats.dom);
 
 	}
 
-	Update()
+	private Update()
 	{
 		this._Stats.begin();
 
 		this._World.Update();
-		this._Camera.Update();
-		this._Renderer.Update();
 
 		this._Stats.end();
 	}
 
-	Resize()
+	private Resize()
 	{
-		this._Camera.Resize();
-		this._Renderer.Resize();
+		this._World.Resize();
 	}
 }
 
-export default Canvas3D;
+export default Experience;

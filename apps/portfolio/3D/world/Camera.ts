@@ -1,10 +1,13 @@
 import * as THREE from 'three';
+import IWindowExperience from 'Interfaces/ExperienceWindow.interface';
 
-import Canvas3D from '3D/Canvas3D';
 import Sizes from '3D/utils/Sizes';
 import Control from '3D/world/Controls';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+
+declare const window: IWindowExperience;
+
 export interface ILerp3d {
 	current: THREE.Vector3,
 	target: THREE.Vector3,
@@ -17,19 +20,17 @@ export interface ILerpQuad {
 	speed: number,
 }
 
-class Camera {
+class Camera
+{
 	// Quick access
-	private _Canvas3D: Canvas3D;
 	private _Sizes: Sizes;
 	private _Scene: THREE.Scene;
 
 	// Own properties
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
 	private _Controls: Control;
-
 	private _PositionLerp: ILerp3d = { current: new THREE.Vector3(0), target: new THREE.Vector3(0), speed: 0.25 };
 	private _RotationLerp: ILerpQuad = { current: new THREE.Quaternion(0), target: new THREE.Quaternion(0), speed: 0.25 };
-
 	private _OrbitControls: OrbitControls | undefined;
 
 	// Own properties getters
@@ -37,9 +38,8 @@ class Camera {
 
 	constructor()
 	{
-		this._Canvas3D = new Canvas3D();
-		this._Sizes = this._Canvas3D.Sizes;
-		this._Scene = this._Canvas3D.World.Scene;
+		this._Sizes = window.experience.Sizes;
+		this._Scene = window.experience.World.Scene;
 
 		this.InitPerspectiveCamera();
 	}
@@ -52,18 +52,18 @@ class Camera {
 			this._Sizes.Aspect,
 			0.1,
 			1000);
-		this._PerspectiveCamera.position.set(0, 0, 0);
-		this._PerspectiveCamera.rotation.set(0, 0, 0);
+		this.MoveTo(0, 0, 0, true);
+		this.RotateTo(new THREE.Quaternion(), true);
 		this._Scene.add(this._PerspectiveCamera);
 
 		// Init controls
 		this._Controls = new Control(this);
 
 		// Init OrbitControls
-		// this._OrbitControls = new OrbitControls(this._PerspectiveCamera, this._Canvas3D.Canvas);
+		this._OrbitControls = new OrbitControls(this._PerspectiveCamera, document.getElementById('HtmlGridContent'));
 		if (this._OrbitControls) {
 			this._OrbitControls.enableDamping = true;
-			this._OrbitControls.dampingFactor = 0.05;
+			this._OrbitControls.dampingFactor = 0.01;
 			this._OrbitControls.enableZoom = true;
 		}
 	}
@@ -133,7 +133,7 @@ class Camera {
 		this._RotationLerp.target.copy(rot);
 	}
 
-	public LookAt(target: THREE.Vector3)
+	public LookAt(target: THREE.Vector3, teleport = false)
 	{
 		const rot = new THREE.Euler();
 		rot.setFromRotationMatrix(
@@ -143,7 +143,7 @@ class Camera {
 					target,
 					new THREE.Vector3(0, 1, 0)));
 
-		this.RotateTo(new THREE.Quaternion().setFromEuler(rot));
+		this.RotateTo(new THREE.Quaternion().setFromEuler(rot), teleport);
 	}
 }
 

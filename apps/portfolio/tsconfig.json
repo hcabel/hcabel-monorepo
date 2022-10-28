@@ -21,6 +21,7 @@
       "Components/*": ["apps/portfolio/components/*"],
       "3D/*": ["apps/portfolio/3D/*"],
       "Images/*": ["apps/portfolio/assets/images/*"],
+      "Interfaces/*": ["apps/portfolio/interfaces/*"],
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", "**/*.glsl"],

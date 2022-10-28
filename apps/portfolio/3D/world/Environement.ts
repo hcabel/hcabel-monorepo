@@ -1,28 +1,28 @@
 import * as THREE from 'three';
+import IWindowExperience from 'Interfaces/ExperienceWindow.interface';
 
-class Environements {
+declare const window: IWindowExperience;
+
+class Environement
+{
+	// Quick access
 	private _Scene: THREE.Scene;
 
-	constructor(InScene: THREE.Scene)
+	constructor()
 	{
-		this._Scene = InScene;
+		this._Scene = window.experience.World.Scene;
 
-		// @TODO: Is it weird that you see the sun but the directional light is at another angle?
-		// Add directional light (sun)
 		const directionalLight = new THREE.DirectionalLight("#ffffff", 5);
 		directionalLight.castShadow = true;
 		directionalLight.shadow.camera.far = 25;
 		directionalLight.shadow.mapSize.set(4096, 4096);
 		directionalLight.shadow.normalBias = 0.1;
-		directionalLight.position.set(5, 2, 10);
-
+		directionalLight.position.set(5, 5, 5);
 		directionalLight.shadow.camera.left = -3;
 		directionalLight.shadow.camera.right = 3;
 		directionalLight.shadow.camera.top = 10;
 		directionalLight.shadow.camera.bottom = -10;
-
-		directionalLight.intensity = 7.5;
-
+		directionalLight.intensity = 1.0;
 		this._Scene.add(directionalLight);
 
 		// show shadow debug
@@ -33,16 +33,8 @@ class Environements {
 		const ambiantLight = new THREE.AmbientLight("#ffffff", 1);
 		this._Scene.add(ambiantLight);
 
-		// Add background plane
-		const planeGeometry = new THREE.PlaneGeometry(40, 30);
-		const planeMaterial = new THREE.MeshStandardMaterial({
-			color: "#ffffff",
-		});
-		const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-		plane.position.set(0, 0, -1);
-		plane.receiveShadow = true;
-		this._Scene.add(plane);
+		this._Scene.background = new THREE.Color("#3C4C5F");
 	}
 }
 
-export default Environements;
+export default Environement;

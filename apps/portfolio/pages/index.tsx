@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 
 import Style from 'Styles/pages/index.module.scss';
 
-import Canvas3D from '3D/Canvas3D';
+import Experience from '3D/Experience';
 import ProjectFirstImpression from 'Components/ProjectFirstImpression';
 import { IRouteGetProjectInfos } from '@hcabel/types/ProjectApi';
 
 export function Index({ staticProps }: any) {
 	useEffect(() => {
-		new Canvas3D(document.getElementById("Canvas3D") as HTMLCanvasElement);
+		new Experience(document.getElementById("Canvas3D") as HTMLCanvasElement);
 	}, []);
 
 	return (

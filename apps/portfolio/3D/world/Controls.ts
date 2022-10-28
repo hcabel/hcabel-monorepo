@@ -1,20 +1,21 @@
 import * as THREE from 'three';
+import IWindowExperience from 'Interfaces/ExperienceWindow.interface';
 
 import Camera from '3D/world/Camera';
 
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import GSAP from 'gsap';
-import Canvas3D from '3D/Canvas3D';
+
+declare const window: IWindowExperience;
 
 class Controls
 {
-	public static _ProjectFocusBoxSize = new THREE.Vector3(3.5, 3.5, 3.5);
-
 	// Quick access
 	protected _Camera: Camera;
 
 	// Own properties
 	protected _ScrollTrigger: ScrollTrigger;
+	public static _ProjectFocusBoxSize = new THREE.Vector3(3.5, 3.5, 3.5);
 
 	constructor(InCamera: Camera)
 	{
@@ -116,7 +117,7 @@ class ControlsDebug extends Controls
 				new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true })
 			);
 			cube.position.set(0, y, 0);
-			new Canvas3D().World.Scene.add(cube);
+			window.experience.World.Scene.add(cube);
 		}
 	}
 }
