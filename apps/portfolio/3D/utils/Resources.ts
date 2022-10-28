@@ -34,7 +34,7 @@ export default class Resources extends EventEmitter
 			const asset = assetsList[assetName];
 			if (asset.type === 'gltf') {
 				this._GLTFLoader.load(asset.path, (content: any) => {
-					this.assetLoaded(assetName, content);
+					this.assetLoaded(assetName, content.scene);
 				});
 			}
 			else if (asset.type === 'texture') {
@@ -49,12 +49,6 @@ export default class Resources extends EventEmitter
 	{
 		this._Assets[assetName] = content;
 		this.emit('assetLoaded', assetName);
-
-		Object.defineProperty(this, assetName, {
-			get: () => {
-				return content;
-			}
-		});
 
 		// Check if all assets are loaded
 		if (Object.keys(this._Assets).length === Object.keys(assetsList).length) {

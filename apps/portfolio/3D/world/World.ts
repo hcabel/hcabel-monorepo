@@ -35,7 +35,16 @@ class World
 			this._Camera = new Camera();
 			this._Renderer = new Renderer();
 
-			const scene = this._Resources.Assets.scene.scene as THREE.Scene;
+			const scene = this._Resources.Assets.scene as THREE.Group;
+			for (const child of scene.children) {
+				if (child.isObject3D) {
+					const object = child as THREE.Mesh;
+					const texture = this._Resources.Assets.uvchBackedTexture as THREE.Texture;
+					object.material = new THREE.MeshStandardMaterial({
+						map: texture,
+					});
+				}
+			}
 			this._Scene.add(scene);
 		});
 	}

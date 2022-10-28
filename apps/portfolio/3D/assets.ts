@@ -10,7 +10,7 @@ const assetsList: AssetsMap = {
 		path: 'models/scene.glb',
 		type: 'gltf',
 	},
-	bakedUvch: {
+	uvchBackedTexture: {
 		path: 'images/UVCH_BakedTexture.png',
 		type: 'texture',
 	}
