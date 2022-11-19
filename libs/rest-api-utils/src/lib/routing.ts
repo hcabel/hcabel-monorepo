@@ -28,9 +28,9 @@ export function useRoute(callee: RequestHandler): Express.RequestHandler
 			res.status(result.status).json(result.json);
 			next();
 		}
-		catch {
-			console.error(`${req.route.path}: CRASHED`);
-			res.status(500).json({ message: "Internal server error" });
+		catch (err) {
+			console.error(`${req.method} ${req.path} failed: ${err}`);
+			res.status(500).json({ error: "Internal server error" });
 		}
 	};
 }

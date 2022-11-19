@@ -1,6 +1,5 @@
-import Mongoose from 'mongoose';
+import Mongoose, { LeanDocument, Types } from 'mongoose';
 import { II18nText } from '../i18n.interface';
-import { IModel } from '.';
 
 // The interface that I want
 export interface IProjectSchema {
@@ -8,11 +7,10 @@ export interface IProjectSchema {
 	description: II18nText		// A short description of the project
 }
 
-// The interface that is stored in the database
-export type IProjectModel = IProjectSchema & IModel;
-
 // The interface that is return by the queries
-export type IProjectDocument = Mongoose.Document<any, any, IProjectModel>;
+export type IProjectDocument = IProjectSchema & Mongoose.Document<Types.ObjectId>;
+// The interface that is stored in the database
+export type IProjectModel = LeanDocument<IProjectDocument>;
 
 // Interface when the api is returning a single project
 export type IProject = IProjectSchema;

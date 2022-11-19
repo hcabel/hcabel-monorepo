@@ -2,11 +2,12 @@ import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
 import { IRouteGetProjectInfos } from "@hcabel/types/ProjectApi";
 
-import { ProjectServices, StatServices } from "../database/services";
+import * as Queries from "../database/queries";
+
 import { IStatModelArrayToIStats } from "./utils/stats.utils";
 import { IProjectModelArrayToIProjects } from "./utils/project.utils";
 
-async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<IRouteGetProjectInfos>>
+export async function get_project_infos(req: Express.Request): Promise<IRequestResponse<IRouteGetProjectInfos>>
 {
 	const { params: { projectname }} = req;
 
@@ -19,7 +20,9 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 	}
 
 	// get project
-	const project = await ProjectServices.GetProjectByName(projectname);
+	const project = await Queries.Project.read_single({
+		name: projectname
+	});
 	if (!project) {
 		return ({
 			status: 404,
@@ -28,7 +31,9 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 	}
 
 	// get projects stats
-	const stats = await StatServices.GetAllProjectStats(project._id);
+	const stats = await Queries.Stat.read({
+		project_id: project._id
+	});
 	if (!stats) {
 		return ({
 			status: 404,
@@ -44,5 +49,3 @@ async function GetProjectInfos(req: Express.Request): Promise<IRequestResponse<I
 		}
 	});
 }
-
-export default GetProjectInfos;

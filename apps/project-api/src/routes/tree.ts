@@ -1,5 +1,5 @@
 import { useRoute, IRoutingTreeBranch } from '@hcabel/rest-api-utils';
-import GetProjectInfos from './projects.routes';
+import { get_project_infos } from './projects.routes';
 import { GetProjectStats, GetAllProjectPlatformStats, GetProjectStat } from './stats.routes';
 
 // Graph of all the routes in the API
@@ -13,7 +13,7 @@ const RouteTree: IRoutingTreeBranch = {
 	},
 	":projectname": {
 		__self__: {
-			get: useRoute(GetProjectInfos),
+			get: useRoute(get_project_infos),
 		},
 		stats: {
 			__self__: {

@@ -2,7 +2,7 @@ import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
 import { IRouteGetAllProjectPlatformStats, IRouteGetProjectStat, IRouteGetProjectStats } from "@hcabel/types/ProjectApi";
 
-import { ProjectServices, StatServices } from "../database/services";
+import * as Queries from "../database/queries";
 import { IStatModelArrayToIStats, IStatModelToIStat } from "./utils/stats.utils";
 
 export async function GetAllProjectPlatformStats(req: Express.Request): Promise<IRequestResponse<IRouteGetAllProjectPlatformStats>>
@@ -18,16 +18,29 @@ export async function GetAllProjectPlatformStats(req: Express.Request): Promise<
 	}
 
 	// find project from his name
-	const project = await ProjectServices.GetProjectByName(projectname);
-	if (!project) {
+	const projects = await Queries.Project.read({
+		name: projectname
+	});
+	if (!projects || projects.length === 0) {
 		return ({
 			status: 404,
 			json: { message: "Project not found" }
 		});
 	}
 
+	if (projects.length > 1) {
+		return ({
+			status: 409,
+			json: { message: "Filter is not specific enough" }
+		});
+	}
+	const project = projects[0];
+
 	// find all stats of the project from the platform
-	const platformStats = await StatServices.GetAllProjectStatsFromPlatform(project._id, platform);
+	const platformStats = await Queries.Stat.read({
+		project_id: project._id,
+		platform: platform
+	});
 	if (!platformStats) {
 		return ({
 			status: 404,
@@ -56,16 +69,39 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 	}
 
 	// find project from his name
-	const project = await ProjectServices.GetProjectByName(projectname);
-	if (!project) {
+
+	// find project from his name
+	const projects = await Queries.Project.read({
+		name: projectname
+	});
+	if (!projects || projects.length === 0) {
 		return ({
 			status: 404,
 			json: { message: "Project not found" }
 		});
 	}
 
-	// find stat of the project from the platform and the stat name
-	const stat = await StatServices.GetStat(project._id, platform, statname);
+	if (projects.length > 1) {
+		return ({
+			status: 409,
+			json: { message: "Filter is not specific enough" }
+		});
+	}
+	const project = projects[0];
+
+	// find stat of the project from the platform
+	const stats = await Queries.Stat.read({
+		project_id: project._id,
+		platform: platform
+	});
+	if (!stats) {
+		return ({
+			status: 404,
+			json: { message: "Stat not found" }
+		});
+	}
+
+	const stat = stats.find((entry) => entry.name.en === statname);
 	if (!stat) {
 		return ({
 			status: 404,
@@ -92,16 +128,30 @@ export async function GetProjectStats(req: Express.Request): Promise<IRequestRes
 	}
 
 	// find project from his name
-	const project = await ProjectServices.GetProjectByName(projectname);
-	if (!project) {
+
+	// find project from his name
+	const projects = await Queries.Project.read({
+		name: projectname
+	});
+	if (!projects || projects.length === 0) {
 		return ({
 			status: 404,
 			json: { message: "Project not found" }
 		});
 	}
 
+	if (projects.length > 1) {
+		return ({
+			status: 409,
+			json: { message: "Filter is not specific enough" }
+		});
+	}
+	const project = projects[0];
+
 	// find all stats of the project
-	const stats = await StatServices.GetAllProjectStats(project._id);
+	const stats = await Queries.Stat.read({
+		project_id: project._id
+	});
 	if (!stats) {
 		return ({
 			status: 404,
