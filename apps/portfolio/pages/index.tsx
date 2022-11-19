@@ -7,8 +7,8 @@ import Style from 'Styles/pages/index.module.scss';
 import Experience from '3D/Experience';
 import ProjectFirstImpression from 'Components/ProjectFirstImpression';
 import { IRouteGetProjectInfos } from '@hcabel/types/ProjectApi';
-import SlideShow from 'Components/ScrollSelector/SlideShow';
-import Slide from 'Components/ScrollSelector/Slide';
+import SlideShow from 'Components/SlideShow/SlideShow';
+import Slide from 'Components/SlideShow/Slide';
 
 export function Index({ staticProps }: any) {
 	useEffect(() => {
