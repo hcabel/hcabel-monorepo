@@ -90,18 +90,11 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 	const project = projects[0];
 
 	// find stat of the project from the platform
-	const stats = await Queries.Stat.read({
+	const stat = await Queries.Stat.read_single({
 		project_id: project._id,
-		platform: platform
+		platform: platform,
+		"name.en": statname
 	});
-	if (!stats) {
-		return ({
-			status: 404,
-			json: { message: "Stat not found" }
-		});
-	}
-
-	const stat = stats.find((entry) => entry.name.en === statname);
 	if (!stat) {
 		return ({
 			status: 404,

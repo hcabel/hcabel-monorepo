@@ -1,4 +1,4 @@
-import { IStatModel, IStatSchema } from "@hcabel/types/ProjectApi";
+import { Dotnation, IStatModel, IStatSchema } from "@hcabel/types/ProjectApi";
 import { Stat } from "../../models";
 
 /**
@@ -25,7 +25,7 @@ export function read(filter: Partial<IStatSchema>): Promise<IStatModel[] | null>
  * @param filter {Partial<IStatSchema>} the data needed to find the stat to read
  * @returns {Promise<IStatModel> | null} The stat found OR null if the query failed
  */
-export function read_single(filter: Partial<IStatSchema>): Promise<IStatModel | null>
+export function read_single(filter: Partial<IStatSchema & Dotnation>): Promise<IStatModel | null>
 {
 	return (
 		Stat.table
