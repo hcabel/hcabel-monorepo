@@ -1,12 +1,9 @@
 import * as THREE from 'three';
-import IWindowExperience from 'Interfaces/ExperienceWindow.interface';
 
 import Resources from '3D/utils/Resources';
-import Environement from '3D/world/Environement';
 import Camera from '3D/world/Camera';
 import Renderer from '3D/world/Renderer';
-
-declare const window: IWindowExperience;
+import Experience from '3D/Experience';
 
 class World
 {
@@ -15,7 +12,6 @@ class World
 
 	// Own properties
 	private _Scene: THREE.Scene;
-	private _Environement: Environement;
 	private _Camera: Camera;
 	private _Renderer: Renderer;
 
@@ -26,25 +22,37 @@ class World
 
 	constructor()
 	{
-		this._Resources = window.experience.Resources;
+		this._Resources = new Experience().Resources;
+		this._Scene = new THREE.Scene();
+		this._Camera = new Camera(this._Scene);
+		this._Renderer = new Renderer(this._Scene, this._Camera);
 
 		// Wait resources to be loaded before initializing the world
 		this._Resources.on('ready', () => {
-			this._Scene = new THREE.Scene();
-			this._Environement = new Environement();
-			this._Camera = new Camera();
-			this._Renderer = new Renderer();
+			(this._Resources.Assets.uvchBackedTexture as THREE.Texture).flipY = false;
+			const bakedMaterial = new THREE.MeshBasicMaterial({
+				map: this._Resources.Assets.uvchBackedTexture,
+				transparent: true
+			});
 
 			const scene = this._Resources.Assets.scene as THREE.Group;
+			const sceneMeshs = new Map<string, THREE.Mesh>();
+
 			for (const child of scene.children) {
-				if (child.isObject3D) {
-					const object = child as THREE.Mesh;
-					const texture = this._Resources.Assets.uvchBackedTexture as THREE.Texture;
-					object.material = new THREE.MeshStandardMaterial({
-						map: texture,
+				if (child instanceof THREE.Group) {
+					child.children.forEach((groupChild) => {
+						if (groupChild instanceof THREE.Mesh) {
+							groupChild.material = bakedMaterial;
+							sceneMeshs.set(groupChild.name, groupChild);
+						}
 					});
 				}
+				else if (child instanceof THREE.Mesh) {
+					child.material = bakedMaterial;
+					sceneMeshs.set(child.name, child);
+				}
 			}
+
 			this._Scene.add(scene);
 		});
 	}

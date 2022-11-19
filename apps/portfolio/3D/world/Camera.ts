@@ -1,12 +1,10 @@
 import * as THREE from 'three';
-import IWindowExperience from 'Interfaces/ExperienceWindow.interface';
 
 import Sizes from '3D/utils/Sizes';
-import Control from '3D/world/Controls';
+import Control from '3D/world/controls/Controls';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
-declare const window: IWindowExperience;
+import Experience from '3D/Experience';
 
 export interface ILerp3d {
 	current: THREE.Vector3,
@@ -35,11 +33,13 @@ class Camera
 
 	// Own properties getters
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
+	get Controls(): Control { return this._Controls; }
 
-	constructor()
+	constructor(InScene: THREE.Scene)
 	{
-		this._Sizes = window.experience.Sizes;
-		this._Scene = window.experience.World.Scene;
+		const experience = new Experience();
+		this._Sizes = experience.Sizes;
+		this._Scene = InScene;
 
 		this.InitPerspectiveCamera();
 	}
@@ -60,7 +60,7 @@ class Camera
 		this._Controls = new Control(this);
 
 		// Init OrbitControls
-		this._OrbitControls = new OrbitControls(this._PerspectiveCamera, document.getElementById('HtmlGridContent'));
+		// this._OrbitControls = new OrbitControls(this._PerspectiveCamera, document.getElementById('HtmlPageContent'));
 		if (this._OrbitControls) {
 			this._OrbitControls.enableDamping = true;
 			this._OrbitControls.dampingFactor = 0.01;
@@ -82,8 +82,11 @@ class Camera
 	{
 		if (this._OrbitControls) {
 			this._OrbitControls.update();
+			console.log(this._PerspectiveCamera.position);
 			return;
 		}
+
+		this._Controls.Update();
 
 		// Update smooth position
 		this._PositionLerp.current.lerp(this._PositionLerp.target, this._PositionLerp.speed);

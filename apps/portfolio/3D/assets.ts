@@ -3,17 +3,18 @@ export interface IAsset {
 	type: 'gltf' | 'texture';
 }
 
-export type AssetsMap = { [name: string]: IAsset };
-
-const assetsList: AssetsMap = {
+const assetsList = {
 	scene: {
 		path: 'models/scene.glb',
 		type: 'gltf',
 	},
 	uvchBackedTexture: {
-		path: 'images/UVCH_BakedTexture.png',
+		path: 'images/UVCH_BakedTexture_B.png',
 		type: 'texture',
 	}
 };
+
+export type IAssetsList = typeof assetsList;
+export type IAssetsListKey = keyof IAssetsList;
 
 export default assetsList;

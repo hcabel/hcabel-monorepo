@@ -21,6 +21,9 @@
 		.StatIcon {
 			margin-right: 8px;
 		}
+		.StatIcon svg path {
+			fill: $SecondaryTextColor;
+		}
 		.StatValue {
 			font-weight: bold;
 		}

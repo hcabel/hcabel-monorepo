@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -21,6 +21,9 @@ export interface IProjectFirstImpressionProps {
 	moreTextOverride?: string;
 
 	staticProps: IRouteGetProjectInfos;
+
+	hideDescription?: boolean;
+	hideStats?: boolean;
 }
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
@@ -32,12 +35,14 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 	return (
 		<article id={props.id || ""} className={`${Style.ProjectFirstImpression} ${props.className || ""}`} style={props.style || {}}>
 			<div>
-				<figure className={Style.ProjectName} data-cy={`Project-${props.projectName}-Title`}>
+				<h1 className={Style.ProjectName} data-cy={`Project-${props.projectName}-Title`}>
 					{_Project.name}
-				</figure>
-				<figcaption className={Style.ProjectDescription} data-cy={`Project-${props.projectName}-Description`}>
-					{_Project.description[locale as Locales]}
-				</figcaption>
+				</h1>
+				{!props.hideDescription &&
+					<h3 className={Style.ProjectDescription} data-cy={`Project-${props.projectName}-Description`}>
+						{_Project.description[locale as Locales]}
+					</h3>
+				}
 				{props.moreButtonRedirection &&
 					<Link href={props.moreButtonRedirection}>
 						<a className={Style.ProjectMoreButton}>
@@ -46,17 +51,19 @@ export default function ProjectFirstImpression(props: IProjectFirstImpressionPro
 					</Link>
 				}
 			</div>
-			<div className={Style.ProjectStats}>
-				{_Project.stats["youtube"] &&
-					<YoutubeStats stats={_Project.stats["youtube"]}/>
-				}
-				{_Project.stats["vscode marketplace"] &&
-					<VsCodeStats stats={_Project.stats["vscode marketplace"]}/>
-				}
-				{_Project.stats["github"] &&
-					<GithubStats stats={_Project.stats["github"]}/>
-				}
-			</div>
+			{!props.hideStats &&
+				<div className={Style.ProjectStats}>
+					{_Project.stats["youtube"] &&
+						<YoutubeStats stats={_Project.stats["youtube"]}/>
+					}
+					{_Project.stats["vscode marketplace"] &&
+						<VsCodeStats stats={_Project.stats["vscode marketplace"]}/>
+					}
+					{_Project.stats["github"] &&
+						<GithubStats stats={_Project.stats["github"]}/>
+					}
+				</div>
+			}
 		</article>
 	);
 }

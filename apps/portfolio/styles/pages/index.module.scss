@@ -4,9 +4,10 @@
 .ThreeJsCanvas3D {
 	position: fixed;
 	top: 0;
-	left: 0;
-	width: 100%;
+	right: 0;
+	width: 50%;
 	height: 100%;
+	background-image: radial-gradient(ellipse at 15% 0%, rgb(95 236 238) 0%, rgb(129 129 242) 100%);
 }
 
 .HtmlPageContent {
@@ -17,59 +18,24 @@
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 300%;
+	height: fit-content;
 	overflow-x: hidden;
 
-	display: grid;
-
-	$gapC: 0.25fr;
-	$gapR: 0.25fr;
-
-	grid-template-columns: ($gapC / 2) 1fr ($gapC * 2) 1fr ($gapC / 2);
-	grid-template-rows: ($gapR / 2) 1fr $gapR 1fr $gapR 1fr ($gapR / 2);
+	display: flex;
+	flex-direction: column;
 }
 
-.ProjectUVCH {
-	grid-column: 2 / 3;
-	grid-row: 2 / 3;
-
-	figure {
-		background: $grad-Midnight;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
+.FirstImpressionArea {
+	position: relative;
+	padding: 5%;
+	box-sizing: border-box;
+	height: 100vh;
+	width: 100vh;
 }
 
-.ProjectHugoMeet {
-	grid-column: 2 / 3;
-	grid-row: 4 / 5;
-
-	figure {
-		background: $grad-Sunset;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-}
-
+.ProjectUVCH,
+.ProjectHugoMeet,
 .ProjectProceduralTerrain {
-	grid-column: 2 / 3;
-	grid-row: 6 / 7;
-
-
-	figure {
-		background: $grad-SunToOcean;
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-}
-
-@media (max-width: $breakpoint-tablet) {
-	.ProjectUVCH,
-	.ProjectHugoMeet,
-	.ProjectProceduralTerrain {
-		grid-column: 2 / 5;
-	}
+	width: 100%;
+	height: 100%;
 }

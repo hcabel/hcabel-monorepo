@@ -5,11 +5,9 @@ import World from '3D/world/World';
 
 import Stats from 'stats.js';
 import Resources from './utils/Resources';
-import IWindowExperience from '../interfaces/ExperienceWindow.interface';
+import { EventEmitter } from 'events';
 
-declare const window: IWindowExperience;
-
-class Experience
+class Experience extends EventEmitter
 {
 	// Singleton instance
 	private static instance: Experience;
@@ -32,17 +30,29 @@ class Experience
 
 	constructor(canvas: HTMLCanvasElement | undefined = undefined)
 	{
-		// init/check singleton
+		// If the instance already exists, return it
 		if (Experience.instance) {
+			// Init experience if a canvas has been passed
+			if (canvas) {
+				Experience.instance.Init(canvas);
+			}
 			return (Experience.instance);
 		}
+
+		super();
+
 		Experience.instance = this;
+		// Init experience if a canvas has been passed
+		if (canvas) {
+			Experience.instance.Init(canvas);
+		}
+	}
 
-		// Expose singleton in global scope
-		window.experience = this;
-
-		if (!canvas) {
-			throw new Error("Experience need a canvas element at initialization");
+	public Init(canvas: HTMLCanvasElement)
+	{
+		// If already initialized
+		if (this.Canvas !== undefined) {
+			return;
 		}
 
 		// Init experience properties
@@ -59,6 +69,8 @@ class Experience
 			this._Sizes.on('resize', () => {
 				this.Resize();
 			});
+
+			this.emit('ready');
 		});
 
 		// Performances stats
@@ -66,6 +78,7 @@ class Experience
 		this._Stats.showPanel(0);
 		document.body.appendChild(this._Stats.dom);
 
+		this.emit('initialized');
 	}
 
 	private Update()
