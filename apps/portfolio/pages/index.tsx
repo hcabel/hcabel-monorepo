@@ -30,16 +30,14 @@ export function Index({ staticProps }: any) {
 							]);
 						}}
 						onEnter={(self: any, direction: number) => {
-							console.log("onEnter", self.index);
 							const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-							self._Camera.LookAt(new THREE.Vector3(0, 0, 0));
+							self._Camera.Focus(new THREE.Vector3(0, 0, 0));
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
 							const camPosition = self._CamPath.getPointAt(progress).multiply(new THREE.Vector3(25, 25, 25));
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
-							self._Camera.LookAt(new THREE.Vector3(0, 0, 0), true);
+							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
 						}}
 						LeaveTransition={{
 							duration: 0.0
@@ -68,19 +66,20 @@ export function Index({ staticProps }: any) {
 						onEnter={(self: any, direction: number) => {
 							const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-							self._Camera.LookAt(new THREE.Vector3(0, 0, 0));
+							self._Camera.Focus(new THREE.Vector3(0, 0, 0));
 						}}
 						onLeave={(self: any, direction: number) => {
-							self._Camera.MoveTo(
-								self._Camera.PerspectiveCamera.position.x,
-								-3,
-								self._Camera.PerspectiveCamera.position.z
-							);
+							self._Camera.Unfocus();
+							// self._Camera.MoveTo(
+							// 	self._Camera.PerspectiveCamera.position.x,
+							// 	-3,
+							// 	self._Camera.PerspectiveCamera.position.z
+							// );
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
 							const camPosition = self._CamPath.getPointAt(progress).multiply(new THREE.Vector3(25, 25, 25));
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
 							self._Camera.LookAt(new THREE.Vector3(0, 0, 0), true);
 						}}
 					>
