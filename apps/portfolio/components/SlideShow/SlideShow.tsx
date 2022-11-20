@@ -23,10 +23,11 @@ export interface ISlideClass {
 
 export default function SlideShow({ children }: ISlideShowProps)
 {
-	const [_Slides, set_Slides] = useState<ISlideClass[]>(
+	const [_Slides] = useState<ISlideClass[]>(
 		children.map((jsx, i) => {
 			const slide: ISlideClass = {
 				jsx: jsx,
+				...jsx.props,
 				onConstruct: jsx.props.onConstruct || (() => {}),
 				onUpdate: jsx.props.onUpdate || (() => {}),
 				onEnter: jsx.props.onEnter || (() => {}),
@@ -52,45 +53,34 @@ export default function SlideShow({ children }: ISlideShowProps)
 					start: "top top",
 					end: "bottom top",
 					onEnter: (i === 0 ? undefined : () => {
-					// Get controls, then trigger 3D controls events, if 3D finished loading
-						const controls = new Experience()?.World?.Camera?.Controls;
-						if (controls) {
-							const slideBefore = _Slides[i - 1];
-							slideBefore?.onLeave?.(slideBefore, 1);
-							slide.onEnter?.(slide, 1);
-						}
+						const slideBefore = _Slides[i - 1];
+						slideBefore?.onLeave?.(slideBefore, 1);
+						slide.onEnter?.(slide, 1);
 
 						GSAP.to(".slide", {
-							y: `${-100 * i }vh`,
+							y: `${-100 * i}vh`,
 							ease: "expo",
-							overwrite: true
+							overwrite: true,
+							...slideBefore.LeaveTransition
 						});
 					}),
 					onLeaveBack: (i === 0 ? undefined : () => {
-					// Get controls, then trigger 3D controls events, if 3D finished loading
-						const controls = new Experience()?.World?.Camera?.Controls;
-						if (controls) {
-							const slideBefore = _Slides[i + 1];
-							slideBefore?.onLeave?.(slideBefore, -1);
-							slide.onEnter?.(slide, -1);
-						}
+						const slideBefore = _Slides[i + 1];
+						slideBefore?.onLeave?.(slideBefore, -1);
+						slide.onEnter?.(slide, -1);
 
 						GSAP.to(".slide", {
 							y: `${-100 * (i - 1) }vh`,
 							ease: "expo",
-							overwrite: true
+							overwrite: true,
+							...(_Slides[i - 1].LeaveTransition || {})
 						});
 					}),
 					onUpdate: ({ progress }) => {
-					// Get controls, then trigger 3D controls events, if 3D finished loading
-						const controls = new Experience()?.World?.Camera?.Controls;
-						if (controls) {
-							slide.onScroll?.(slide, progress);
-						}
+						slide.onScroll?.(slide, progress);
 					}
 				});
 			});
-			new Experience().World.Camera.Controls.Steps[0].OnEnter(1);
 		});
 	}, [_Slides]);
 

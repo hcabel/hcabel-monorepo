@@ -1,4 +1,5 @@
 import * as React from 'react';
+import gsap from 'gsap/dist/gsap';
 
 export interface ISlideProps {
 	children?: React.ReactNode;
@@ -8,6 +9,7 @@ export interface ISlideProps {
 	onLeave?: (self: any, direction: number) => void;
 	onScroll?: (self: any, progress: number) => void;
 	onResize?: (self: any, ) => void;
+	LeaveTransition?: gsap.TweenVars;
 }
 
 export default function Slide(props: ISlideProps): JSX.Element

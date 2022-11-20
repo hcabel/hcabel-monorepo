@@ -41,6 +41,9 @@ export function Index({ staticProps }: any) {
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 							self._Camera.LookAt(new THREE.Vector3(0, 0, 0), true);
 						}}
+						LeaveTransition={{
+							duration: 0.0
+						}}
 					>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
@@ -63,7 +66,6 @@ export function Index({ staticProps }: any) {
 							]);
 						}}
 						onEnter={(self: any, direction: number) => {
-							console.log("onEnter", self.index);
 							const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
 							self._Camera.LookAt(new THREE.Vector3(0, 0, 0));
