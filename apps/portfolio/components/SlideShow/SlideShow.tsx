@@ -81,6 +81,7 @@ export default function SlideShow({ children }: ISlideShowProps)
 					}
 				});
 			});
+			_Slides[0].onEnter(_Slides[0], 1);
 		});
 	}, [_Slides]);
 
