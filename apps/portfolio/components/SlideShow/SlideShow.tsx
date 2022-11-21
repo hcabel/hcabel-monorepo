@@ -48,15 +48,19 @@ export default function SlideShow({ children }: ISlideShowProps)
 				slide.onConstruct(slide);
 
 				// The first element dont need onEnter/OnLeaveBack, but still need to track the process
+				// note: onEnter and onLeaveBack are not setted in the first slide because it will never be triggered.
 				ScrollTrigger.create({
 					trigger: document.getElementById(`InvisibleDiv_${i}`),
 					start: "top top",
 					end: "bottom top",
+					// Trigger when you come from the top
 					onEnter: (i === 0 ? undefined : () => {
+						// Call slide events
 						const slideBefore = _Slides[i - 1];
 						slideBefore?.onLeave?.(slideBefore, 1);
 						slide.onEnter?.(slide, 1);
 
+						// Move UI
 						GSAP.to(".slide", {
 							y: `${-100 * i}vh`,
 							ease: "expo",
@@ -64,11 +68,14 @@ export default function SlideShow({ children }: ISlideShowProps)
 							...slideBefore.LeaveTransition
 						});
 					}),
+					// Trigger when you leave from the top
 					onLeaveBack: (i === 0 ? undefined : () => {
-						const slideBefore = _Slides[i + 1];
-						slideBefore?.onLeave?.(slideBefore, -1);
-						slide.onEnter?.(slide, -1);
+						// Call slide events
+						slide.onLeave?.(slide, -1);
+						const slideBefore = _Slides[i - 1];
+						slideBefore?.onEnter?.(slideBefore, -1);
 
+						// Move UI
 						GSAP.to(".slide", {
 							y: `${-100 * (i - 1) }vh`,
 							ease: "expo",
@@ -77,6 +84,7 @@ export default function SlideShow({ children }: ISlideShowProps)
 						});
 					}),
 					onUpdate: ({ progress }) => {
+						// Call slide events
 						slide.onScroll?.(slide, progress);
 					}
 				});
