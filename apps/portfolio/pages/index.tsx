@@ -26,7 +26,7 @@ export function Index({ staticProps }: any) {
 							self._Camera = new Experience().World.Camera;
 							self._CamPath = new THREE.CatmullRomCurve3([
 								new THREE.Vector3(-7, 15, -25).normalize(),
-								new THREE.Vector3(-15, 5, -15).normalize(),
+								new THREE.Vector3(-10.1, 9.9, -19.4).normalize()
 							]);
 						}}
 						onEnter={(self: any, direction: number) => {
@@ -42,6 +42,7 @@ export function Index({ staticProps }: any) {
 						LeaveTransition={{
 							duration: 0.0
 						}}
+						Length={50}
 					>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
@@ -59,6 +60,7 @@ export function Index({ staticProps }: any) {
 						onConstruct={(self: any) => {
 							self._Camera = new Experience().World.Camera;
 							self._CamPath = new THREE.CatmullRomCurve3([
+								new THREE.Vector3(-10.1, 9.9, -19.4).normalize(),
 								new THREE.Vector3(-15, 5, -15).normalize(),
 								new THREE.Vector3(-25, 15, 2).normalize(),
 							]);
@@ -70,11 +72,11 @@ export function Index({ staticProps }: any) {
 						}}
 						onLeave={(self: any, direction: number) => {
 							self._Camera.Unfocus();
-							// self._Camera.MoveTo(
-							// 	self._Camera.PerspectiveCamera.position.x,
-							// 	-3,
-							// 	self._Camera.PerspectiveCamera.position.z
-							// );
+							self._Camera.MoveTo(
+								self._Camera.PerspectiveCamera.position.x,
+								-3,
+								self._Camera.PerspectiveCamera.position.z
+							);
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
@@ -82,6 +84,7 @@ export function Index({ staticProps }: any) {
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
 							self._Camera.LookAt(new THREE.Vector3(0, 0, 0), true);
 						}}
+						Length={200}
 					>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression

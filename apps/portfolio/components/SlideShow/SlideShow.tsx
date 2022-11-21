@@ -99,8 +99,8 @@ export default function SlideShow({ children }: ISlideShowProps)
 				{children}
 			</div>
 			{/* Generate X invisible div for scrolling */}
-			{children.map((_child, index) =>
-				<div key={index} id={`InvisibleDiv_${index}`} style={{ width: "100vw", height: "100vh" }} />
+			{children.map((child, index) =>
+				<div key={index} id={`InvisibleDiv_${index}`} style={{ width: "100vw", height: `${child.props.Length || 100}vh` }} />
 			)}
 			{/* We add one more to allow the last one to have a scroll animation */}
 			<div key={children.length} id={`InvisibleDiv_${children.length}`} style={{ width: "100vw", height: "100vh" }} />

@@ -10,6 +10,8 @@ export interface ISlideProps {
 	onScroll?: (self: any, progress: number) => void;
 	onResize?: (self: any, ) => void;
 	LeaveTransition?: gsap.TweenVars;
+	// Scroll size of the slide (in vh)
+	Length?: number;
 }
 
 export default function Slide(props: ISlideProps): JSX.Element
