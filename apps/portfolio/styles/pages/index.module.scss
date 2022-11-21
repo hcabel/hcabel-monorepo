@@ -1,13 +1,28 @@
 @import "Styles/colors.scss";
 @import "Styles/responsive.scss";
 
+.Background {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	background-image: radial-gradient(ellipse at 15% 0%, rgb(95 236 238) 0%, rgb(129 129 242) 100%);
+	z-index: -1000;
+}
+
 .ThreeJsCanvas3D {
 	position: fixed;
 	top: 0;
 	right: 0;
-	width: 50%;
+	width: 60%;
 	height: 100%;
-	background-image: radial-gradient(ellipse at 15% 0%, rgb(95 236 238) 0%, rgb(129 129 242) 100%);
+}
+
+@media (max-width: $breakpoint-tablet) {
+	.ThreeJsCanvas3D {
+		width: 100%;
+	}
 }
 
 .HtmlPageContent {

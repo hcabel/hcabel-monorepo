@@ -18,6 +18,7 @@ export function Index({ staticProps }: any) {
 	return (
 		<section className="Page">
 			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}></canvas>
+			<div className={Style.Background} />
 			<main className={Style.HtmlPageContent} id="HtmlPageContent">
 				<SlideShow>
 					{/* UNREAL VSCODE HELPER */}
@@ -32,7 +33,7 @@ export function Index({ staticProps }: any) {
 						onEnter={(self: any, direction: number) => {
 							const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-							self._Camera.Focus(new THREE.Vector3(0, 0, 0));
+							self._Camera.Focus(new THREE.Vector3(0, 2, 0));
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
@@ -68,13 +69,13 @@ export function Index({ staticProps }: any) {
 						onEnter={(self: any, direction: number) => {
 							const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-							self._Camera.Focus(new THREE.Vector3(0, 0, 0));
+							self._Camera.Focus(new THREE.Vector3(0, 2, 0));
 						}}
 						onLeave={(self: any, direction: number) => {
 							self._Camera.Unfocus();
 							self._Camera.MoveTo(
 								self._Camera.PerspectiveCamera.position.x,
-								-3,
+								-4,
 								self._Camera.PerspectiveCamera.position.z
 							);
 						}}

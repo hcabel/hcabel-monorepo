@@ -48,7 +48,7 @@ class Renderer
 
 	public Resize()
 	{
-		this._WebGLRenderer.setSize(this._Sizes.Width, this._Sizes.Height);
+		this._WebGLRenderer.setSize(this._Sizes.Width, this._Sizes.Height, false);
 		this._WebGLRenderer.setPixelRatio(this._Sizes.PixelRatio);
 	}
 

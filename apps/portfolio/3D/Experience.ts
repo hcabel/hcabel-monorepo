@@ -58,7 +58,7 @@ class Experience extends EventEmitter
 		// Init experience properties
 		this._Canvas = canvas;
 		this._Clock = new Clock();
-		this._Sizes = new Sizes();
+		this._Sizes = new Sizes(this._Canvas);
 		this._Resources = new Resources();
 		this._World = new World();
 
