@@ -120,6 +120,9 @@ class Camera
 
 	public MoveTo(x: number, y: number, z: number, teleport = false)
 	{
+		// if too target to close, teleport
+		teleport = teleport || this._PerspectiveCamera.position.distanceTo(new THREE.Vector3(x, y, z)) < 0.1;
+
 		if (teleport) {
 			this._Position.progress = 1;
 			this._Position.start.set(x, y, z);
