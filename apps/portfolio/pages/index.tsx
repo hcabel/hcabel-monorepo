@@ -27,41 +27,6 @@ export function Index({ staticProps }: any) {
 							self._Camera = new Experience().World.Camera;
 							self._CamPath = new THREE.CatmullRomCurve3([
 								new THREE.Vector3(-7, 15, -25).normalize(),
-								new THREE.Vector3(-10.1, 9.9, -19.4).normalize()
-							]);
-						}}
-						onEnter={(self: any, direction: number) => {
-							const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-							self._Camera.Focus(new THREE.Vector3(0, 2, 0));
-						}}
-						onScroll={(self: any, progress: number) => {
-							// follow path
-							const camPosition = self._CamPath.getPointAt(progress).multiply(new THREE.Vector3(25, 25, 25));
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-						}}
-						LeaveTransition={{
-							duration: 0.0
-						}}
-						Length={50}
-					>
-						<div className={Style.FirstImpressionArea}>
-							<ProjectFirstImpression
-								className={Style.ProjectUVCH}
-								projectName="Unreal VsCode Helper"
-								moreButtonRedirection="/projects/unreal-vscode-helper"
-								staticProps={staticProps.uvch}
-								hideDescription
-								hideStats
-							/>
-						</div>
-					</Slide>
-					{/* UNREAL VSCODE HELPER */}
-					<Slide
-						onConstruct={(self: any) => {
-							self._Camera = new Experience().World.Camera;
-							self._CamPath = new THREE.CatmullRomCurve3([
-								new THREE.Vector3(-10.1, 9.9, -19.4).normalize(),
 								new THREE.Vector3(-15, 5, -15).normalize(),
 								new THREE.Vector3(-25, 15, 2).normalize(),
 							]);
@@ -71,19 +36,10 @@ export function Index({ staticProps }: any) {
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
 							self._Camera.Focus(new THREE.Vector3(0, 2, 0));
 						}}
-						onLeave={(self: any, direction: number) => {
-							self._Camera.Unfocus();
-							self._Camera.MoveTo(
-								self._Camera.PerspectiveCamera.position.x,
-								-4,
-								self._Camera.PerspectiveCamera.position.z
-							);
-						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
 							const camPosition = self._CamPath.getPointAt(progress).multiply(new THREE.Vector3(25, 25, 25));
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-							self._Camera.LookAt(new THREE.Vector3(0, 0, 0), true);
 						}}
 						Length={200}
 					>
