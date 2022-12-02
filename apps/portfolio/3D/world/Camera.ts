@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 
 import Sizes from '3D/utils/Sizes';
-import Control from '3D/world/controls/Controls';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Experience from '3D/Experience';
@@ -30,7 +29,6 @@ class Camera
 
 	// Own properties
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
-	private _Controls: Control;
 	private _Position: ICameraPosition
 		= { start: new THREE.Vector3(0), end: new THREE.Vector3(0), speed: 0.25, progress: 0 };
 	private _Rotation: ICameraRotation
@@ -39,7 +37,7 @@ class Camera
 
 	// Own properties getters
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
-	get Controls(): Control { return this._Controls; }
+	get Position(): THREE.Vector3 { return this._PerspectiveCamera.position; }
 
 	constructor(InScene: THREE.Scene)
 	{
@@ -62,9 +60,6 @@ class Camera
 		this.RotateTo(new THREE.Quaternion(), true);
 		this._Scene.add(this._PerspectiveCamera);
 
-		// Init controls
-		this._Controls = new Control(this);
-
 		// Init OrbitControls
 		// this._OrbitControls = new OrbitControls(this._PerspectiveCamera, document.getElementById('HtmlPageContent'));
 		if (this._OrbitControls) {
@@ -78,10 +73,6 @@ class Camera
 	{
 		this._PerspectiveCamera.aspect = this._Sizes.Aspect;
 		this._PerspectiveCamera.updateProjectionMatrix();
-
-		if (!this._OrbitControls) {
-			this._Controls.Resize();
-		}
 	}
 
 	public Update()
@@ -91,8 +82,6 @@ class Camera
 			console.log(this._PerspectiveCamera.position);
 			return;
 		}
-
-		this._Controls.Update();
 
 		this.UpdatePosition();
 		this.UpdateRotation();
