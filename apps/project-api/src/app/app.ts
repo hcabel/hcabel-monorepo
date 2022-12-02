@@ -1,7 +1,7 @@
 import express from "express";
 import helmet from "helmet";
 
-import RouteTree from "../routes/tree";
+import RouteTree from "./routes/tree";
 import { GenerateRouterFromRoutingTree } from "@hcabel/rest-api-utils";
 
 export function create_app(database: any)

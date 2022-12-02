@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import { IDatabase } from "@hcabel/rest-api-utils";
 
 import * as queries from "./queries";
-import { IQueries } from "@hcabel/types/ProjectApi";
+import { IProjectApiDatabase } from "@hcabel/types/ProjectApi";
 
 function connect()
 {
@@ -25,7 +24,7 @@ function connect()
 	);
 }
 
-const database: IDatabase<IQueries> = {
+const database: IProjectApiDatabase = {
 	connect,
 	queries: queries
 };

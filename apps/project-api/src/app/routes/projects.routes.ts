@@ -1,8 +1,6 @@
 import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { IRouteGetProjectInfos } from "@hcabel/types/ProjectApi";
-
-import * as Queries from "../database/queries";
+import { IProjectApiDatabase, IRouteGetProjectInfos } from "@hcabel/types/ProjectApi";
 
 import { IStatModelArrayToIStats } from "./utils/stats.utils";
 import { IProjectModelArrayToIProjects } from "./utils/project.utils";
@@ -19,8 +17,11 @@ export async function get_project_infos(req: Express.Request): Promise<IRequestR
 		});
 	}
 
+	// get database
+	const db = req.app.get('database') as IProjectApiDatabase;
+
 	// get project
-	const project = await Queries.Project.read_single({
+	const project = await db.queries.Project.read_single({
 		name: projectname
 	});
 	if (!project) {
@@ -31,7 +32,7 @@ export async function get_project_infos(req: Express.Request): Promise<IRequestR
 	}
 
 	// get projects stats
-	const stats = await Queries.Stat.read({
+	const stats = await db.queries.Stat.read({
 		project_id: project._id
 	});
 	if (!stats) {

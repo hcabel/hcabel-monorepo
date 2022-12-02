@@ -11,7 +11,7 @@
         "target": "node",
         "compiler": "tsc",
         "outputPath": "dist/apps/project-api",
-        "main": "apps/project-api/src/main.ts",
+        "main": "apps/project-api/src/server.ts",
         "tsConfig": "apps/project-api/tsconfig.json"
       },
       "configurations": {

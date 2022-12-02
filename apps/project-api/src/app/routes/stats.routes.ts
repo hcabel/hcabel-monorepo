@@ -1,8 +1,13 @@
 import Express from "express";
-import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { IRouteGetAllProjectPlatformStats, IRouteGetProjectStat, IRouteGetProjectStats } from "@hcabel/types/ProjectApi";
 
-import * as Queries from "../database/queries";
+import { IRequestResponse } from "@hcabel/rest-api-utils";
+import {
+	IProjectApiDatabase,
+	IRouteGetAllProjectPlatformStats,
+	IRouteGetProjectStat,
+	IRouteGetProjectStats
+} from "@hcabel/types/ProjectApi";
+
 import { IStatModelArrayToIStats, IStatModelToIStat } from "./utils/stats.utils";
 
 export async function GetAllProjectPlatformStats(req: Express.Request): Promise<IRequestResponse<IRouteGetAllProjectPlatformStats>>
@@ -17,8 +22,11 @@ export async function GetAllProjectPlatformStats(req: Express.Request): Promise<
 		});
 	}
 
+	// Get database
+	const db = req.app.get('database') as IProjectApiDatabase;
+
 	// find project from his name
-	const projects = await Queries.Project.read({
+	const projects = await db.queries.Project.read({
 		name: projectname
 	});
 	if (!projects || projects.length === 0) {
@@ -37,7 +45,7 @@ export async function GetAllProjectPlatformStats(req: Express.Request): Promise<
 	const project = projects[0];
 
 	// find all stats of the project from the platform
-	const platformStats = await Queries.Stat.read({
+	const platformStats = await db.queries.Stat.read({
 		project_id: project._id,
 		platform: platform
 	});
@@ -68,10 +76,11 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 		});
 	}
 
-	// find project from his name
+	// Get database
+	const db = req.app.get('database') as IProjectApiDatabase;
 
 	// find project from his name
-	const projects = await Queries.Project.read({
+	const projects = await db.queries.Project.read({
 		name: projectname
 	});
 	if (!projects || projects.length === 0) {
@@ -90,7 +99,7 @@ export async function GetProjectStat(req: Express.Request): Promise<IRequestResp
 	const project = projects[0];
 
 	// find stat of the project from the platform
-	const stat = await Queries.Stat.read_single({
+	const stat = await db.queries.Stat.read_single({
 		project_id: project._id,
 		platform: platform,
 		"name.en": statname
@@ -120,10 +129,11 @@ export async function GetProjectStats(req: Express.Request): Promise<IRequestRes
 		});
 	}
 
-	// find project from his name
+	// Get database
+	const db = req.app.get('database') as IProjectApiDatabase;
 
 	// find project from his name
-	const projects = await Queries.Project.read({
+	const projects = await db.queries.Project.read({
 		name: projectname
 	});
 	if (!projects || projects.length === 0) {
@@ -142,7 +152,7 @@ export async function GetProjectStats(req: Express.Request): Promise<IRequestRes
 	const project = projects[0];
 
 	// find all stats of the project
-	const stats = await Queries.Stat.read({
+	const stats = await db.queries.Stat.read({
 		project_id: project._id
 	});
 	if (!stats) {

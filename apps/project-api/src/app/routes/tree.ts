@@ -7,7 +7,7 @@ import { GetProjectStats, GetAllProjectPlatformStats, GetProjectStat } from './s
 
 const RouteTree: IRoutingTreeBranch = {
 	__self__: {
-		get: useRoute(() => {
+		get: useRoute(async() => {
 			return ({ status: 200, json: { message: "ProjectApi is running." } });
 		})
 	},

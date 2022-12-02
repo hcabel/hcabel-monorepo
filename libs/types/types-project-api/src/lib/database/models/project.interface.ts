@@ -1,5 +1,5 @@
 import Mongoose, { LeanDocument, Types } from 'mongoose';
-import { II18nText } from '../i18n.interface';
+import { II18nText } from '../../i18n.interface';
 
 // The interface that I want
 export interface IProjectSchema {
