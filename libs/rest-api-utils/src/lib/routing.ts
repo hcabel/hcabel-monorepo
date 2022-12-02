@@ -25,7 +25,12 @@ export function useRoute(callee: RequestHandler): Express.RequestHandler
 	return async(req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
 		try {
 			const result = await callee(req);
-			res.status(result.status).json(result.json);
+			if (!result.json) {
+				res.sendStatus(result.status);
+			}
+			else {
+				res.status(result.status).json(result.json);
+			}
 			next();
 		}
 		catch (err) {
