@@ -13,7 +13,8 @@
   "parserOptions": {
     "project": [
       "(../.)?./tsconfig.base.json",
-      "./tsconfig.*?.json"
+      "tsconfig.json",
+      "tsconfig.spec.json"
     ],
     "ecmaFeatures": {
       "jsx": true
