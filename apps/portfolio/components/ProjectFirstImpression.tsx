@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import Style from 'Styles/components/ProjectFirstImpression.module.scss';
 
-import { IRouteGetProjectInfos, Locales } from '@hcabel/types/ProjectApi';
+import { IRouteGetProjectById, Locales } from '@hcabel/types/ProjectApi';
 
 import GithubStats from 'Components/ProjectStats/GithubStats';
 import VsCodeStats from 'Components/ProjectStats/VsCodeStats';
@@ -16,11 +16,10 @@ export interface IProjectFirstImpressionProps {
 	style?: React.CSSProperties;
 	children?: React.ReactElement[] | React.ReactElement;
 
-	projectName: string;
 	moreButtonRedirection?: string;
 	moreTextOverride?: string;
 
-	staticProps: IRouteGetProjectInfos;
+	staticProps: IRouteGetProjectById;
 
 	hideDescription?: boolean;
 	hideStats?: boolean;
@@ -28,18 +27,18 @@ export interface IProjectFirstImpressionProps {
 
 export default function ProjectFirstImpression(props: IProjectFirstImpressionProps)
 {
-	const [_Project] = useState<IRouteGetProjectInfos>(props.staticProps);
+	const [_Project] = useState<IRouteGetProjectById>(props.staticProps);
 
 	const { locale } = useRouter();
 
 	return (
 		<article id={props.id || ""} className={`${Style.ProjectFirstImpression} ${props.className || ""}`} style={props.style || {}}>
 			<div>
-				<h1 className={Style.ProjectName} data-cy={`Project-${props.projectName}-Title`}>
+				<h1 className={Style.ProjectName} data-cy={`Project-${props.staticProps.name}-Title`}>
 					{_Project.name}
 				</h1>
 				{!props.hideDescription &&
-					<h3 className={Style.ProjectDescription} data-cy={`Project-${props.projectName}-Description`}>
+					<h3 className={Style.ProjectDescription} data-cy={`Project-${props.staticProps.name}-Description`}>
 						{_Project.description[locale as Locales]}
 					</h3>
 				}

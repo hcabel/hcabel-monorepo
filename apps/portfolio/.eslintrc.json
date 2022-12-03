@@ -6,6 +6,7 @@
     "../../.eslintrc.json"
   ],
   "rules": {
-    "@next/next/no-html-link-for-pages": ["error"]
+    "@next/next/no-html-link-for-pages": ["error"],
+    "dot-notation": "off"
   }
 }

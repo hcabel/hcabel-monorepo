@@ -6,7 +6,7 @@ import Style from 'Styles/pages/index.module.scss';
 
 import Experience from '3D/Experience';
 import ProjectFirstImpression from 'Components/ProjectFirstImpression';
-import { IRouteGetProjectInfos } from '@hcabel/types/ProjectApi';
+import { IRouteGetAllProjects, IRouteGetProjectById } from '@hcabel/types/ProjectApi';
 import SlideShow from 'Components/SlideShow/SlideShow';
 import Slide from 'Components/SlideShow/Slide';
 
@@ -45,10 +45,9 @@ export function Index({ staticProps }: any) {
 					>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
+								staticProps={staticProps["Unreal VsCode Helper"]}
 								className={Style.ProjectUVCH}
-								projectName="Unreal VsCode Helper"
 								moreButtonRedirection="/projects/unreal-vscode-helper"
-								staticProps={staticProps.uvch}
 							/>
 						</div>
 					</Slide>
@@ -56,11 +55,10 @@ export function Index({ staticProps }: any) {
 					<Slide>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
+								staticProps={staticProps["HugoMeet"]}
 								className={Style.ProjectHugoMeet}
-								projectName="HugoMeet"
 								moreButtonRedirection={"/projects/hugomeet"}
 								moreTextOverride="Explore HugoMeet"
-								staticProps={staticProps.hugomeet}
 							/>
 						</div>
 					</Slide>
@@ -68,9 +66,8 @@ export function Index({ staticProps }: any) {
 					<Slide>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
+								staticProps={staticProps["Procedural Terrain"]}
 								className={Style.ProjectProceduralTerrain}
-								projectName="Procedural Terrain"
-								staticProps={staticProps.procedural_terrain}
 							/>
 						</div>
 					</Slide>
@@ -82,11 +79,16 @@ export function Index({ staticProps }: any) {
 
 export async function getStaticProps()
 {
+	// Get all projects
+	const projects: IRouteGetAllProjects = await fetch(`${process.env.NX_PROJECT_API_ENDPOINT}/projects`)
+		.then((res) => res.json());
+
+	// Create promise that will fetch all the project in parallel
 	const staticProps = await new Promise<any>((resolve, reject) => {
 		const staticData: any = {};
 		let asyncRequest = 0;
 
-		function MakeAsyncRequest(url: string, key: string)
+		function MakeAsyncRequest(url: string)
 		{
 			asyncRequest += 1;
 			return (
@@ -102,20 +104,21 @@ export async function getStaticProps()
 						}
 						return (data);
 					})
-					.then((data: IRouteGetProjectInfos) => {
-						staticData[key] = data;
+					.then((project: IRouteGetProjectById) => {
+						staticData[project.name] = project;
 
 						asyncRequest--;
 						if (asyncRequest === 0) {
 							resolve(staticData);
 						}
 					})
+					.catch(reject)
 			);
 		}
 
-		MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/Unreal VsCode Helper`, "uvch");
-		MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/HugoMeet`, "hugomeet");
-		MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/Procedural Terrain`, "procedural_terrain");
+		for (const project of projects) {
+			MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/projects/${project._id}`);
+		}
 	});
 
 	return {
