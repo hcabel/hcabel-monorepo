@@ -1,7 +1,7 @@
 import Express from 'express';
 
 export interface IRequestError {
-	message: string;
+	error: string;
 }
 
 export interface IRequestResponse<T> {

@@ -1,6 +1,6 @@
 import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { IProjectApiDatabase, IRouteGetAllProjects } from "@hcabel/types/ProjectApi";
+import { IProjectApiDatabase, IRouteGetAllProjects, IRouteGetProjectById } from "@hcabel/types/ProjectApi";
 import { Types } from "mongoose";
 import { IStatModelArrayToIStats } from "./utils/stats.utils";
 
@@ -37,7 +37,7 @@ export async function get_all_projects(req: Express.Request): Promise<IRequestRe
 	});
 }
 
-export async function get_project_by_id(req: Express.Request): Promise<IRequestResponse<any>>
+export async function get_project_by_id(req: Express.Request): Promise<IRequestResponse<IRouteGetProjectById>>
 {
 
 	// check inputs
@@ -82,6 +82,7 @@ export async function get_project_by_id(req: Express.Request): Promise<IRequestR
 		status: 200,
 		json: {
 			...project,
+			_id: project._id.toString(),
 			stats: IStatModelArrayToIStats(stats)
 		}
 	});
