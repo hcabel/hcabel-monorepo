@@ -10,7 +10,11 @@ export interface IProjectSchema {
 // The interface that is return by the queries
 export type IProjectDocument = IProjectSchema & Mongoose.Document<Types.ObjectId>;
 // The interface that is stored in the database
-export type IProjectModel = LeanDocument<IProjectDocument>;
+export interface IProjectModel extends Omit<LeanDocument<IProjectDocument>, "id" | "_id"> {
+	_id: Types.ObjectId
+}
 
 // Interface when the api is returning a single project
-export type IProject = IProjectSchema;
+export interface IProject extends Omit<IProjectModel, "__v" |"_id"> {
+	_id: string
+}

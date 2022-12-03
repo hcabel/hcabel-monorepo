@@ -13,10 +13,14 @@ export interface IStatSchema {
 // The interface that is return by the queries
 export type IStatDocument = IStatSchema & Mongoose.Document<Types.ObjectId>;
 // The interface that is stored in the database
-export type IStatModel = LeanDocument<IStatDocument>;
+export interface IStatModel extends Omit<LeanDocument<IStatDocument>, "id" | "_id"> {
+	_id: Types.ObjectId
+}
 
 // Interface when the api is returning a single stat
-export type IStat = Omit<IStatSchema, "project_id" | "platform">;
+export interface IStat extends Omit<IStatModel, "__v" | "project_id" | "platform" | "_id"> {
+	_id: string,
+}
 
 // Interface when the api is returning multiple stats
 export interface IStats {

@@ -8,7 +8,10 @@ import { IStat, IStatModel, IStats } from "@hcabel/types/ProjectApi";
 export function IStatModelToIStat(stat: IStatModel): IStat {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { _id, __v, project_id, platform, ...statInfos } = stat;
-	return (statInfos);
+	return ({
+		...statInfos,
+		_id: _id?.toString() || "",
+	});
 }
 
 /**
