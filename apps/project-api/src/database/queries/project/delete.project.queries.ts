@@ -1,15 +1,15 @@
-import { IProjectSchema } from "@hcabel/types/ProjectApi";
+import { IProjectModel } from "@hcabel/types/ProjectApi";
 import { Project } from "../../models";
 
 /**
  * Delete a project
- * @param {IProjectSchema} filter the data needed to find the project to delete
+ * @param {Partial<IProjectModel>} filter the data needed to find the project to delete
  * @returns {boolean | null}
  * - true if the project was deleted
  * - false if the project was not deleted
  * - null if the query failed
  */
-export function delete_one(filter: IProjectSchema): Promise<boolean | null>
+export function delete_one(filter: Partial<IProjectModel>): Promise<boolean | null>
 {
 	return (
 		Project.table

@@ -7,10 +7,10 @@ import { IDatabase } from "@hcabel/rest-api-utils";
 export interface IProjectApiQueries {
 	Project: {
 		create(data: IProjectSchema): Promise<IProjectDocument | null>,
-		delete_one(filter: IProjectSchema): Promise<boolean | null>,
-		read(filter: Partial<IProjectSchema>): Promise<IProjectModel[] | null>,
-		read_single(filter: Partial<IProjectSchema>): Promise<IProjectModel | null>
-		update_one(filter: Partial<IProjectSchema>, set: Partial<IProjectSchema>): Promise<IProjectModel | null>
+		delete_one(filter: Partial<IProjectModel>): Promise<boolean | null>,
+		read(filter: Partial<IProjectModel>): Promise<IProjectModel[] | null>,
+		read_single(filter: Partial<IProjectModel>): Promise<IProjectModel | null>
+		update_one(filter: Partial<IProjectModel>, set: Partial<IProjectSchema>): Promise<IProjectModel | null>
 	},
 	Stat: {
 		create(data: IStatSchema): Promise<IStatDocument | null>,

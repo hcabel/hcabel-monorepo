@@ -1,15 +1,15 @@
-import { IStatSchema } from "@hcabel/types/ProjectApi";
+import { IStatModel } from "@hcabel/types/ProjectApi";
 import { Stat } from "../../models";
 
 /**
  * Delete a stat
- * @param {IStatSchema} filter the data needed to find the stat to delete
+ * @param {IStatModel} filter the data needed to find the stat to delete
  * @returns {boolean | null}
  * - true if the stat was deleted
  * - false if the stat was not deleted
  * - null if the query failed
  */
-export function delete_one(filter: IStatSchema): Promise<boolean | null>
+export function delete_one(filter: IStatModel): Promise<boolean | null>
 {
 	return (
 		Stat.table
