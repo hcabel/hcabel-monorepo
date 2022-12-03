@@ -31,12 +31,12 @@ export function useRoute(callee: RequestHandler): Express.RequestHandler
 			else {
 				res.status(result.status).json(result.json);
 			}
-			next();
 		}
 		catch (err) {
 			console.error(`${req.method} ${req.path} failed: ${err}`);
 			res.status(500).json({ error: "Internal server error" });
 		}
+		next();
 	};
 }
 
