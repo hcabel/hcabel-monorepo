@@ -48,8 +48,9 @@ export function Index({ staticProps }: any) {
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
-							const camPosition = self._CamPath.getPointAt(progress).multiply(new THREE.Vector3(25, 25, 25));
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
+						}}
+						onLeave={(self: any, direction: number) => {
+							self._Camera.Unfocus();
 						}}
 						Length={200}
 					>
