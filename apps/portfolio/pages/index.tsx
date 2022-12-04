@@ -24,6 +24,8 @@ export function Index({ staticProps }: any) {
 					{/* UNREAL VSCODE HELPER */}
 					<Slide
 						onConstruct={(self: any) => {
+							self._ScenePosition = new THREE.Vector3(0, 2, 0);
+
 							self._Camera = new Experience().World.Camera;
 							self._CamPath = new THREE.CatmullRomCurve3([
 								new THREE.Vector3(-7, 15, -25).normalize(),
@@ -32,9 +34,17 @@ export function Index({ staticProps }: any) {
 							]);
 						}}
 						onEnter={(self: any, direction: number) => {
-							const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
-							self._Camera.Focus(new THREE.Vector3(0, 2, 0));
+							if (direction === 1 /* Top to bottom */) {
+								// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
+								const camPosition = self._CamPath.getPointAt(1).multiply(new THREE.Vector3(25, 25, 25));
+								self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+								self._Camera.Focus(self._ScenePosition, true);
+							}
+							else {
+								const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
+								self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, false, 0.005);
+								self._Camera.Focus(self._ScenePosition, false, 0.005);
+							}
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
