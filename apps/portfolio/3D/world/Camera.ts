@@ -30,10 +30,11 @@ class Camera
 	// Own properties
 	private _PerspectiveCamera: THREE.PerspectiveCamera;
 	private _Position: ICameraPosition
-		= { start: new THREE.Vector3(0), end: new THREE.Vector3(0), speed: 0.25, progress: 0 };
+		= { start: new THREE.Vector3(0), end: new THREE.Vector3(0), speed: 0.05, progress: 0 };
 	private _Rotation: ICameraRotation
 		= { start: new THREE.Quaternion(0), end: new THREE.Quaternion(0), speed: 0.05, progress: 0, isFocus: false, focusPoint: new THREE.Vector3(0) };
 	private _OrbitControls: OrbitControls | undefined;
+	private _IsInAnimation: boolean = false;
 
 	// Own properties getters
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
@@ -85,6 +86,47 @@ class Camera
 
 		this.UpdatePosition();
 		this.UpdateRotation();
+
+		if (this._IsInAnimation && this._Position.progress >= 1 && this._Rotation.progress >= 1) {
+			this._IsInAnimation = false;
+		}
+	}
+
+	/* ANIMATION *************************************************************/
+
+	public CancelAnimation()
+	{
+		this._IsInAnimation = false;
+		this._Position.progress = 1;
+		this._Rotation.progress = 1;
+		this._Rotation.isFocus = false;
+	}
+
+	public AnimatesTo(InPosition: THREE.Vector3, InRotation: THREE.Quaternion, speed = 0.05)
+	{
+		this._IsInAnimation = true;
+
+		this._Position.start.copy(this._PerspectiveCamera.position);
+		this._Position.end.copy(InPosition);
+		this._Position.progress = 0;
+		this._Position.speed = speed;
+
+		this._Rotation.start.copy(this._PerspectiveCamera.quaternion);
+		this._Rotation.end.copy(InRotation);
+		this._Rotation.progress = 0;
+		this._Rotation.speed = speed;
+	}
+
+	public AnimatesToFocalPoint(InPosition: THREE.Vector3, InFocusPoint: THREE.Vector3, speed = 0.05)
+	{
+		this._Position.start.copy(this._PerspectiveCamera.position);
+		this._Position.end.copy(InPosition);
+		this._Position.progress = 0;
+		this._Position.speed = speed;
+
+		this.Focus(InFocusPoint, false, speed);
+
+		this._IsInAnimation = true;
 	}
 
 	/* LOCATION **************************************************************/
@@ -103,8 +145,15 @@ class Camera
 		}
 	}
 
-	public MoveTo(x: number, y: number, z: number, teleport = false, speed = 0.25)
+	public MoveTo(x: number, y: number, z: number, teleport = false, speed = 0.05)
 	{
+		if (this._IsInAnimation) {
+			if (!teleport) {
+				this._Position.end.set(x, y, z);
+			}
+			return;
+		}
+
 		// if too target to close, teleport
 		teleport = teleport || this._PerspectiveCamera.position.distanceTo(new THREE.Vector3(x, y, z)) < 0.1;
 
@@ -124,11 +173,19 @@ class Camera
 
 	public MoveToVector3(pos: THREE.Vector3, teleport = false)
 	{
+		if (this._IsInAnimation) {
+			return;
+		}
+
 		this.MoveTo(pos.x, pos.y, pos.z, teleport);
 	}
 
 	public OffsetPosition(x: number, y = 0, z = 0, teleport = false)
 	{
+		if (this._IsInAnimation) {
+			return;
+		}
+
 		this.MoveTo(
 			this._PerspectiveCamera.position.x + x,
 			this._PerspectiveCamera.position.y + y,
@@ -181,11 +238,19 @@ class Camera
 
 	public Unfocus()
 	{
+		if (this._IsInAnimation) {
+			return;
+		}
+
 		this._Rotation.isFocus = false;
 	}
 
 	public Focus(focusPoint: THREE.Vector3, teleport = false, speed = 0.05)
 	{
+		if (this._IsInAnimation) {
+			return;
+		}
+
 		this._Rotation.isFocus = true;
 		this._Rotation.focusPoint = focusPoint;
 		this._Rotation.progress = teleport ? 1 : 0;
@@ -195,6 +260,10 @@ class Camera
 
 	public RotateTo(rot: THREE.Quaternion, teleport = false, speed = 0.05)
 	{
+		if (this._IsInAnimation) {
+			return;
+		}
+
 		if (teleport) {
 			this._Rotation.progress = 1;
 			this._Rotation.start.copy(rot);
@@ -211,6 +280,10 @@ class Camera
 
 	public LookAt(target: THREE.Vector3, teleport = false)
 	{
+		if (this._IsInAnimation) {
+			return;
+		}
+
 		const rot = new THREE.Euler();
 		rot.setFromRotationMatrix(
 			new THREE.Matrix4()
