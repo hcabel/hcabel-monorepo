@@ -15,6 +15,8 @@ export function Index({ staticProps }: any) {
 		new Experience(document.getElementById("Canvas3D") as HTMLCanvasElement);
 	}, []);
 
+	const slideTransitionSpeed = 0.025;
+
 	return (
 		<section className="Page">
 			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}></canvas>
@@ -28,31 +30,44 @@ export function Index({ staticProps }: any) {
 
 							self._Camera = new Experience().World.Camera;
 							self._CamPath = new THREE.CatmullRomCurve3([
-								new THREE.Vector3(-7, 15, -25).normalize(),
-								new THREE.Vector3(-15, 5, -15).normalize(),
-								new THREE.Vector3(-25, 15, 2).normalize(),
+								new THREE.Vector3(-0.25, 0.5, -0.825),
+								new THREE.Vector3(-0.675, 0.225, -0.675),
+								new THREE.Vector3(-0.825, 0.5, 0),
 							]);
+							// Distance from the middle of the scene
+							self._PathDistance = new THREE.Vector3(25, 25, 25);
 						}}
 						onEnter={(self: any, direction: number) => {
 							if (direction === 1 /* Top to bottom */) {
 								// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
-								const camPosition = self._CamPath.getPointAt(1).multiply(new THREE.Vector3(25, 25, 25));
+								const camPosition = self._CamPath.getPointAt(0)
+									.multiply(self._PathDistance)
+									.add(self._ScenePosition);
 								self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 								self._Camera.Focus(self._ScenePosition, true);
 							}
 							else {
-								const camPosition = self._CamPath.getPointAt(direction === -1 ? 1 : 0).multiply(new THREE.Vector3(25, 25, 25));
-								self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, false, 0.005);
-								self._Camera.Focus(self._ScenePosition, false, 0.005);
+								const camPosition = self._CamPath.getPointAt(1)
+									.multiply(self._PathDistance)
+									.add(self._ScenePosition);
+								self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
 							}
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
+							const camPosition = self._CamPath.getPointAt(progress)
+								.multiply(self._PathDistance)
+								.add(self._ScenePosition);
+							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
 						}}
 						onLeave={(self: any, direction: number) => {
+							self._Camera.CancelAnimation();
 							self._Camera.Unfocus();
 						}}
 						Length={200}
+						LeaveTransition={{
+							duration: 0.75,
+						}}
 					>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
