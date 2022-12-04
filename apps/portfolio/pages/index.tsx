@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import * as THREE from 'three';
 
@@ -11,6 +11,31 @@ import SlideShow from 'Components/SlideShow/SlideShow';
 import Slide from 'Components/SlideShow/Slide';
 
 export function Index({ staticProps }: any) {
+	const _BackgroundRef = useRef<HTMLDivElement>(null);
+
+	// Hide all the background exect the one with the class that we specified
+	function	UpdateBackground(className: string)
+	{
+		const backgroundChild = _BackgroundRef.current?.children;
+		if (!backgroundChild) {
+			return;
+		}
+
+		// Change opcatity of all background children to 0 unless there is implementing className
+		for (let i = 0; i < backgroundChild.length; i++) {
+			if (backgroundChild[i].classList.contains(className)) {
+				// set opactiy to 1
+				backgroundChild[i].classList.remove(Style.Opacity_Hidden);
+				backgroundChild[i].classList.add(Style.Opacity_Visible);
+			} else {
+				// set opactiy to 0
+				backgroundChild[i].classList.add(Style.Opacity_Hidden);
+				backgroundChild[i].classList.remove(Style.Opacity_Visible);
+			}
+		}
+
+	}
+
 	useEffect(() => {
 		new Experience(document.getElementById("Canvas3D") as HTMLCanvasElement);
 	}, []);
@@ -20,8 +45,11 @@ export function Index({ staticProps }: any) {
 	return (
 		<section className="Page">
 			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}></canvas>
-			<div className={Style.Background} />
-			<main className={Style.HtmlPageContent} id="HtmlPageContent">
+			<div className={Style.Background} ref={_BackgroundRef}>
+				<div className={`${Style.Background_Ocean} ${Style.Background}`} />
+				<div className={`${Style.Background_Peach} ${Style.Background}`} />
+			</div>
+			<main className={Style.HtmlPageContent} id="HtmlPageContent" >
 				<SlideShow>
 					{/* UNREAL VSCODE HELPER */}
 					<Slide
@@ -38,6 +66,8 @@ export function Index({ staticProps }: any) {
 							self._PathDistance = new THREE.Vector3(25, 25, 25);
 						}}
 						onEnter={(self: any, direction: number) => {
+							UpdateBackground(Style.Background_Ocean);
+
 							if (direction === 1 /* Top to bottom */) {
 								// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
 								const camPosition = self._CamPath.getPointAt(0)
@@ -92,6 +122,8 @@ export function Index({ staticProps }: any) {
 							self._PathDistance = new THREE.Vector3(25, 25, 25);
 						}}
 						onEnter={(self: any, direction: number) => {
+							UpdateBackground(Style.Background_Peach);
+
 							// Get either the start or the end of the path depending on the direction where the scroll is from
 							const camPosition = self._CamPath
 								.getPointAt(direction === -1 ? 1 : 0)
