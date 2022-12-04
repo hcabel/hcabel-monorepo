@@ -32,7 +32,7 @@ class Camera
 	private _Position: ICameraPosition
 		= { start: new THREE.Vector3(0), end: new THREE.Vector3(0), speed: 0.25, progress: 0 };
 	private _Rotation: ICameraRotation
-		= { start: new THREE.Quaternion(0), end: new THREE.Quaternion(0), speed: 0.25, progress: 0, isFocus: false, focusPoint: new THREE.Vector3(0) };
+		= { start: new THREE.Quaternion(0), end: new THREE.Quaternion(0), speed: 0.05, progress: 0, isFocus: false, focusPoint: new THREE.Vector3(0) };
 	private _OrbitControls: OrbitControls | undefined;
 
 	// Own properties getters
@@ -100,14 +100,10 @@ class Camera
 				this._Position.start,
 				this._Position.end,
 				this._Position.progress);
-
-			// if (this._Position.progress >= 1) {
-			// 	console.log('Camera position lerp done', this._PerspectiveCamera.position);
-			// }
 		}
 	}
 
-	public MoveTo(x: number, y: number, z: number, teleport = false)
+	public MoveTo(x: number, y: number, z: number, teleport = false, speed = 0.25)
 	{
 		// if too target to close, teleport
 		teleport = teleport || this._PerspectiveCamera.position.distanceTo(new THREE.Vector3(x, y, z)) < 0.1;
@@ -119,6 +115,7 @@ class Camera
 			this._PerspectiveCamera.position.set(x, y, z);
 		}
 		else {
+			this._Position.speed = speed;
 			this._Position.progress = 0;
 			this._Position.start.copy(this._PerspectiveCamera.position);
 			this._Position.end.set(x, y, z);
@@ -144,7 +141,31 @@ class Camera
 	private	UpdateRotation()
 	{
 		if (this._Rotation.isFocus) {
-			this._PerspectiveCamera.lookAt(this._Rotation.focusPoint);
+			// When focusing were animating the rotation until the camera reach the focus point
+			if (this._Rotation.progress >= 1) {
+				this._PerspectiveCamera.lookAt(this._Rotation.focusPoint);
+			}
+			else {
+				// Update progress
+				this._Rotation.progress += this._Rotation.speed;
+
+				// Find end rotation to look at focus point without rolling
+				// Were doing it every time in case the camera is moving
+				this._Rotation.end = new THREE.Quaternion()
+					.setFromRotationMatrix(
+						new THREE.Matrix4().lookAt(
+							this._PerspectiveCamera.position,
+							this._Rotation.focusPoint,
+							new THREE.Vector3(0, 1, 0)
+						)
+					);
+
+				// lerp between start and end
+				this._PerspectiveCamera.quaternion.slerpQuaternions(
+					this._Rotation.start,
+					this._Rotation.end,
+					this._Rotation.progress);
+			}
 		}
 		else if (this._Rotation.progress < 1) {
 			// Update progress
@@ -155,14 +176,6 @@ class Camera
 				this._Rotation.start,
 				this._Rotation.end,
 				this._Rotation.progress);
-
-			if (this._Rotation.progress >= 1) {
-				console.log('Camera rotation lerp done',
-					this._PerspectiveCamera.quaternion.x * 100,
-					this._PerspectiveCamera.quaternion.y * 100,
-					this._PerspectiveCamera.quaternion.z * 100,
-					this._PerspectiveCamera.quaternion.w * 100);
-			}
 		}
 	}
 
@@ -171,13 +184,16 @@ class Camera
 		this._Rotation.isFocus = false;
 	}
 
-	public Focus(focusPoint: THREE.Vector3)
+	public Focus(focusPoint: THREE.Vector3, teleport = false, speed = 0.05)
 	{
 		this._Rotation.isFocus = true;
 		this._Rotation.focusPoint = focusPoint;
+		this._Rotation.progress = teleport ? 1 : 0;
+		this._Rotation.start = this._PerspectiveCamera.quaternion.clone();
+		this._Rotation.speed = speed;
 	}
 
-	public RotateTo(rot: THREE.Quaternion, teleport = false)
+	public RotateTo(rot: THREE.Quaternion, teleport = false, speed = 0.05)
 	{
 		if (teleport) {
 			this._Rotation.progress = 1;
@@ -186,6 +202,7 @@ class Camera
 			this._PerspectiveCamera.quaternion.copy(rot);
 		}
 		else {
+			this._Rotation.speed = speed;
 			this._Rotation.progress = 0;
 			this._Rotation.start.copy(this._PerspectiveCamera.quaternion);
 			this._Rotation.end.copy(rot);
