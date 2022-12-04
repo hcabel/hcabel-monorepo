@@ -125,14 +125,14 @@ export function Index({ staticProps }: any) {
 						</div>
 					</Slide>
 					{/* PROCEDURAL TERRAIN */}
-					<Slide>
+					{/* <Slide>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
 								staticProps={staticProps["Procedural Terrain"]}
 								className={Style.ProjectProceduralTerrain}
 							/>
 						</div>
-					</Slide>
+					</Slide> */}
 				</SlideShow>
 			</main>
 		</section>

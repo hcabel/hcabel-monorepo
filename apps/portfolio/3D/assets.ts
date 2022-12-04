@@ -5,11 +5,11 @@ export interface IAsset {
 
 const assetsList = {
 	scene: {
-		path: 'models/scene.glb',
+		path: 'SM_scene.glb',
 		type: 'gltf',
 	},
 	uvchBackedTexture: {
-		path: 'images/UVCH_BakedTexture_B.png',
+		path: 'T_Scene.png',
 		type: 'texture',
 	}
 };
