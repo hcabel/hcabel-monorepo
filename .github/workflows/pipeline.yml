@@ -24,7 +24,7 @@ jobs:
         # if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
-        run: pnpm install -w nx --frozen-lockfile
+        run: pnpm install -w nx
 
   lint:
     runs-on: ubuntu-latest
