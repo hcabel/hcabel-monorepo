@@ -11,18 +11,18 @@ const mockDatabase: IDatabase<Nested<any>> = {
 	connect: jest.fn(async() => true),
 	queries: {
 		Project: {
-			create: jest.fn(() => {}),
+			create: jest.fn(() => generate_random_project()),
 			delete_one: jest.fn(() => true),
 			read: jest.fn(() => []),
-			read_single: jest.fn(() => {}),
-			update_one: jest.fn(() => {}),
+			read_single: jest.fn(() => generate_random_project()),
+			update_one: jest.fn(() => generate_random_project()),
 		},
 		Stat: {
-			create: jest.fn(() => {}),
+			create: jest.fn(() => generate_random_stat()),
 			delete_one: jest.fn(() => true),
 			read: jest.fn(() => []),
-			read_single: jest.fn(() => {}),
-			update_one: jest.fn(() => {}),
+			read_single: jest.fn(() => generate_random_stat()),
+			update_one: jest.fn(() => generate_random_stat()),
 		}
 	}
 };
@@ -97,7 +97,7 @@ describe('Projects', () => {
 			// Setup mocks for working test
 			mockDatabase.queries.Project.read_single
 				.mockReset()
-				.mockResolvedValueOnce({});
+				.mockResolvedValueOnce(generate_random_project());
 			mockDatabase.queries.Stat.read
 				.mockReset()
 				.mockResolvedValueOnce([]);
