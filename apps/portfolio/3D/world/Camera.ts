@@ -148,9 +148,7 @@ class Camera
 	public MoveTo(x: number, y: number, z: number, teleport = false, speed = 0.05)
 	{
 		if (this._IsInAnimation) {
-			if (!teleport) {
-				this._Position.end.set(x, y, z);
-			}
+			this._Position.end.set(x, y, z);
 			return;
 		}
 
