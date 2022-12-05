@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Cache node modules
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      # - name: Cache node modules
+      #   id: cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: node_modules
+      #     key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
       - name: install pnpm
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: npm install -g pnpm
       - name: pnpm install deps
-        if: steps.cache.outputs.cache-hit != 'true'
+        # if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
         run: pnpm install -w nx --frozen-lockfile
@@ -31,8 +31,8 @@ jobs:
     needs: install-deps
     steps:
       - uses: actions/checkout@v3
-      - name: Cache node modules
-        uses: actions/cache@v3
+      # - name: Cache node modules
+      #   uses: actions/cache@v3
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
@@ -43,8 +43,8 @@ jobs:
     needs: install-deps
     steps:
       - uses: actions/checkout@v3
-      - name: Cache node modules
-        uses: actions/cache@v3
+      # - name: Cache node modules
+      #   uses: actions/cache@v3
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
@@ -55,8 +55,8 @@ jobs:
     needs: install-deps
     steps:
       - uses: actions/checkout@v3
-      - name: Cache node modules
-        uses: actions/cache@v3
+      # - name: Cache node modules
+      #   uses: actions/cache@v3
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
