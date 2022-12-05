@@ -11,19 +11,25 @@
 }
 
 .Background_Ocean {
-	background-image: radial-gradient(ellipse at 15% 0%, rgb(129 129 242) 0%, rgb(95 236 238) 100%);
+	background-image: radial-gradient(ellipse at 15% 0%,
+		#5fecee 0%,
+		#8181f2 100%);
 	-webkit-transition: opacity 0.75s;
 	transition: opacity 0.75s;
 }
 
 .Background_Peach {
-	background-image: radial-gradient(ellipse at 15% 0%, #ffea9f 0%, #ffafb7 100%);
+	background-image: radial-gradient(ellipse at 15% 0%,
+		#ffafb7 0%,
+		#ffea9f 100%);
 	-webkit-transition: opacity 0.75s;
 	transition: opacity 0.75s;
 }
 
 .Background_SunToOcean {
-	background-image: radial-gradient(ellipse at 15% 0%, #F18271 0%,#CC6B8E 33%, #3F51B1 99%);
+	background-image: radial-gradient(ellipse at 15% 0%,
+		#96e083 0%,
+		#5cd5db 100%);
 	-webkit-transition: opacity 0.75s;
 	transition: opacity 0.75s;
 }

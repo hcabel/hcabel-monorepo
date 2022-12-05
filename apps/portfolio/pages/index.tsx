@@ -166,11 +166,11 @@ export function Index({ staticProps }: any) {
 							self._ScenePosition = new THREE.Vector3(0, -75, 0);
 							// The path to follow, only represente direction not the actual position
 							self._CamPath = new THREE.CatmullRomCurve3([
-								new THREE.Vector3(1, 1, 1),
-								new THREE.Vector3(-1, 1, 1),
 								new THREE.Vector3(-1, 1, -1),
 								new THREE.Vector3(1, 1, -1),
 								new THREE.Vector3(1, 1, 1),
+								new THREE.Vector3(-1, 1, 1),
+								new THREE.Vector3(-1, 1, -1),
 							]);
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
