@@ -113,7 +113,7 @@ export function Index({ staticProps }: any) {
 						onConstruct={(self: any) => {
 							self._Camera = new Experience().World.Camera;
 
-							self._ScenePosition = new THREE.Vector3(0, -35, 0);
+							self._ScenePosition = new THREE.Vector3(0, -33, 0);
 							// The path to follow, only represente direction not the actual position
 							self._CamPath = new THREE.CatmullRomCurve3([
 								new THREE.Vector3(-1, 1, -0.75),
@@ -163,15 +163,14 @@ export function Index({ staticProps }: any) {
 						onConstruct={(self: any) => {
 							self._Camera = new Experience().World.Camera;
 
-							self._ScenePosition = new THREE.Vector3(0, -70, 0);
+							self._ScenePosition = new THREE.Vector3(0, -75, 0);
 							// The path to follow, only represente direction not the actual position
 							self._CamPath = new THREE.CatmullRomCurve3([
 								new THREE.Vector3(1, 1, 1),
-								new THREE.Vector3(-1, 0.8, 1),
-								new THREE.Vector3(-1, 0.6, -1),
-								new THREE.Vector3(1, 0.4, -1),
-								new THREE.Vector3(1, 0.2, 1),
-								new THREE.Vector3(-1, 0, 1)
+								new THREE.Vector3(-1, 1, 1),
+								new THREE.Vector3(-1, 1, -1),
+								new THREE.Vector3(1, 1, -1),
+								new THREE.Vector3(1, 1, 1),
 							]);
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
