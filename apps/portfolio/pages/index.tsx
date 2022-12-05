@@ -48,6 +48,7 @@ export function Index({ staticProps }: any) {
 			<div className={Style.Background} ref={_BackgroundRef}>
 				<div className={`${Style.Background_Ocean} ${Style.Background}`} />
 				<div className={`${Style.Background_Peach} ${Style.Background}`} />
+				<div className={`${Style.Background_SunToOcean} ${Style.Background}`} />
 			</div>
 			<main className={Style.HtmlPageContent} id="HtmlPageContent" >
 				<SlideShow>
@@ -158,14 +159,54 @@ export function Index({ staticProps }: any) {
 						</div>
 					</Slide>
 					{/* PROCEDURAL TERRAIN */}
-					{/* <Slide>
+					<Slide
+						onConstruct={(self: any) => {
+							self._Camera = new Experience().World.Camera;
+
+							self._ScenePosition = new THREE.Vector3(0, -70, 0);
+							// The path to follow, only represente direction not the actual position
+							self._CamPath = new THREE.CatmullRomCurve3([
+								new THREE.Vector3(1, 1, 1),
+								new THREE.Vector3(-1, 0.8, 1),
+								new THREE.Vector3(-1, 0.6, -1),
+								new THREE.Vector3(1, 0.4, -1),
+								new THREE.Vector3(1, 0.2, 1),
+								new THREE.Vector3(-1, 0, 1)
+							]);
+							// Distance from the middle of the scene
+							self._PathDistance = new THREE.Vector3(20, 20, 20);
+						}}
+						onEnter={(self: any, direction: number) => {
+							UpdateBackground(Style.Background_SunToOcean);
+
+							// Get either the start or the end of the path depending on the direction where the scroll is from
+							const camPosition = self._CamPath
+								.getPointAt(direction === -1 ? 1 : 0)
+								.multiply(self._PathDistance)
+								.add(self._ScenePosition);
+							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
+						}}
+						onScroll={(self: any, progress: number) => {
+							// follow path
+							const camPosition = self._CamPath
+								.getPointAt(progress)
+								.multiply(self._PathDistance)
+								.add(self._ScenePosition);
+							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+						}}
+						onLeave={(self: any, direction: number) => {
+							self._Camera.CancelAnimation();
+							self._Camera.Unfocus();
+						}}
+						Length={200}
+					>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
 								staticProps={staticProps["Procedural Terrain"]}
 								className={Style.ProjectProceduralTerrain}
 							/>
 						</div>
-					</Slide> */}
+					</Slide>
 				</SlideShow>
 			</main>
 		</section>

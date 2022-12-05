@@ -10,15 +10,20 @@
 	z-index: -1000;
 }
 
-// $grad-SunToOcean: linear-gradient(90deg, #F18271 0%, #CC6B8E 33%, #8F6AAE 66%, #3F51B1 99%);
 .Background_Ocean {
-	background-image: radial-gradient(ellipse at 15% 0%, rgb(95 236 238) 0%, rgb(129 129 242) 100%);
+	background-image: radial-gradient(ellipse at 15% 0%, rgb(129 129 242) 0%, rgb(95 236 238) 100%);
 	-webkit-transition: opacity 0.75s;
 	transition: opacity 0.75s;
 }
 
 .Background_Peach {
 	background-image: radial-gradient(ellipse at 15% 0%, #ffea9f 0%, #ffafb7 100%);
+	-webkit-transition: opacity 0.75s;
+	transition: opacity 0.75s;
+}
+
+.Background_SunToOcean {
+	background-image: radial-gradient(ellipse at 15% 0%, #F18271 0%,#CC6B8E 33%, #3F51B1 99%);
 	-webkit-transition: opacity 0.75s;
 	transition: opacity 0.75s;
 }
