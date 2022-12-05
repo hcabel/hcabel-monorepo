@@ -31,6 +31,7 @@ jobs:
     # needs: install-deps
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       # - name: Cache node modules
       #   uses: actions/cache@v3
       #   with:
@@ -41,7 +42,7 @@ jobs:
       - name: pnpm install deps
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
-        run: pnpm install -g nx
+        run: pnpm install -w nx
       - run: nx affected --target=lint --base=${baseSha} --head=${headSha} --parallel
 
   build:
@@ -49,6 +50,7 @@ jobs:
     # needs: install-deps
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       # - name: Cache node modules
       #   uses: actions/cache@v3
       #   with:
@@ -59,7 +61,7 @@ jobs:
       - name: pnpm install deps
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
-        run: pnpm install -g nx
+        run: pnpm install -w nx
       - run: nx affected --target=build --base=${baseSha} --head=${headSha} --parallel
 
   test:
@@ -67,6 +69,7 @@ jobs:
     # needs: install-deps
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       # - name: Cache node modules
       #   uses: actions/cache@v3
       #   with:
@@ -77,5 +80,5 @@ jobs:
       - name: pnpm install deps
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
-        run: pnpm install -g nx
+        run: pnpm install -w nx
       - run: nx affected --target=test --base=${baseSha} --head=${headSha} --parallel
