@@ -47,3 +47,15 @@ jobs:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
       - run: npx nx -- affected --target=build --base=${baseSha} --head=${headSha} --parallel
+
+  test:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+      - run: npx nx -- affected --target=test --base=${baseSha} --head=${headSha} --parallel
