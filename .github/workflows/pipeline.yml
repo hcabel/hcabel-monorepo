@@ -23,6 +23,9 @@ jobs:
       - name: pnpm install deps
         if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
+      - name: explicitly install NX
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm install -w nx --frozen-lockfile
 
   lint:
     runs-on: ubuntu-latest
