@@ -43,7 +43,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
         run: pnpm install -w nx
-      - run: pnpm nx -- affected --target=lint --base=${baseSha} --head=${headSha} --parallel
+      - run: npx nx affected --target=lint --base=${baseSha} --head=${headSha} --parallel
 
   build:
     runs-on: ubuntu-latest
@@ -62,7 +62,7 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
         run: pnpm install -w nx
-      - run: pnpm nx -- affected --target=build --base=${baseSha} --head=${headSha} --parallel
+      - run: npx nx affected --target=build --base=${baseSha} --head=${headSha} --parallel
 
   test:
     runs-on: ubuntu-latest
@@ -81,4 +81,4 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: explicitly install NX every time
         run: pnpm install -w nx
-      - run: pnpm nx -- affected --target=test --base=${baseSha} --head=${headSha} --parallel
+      - run: npx nx affected --target=test --base=${baseSha} --head=${headSha} --parallel
