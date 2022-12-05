@@ -58,7 +58,7 @@ export function Index({ staticProps }: any) {
 
 							self._Camera = new Experience().World.Camera;
 							self._CamPath = new THREE.CatmullRomCurve3([
-								new THREE.Vector3(-0.25, 0.5, -0.825),
+								new THREE.Vector3(-0.4, 0.5, -0.825),
 								new THREE.Vector3(-0.675, 0.225, -0.675),
 								new THREE.Vector3(-0.825, 0.5, 0),
 							]);
@@ -88,7 +88,7 @@ export function Index({ staticProps }: any) {
 							const camPosition = self._CamPath.getPointAt(progress)
 								.multiply(self._PathDistance)
 								.add(self._ScenePosition);
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
+							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 						}}
 						onLeave={(self: any, direction: number) => {
 							self._Camera.CancelAnimation();
@@ -119,7 +119,7 @@ export function Index({ staticProps }: any) {
 								new THREE.Vector3(-1, 0.5, 0.75),
 							]);
 							// Distance from the middle of the scene
-							self._PathDistance = new THREE.Vector3(25, 25, 25);
+							self._PathDistance = new THREE.Vector3(20, 20, 20);
 						}}
 						onEnter={(self: any, direction: number) => {
 							UpdateBackground(Style.Background_Peach);
@@ -137,7 +137,7 @@ export function Index({ staticProps }: any) {
 								.getPointAt(progress)
 								.multiply(self._PathDistance)
 								.add(self._ScenePosition);
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z);
+							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 						}}
 						onLeave={(self: any, direction: number) => {
 							self._Camera.CancelAnimation();
@@ -146,6 +146,7 @@ export function Index({ staticProps }: any) {
 						LeaveTransition={{
 							duration: 0.75,
 						}}
+						Length={200}
 					>
 						<div className={Style.FirstImpressionArea}>
 							<ProjectFirstImpression
