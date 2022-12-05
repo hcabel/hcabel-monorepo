@@ -34,7 +34,8 @@ export default function SlideShow({ children }: ISlideShowProps)
 				onLeave: jsx.props.onLeave || (() => {}),
 				onScroll: jsx.props.onScroll || (() => {}),
 				onResize: jsx.props.onResize || (() => {}),
-				index: i
+				index: i,
+				active: false
 			};
 			return slide;
 		})
@@ -58,7 +59,9 @@ export default function SlideShow({ children }: ISlideShowProps)
 						// Call slide events
 						const slideBefore = _Slides[i - 1];
 						slideBefore?.onLeave?.(slideBefore, 1);
+						slideBefore.active = false;
 						slide.onEnter?.(slide, 1);
+						slide.active = true;
 
 						// Move UI
 						GSAP.to(".slide", {
@@ -72,8 +75,10 @@ export default function SlideShow({ children }: ISlideShowProps)
 					onLeaveBack: (i === 0 ? undefined : () => {
 						// Call slide events
 						slide.onLeave?.(slide, -1);
+						slide.active = false;
 						const slideBefore = _Slides[i - 1];
 						slideBefore?.onEnter?.(slideBefore, -1);
+						slideBefore.active = true;
 
 						// Move UI
 						GSAP.to(".slide", {
@@ -84,12 +89,15 @@ export default function SlideShow({ children }: ISlideShowProps)
 						});
 					}),
 					onUpdate: ({ progress }) => {
-						// Call slide events
-						slide.onScroll?.(slide, progress);
+						// Call slide events if onEnter has been triggered before
+						if (slide.active) {
+							slide.onScroll?.(slide, progress);
+						}
 					}
 				});
 			});
 			_Slides[0].onEnter(_Slides[0], 1);
+			_Slides[0].active = true;
 		});
 	}, [_Slides]);
 
