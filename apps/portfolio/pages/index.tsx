@@ -6,11 +6,20 @@ import Style from 'Styles/pages/index.module.scss';
 
 import Experience from '3D/Experience';
 import ProjectFirstImpression from 'Components/ProjectFirstImpression';
-import { IRouteGetAllProjects, IRouteGetProjectById } from '@hcabel/types/ProjectApi';
+import { IRouteGetProjectById } from '@hcabel/types/ProjectApi';
 import SlideShow from 'Components/SlideShow/SlideShow';
 import Slide from 'Components/SlideShow/Slide';
+import { GetStaticPropsResult } from 'next';
 
-export function Index({ staticProps }: any) {
+interface IStaticProps {
+	[key: string]: IRouteGetProjectById;
+}
+
+interface IndexProps {
+	staticProps: IStaticProps;
+}
+
+export function Index({ staticProps }: IndexProps) {
 	const _BackgroundRef = useRef<HTMLDivElement>(null);
 
 	// Hide all the background exect the one with the class that we specified
@@ -212,11 +221,14 @@ export function Index({ staticProps }: any) {
 	);
 }
 
-export async function getStaticProps()
+export async function getStaticProps(): Promise<GetStaticPropsResult<IStaticProps>>
 {
-	// Get all projects
-	const projects: IRouteGetAllProjects = await fetch(`${process.env.NX_PROJECT_API_ENDPOINT}/projects`)
-		.then((res) => res.json());
+	// if does not exist were are skipping the static generation (handy for the pipeline)
+	if (!process.env.NX_PROJECT_API_ENDPOINT) {
+		return ({
+			notFound: true,
+		});
+	}
 
 	// Create promise that will fetch all the project in parallel
 	const staticProps = await new Promise<any>((resolve, reject) => {
@@ -251,10 +263,24 @@ export async function getStaticProps()
 			);
 		}
 
-		for (const project of projects) {
-			MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/projects/${project._id}`);
-		}
-	});
+		// Get all projects
+		fetch(`${process.env.NX_PROJECT_API_ENDPOINT}/projects`)
+			.then((res) => res.json())
+			.then((projects) => {
+				// make a parallel request for each project
+				for (const project of projects) {
+					MakeAsyncRequest(`${process.env.NX_PROJECT_API_ENDPOINT}/projects/${project._id}`);
+				}
+			})
+			.catch(reject);
+	})
+		.catch(() => {
+			// This may occure when API is not found/started
+			console.error("GetStaticProps failed: API is not reachable");
+			return ({
+				notFound: true
+			});
+		});
 
 	return {
 		props: {
