@@ -23,10 +23,6 @@ jobs:
       - name: pnpm install deps
         if: steps.cache.outputs.cache-hit != 'true'
         run: pnpm install --frozen-lockfile
-      - name: dump github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
 
   lint:
     runs-on: ubuntu-latest
