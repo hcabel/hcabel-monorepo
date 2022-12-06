@@ -62,4 +62,4 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
-      - run: npx nx affected:test --base=origin/DEV --parallel
+      - run: npx nx affected:test --base=${{ github.event.before }} --parallel
