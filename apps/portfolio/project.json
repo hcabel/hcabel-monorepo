@@ -22,18 +22,18 @@
     },
     "serve": {
       "executor": "@nrwl/next:server",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "OnComputer",
       "options": {
         "buildTarget": "portfolio:build",
         "dev": true
       },
       "configurations": {
-        "development": {
-          "buildTarget": "portfolio:build:development",
+        "OnComputer": {
+          "buildTarget": "portfolio:build:OnComputer",
           "dev": true
         },
-        "production": {
-          "buildTarget": "portfolio:build:production",
+        "OnLocalNetwork": {
+          "buildTarget": "portfolio:build:OnLocalNetwork",
           "dev": false,
           "hostname": "10.0.0.78"
         }
