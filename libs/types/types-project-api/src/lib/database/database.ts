@@ -2,7 +2,6 @@
 import { IProjectSchema, IProjectDocument, IProjectModel} from "./models/project.interface";
 import { IStatSchema, IStatDocument, IStatModel} from "./models/stat.interface";
 import { Dotnation } from "../utils/mongoose.interface";
-import { IDatabase } from "@hcabel/rest-api-utils";
 
 export interface IProjectApiQueries {
 	Project: {
@@ -20,5 +19,3 @@ export interface IProjectApiQueries {
 		update_one(filter: Partial<IStatSchema>, set: Partial<IStatSchema>): Promise<IStatModel | null>
 	}
 };
-
-export type IProjectApiDatabase = IDatabase<IProjectApiQueries>;

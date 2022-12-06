@@ -1,8 +1,9 @@
 import Express from "express";
 import { IRequestResponse } from "@hcabel/rest-api-utils";
-import { IProjectApiDatabase, IRouteGetAllProjects, IRouteGetProjectById } from "@hcabel/types/ProjectApi";
+import { IRouteGetAllProjects, IRouteGetProjectById } from "@hcabel/types/ProjectApi";
 import { Types } from "mongoose";
 import { IStatModelArrayToIStats } from "./utils/stats.utils";
+import { IProjectApiDatabase } from "../../database/database";
 
 export async function get_all_projects(req: Express.Request): Promise<IRequestResponse<IRouteGetAllProjects>>
 {
