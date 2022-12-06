@@ -38,7 +38,7 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
-      - run: npx nx affected:lint --base=origin/DEV --parallel
+      - run: npx nx affected:lint --base=${{ github.event.before }} --parallel
 
   build:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
-      - run: npx nx affected:build --base=origin/DEV --parallel
+      - run: npx nx affected:build --base=${{ github.event.before }} --parallel
 
   test:
     runs-on: ubuntu-latest
