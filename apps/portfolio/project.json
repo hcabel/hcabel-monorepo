@@ -23,12 +23,12 @@
       },
       "configurations": {
         "OnComputer": {
-          "buildTarget": "portfolio:build:OnComputer",
+          "buildTarget": "portfolio:build",
           "dev": true
         },
         "OnLocalNetwork": {
-          "buildTarget": "portfolio:build:OnLocalNetwork",
-          "dev": false,
+          "buildTarget": "portfolio:build",
+          "dev": true,
           "hostname": "10.0.0.78"
         }
       }
