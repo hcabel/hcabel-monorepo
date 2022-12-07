@@ -7,9 +7,9 @@
   ],
   "parserOptions": {
     "project": [
-      "tsconfig.base.json",
-      "apps/portfolio/tsconfig.json",
-      "apps/portfolio/tsconfig.spec.json"
+      "(../../|./)tsconfig.base.json",
+      "(apps/portfolio/|./)tsconfig.json",
+      "(apps/portfolio/|./)tsconfig.spec.json"
     ]
   },
   "rules": {

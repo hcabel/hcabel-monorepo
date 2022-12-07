@@ -4,9 +4,9 @@
   ],
   "parserOptions": {
     "project": [
-      "tsconfig.base.json",
-      "apps/project-api/tsconfig.json",
-      "apps/project-api/tsconfig.spec.json"
+      "(../../|./)tsconfig.base.json",
+      "(apps/project-api/|./)tsconfig.json",
+      "(apps/project-api/|./)tsconfig.spec.json"
     ]
   }
 }
