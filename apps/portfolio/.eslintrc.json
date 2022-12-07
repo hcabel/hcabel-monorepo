@@ -5,6 +5,13 @@
     "next/core-web-vitals",
     "../../.eslintrc.json"
   ],
+  "parserOptions": {
+    "project": [
+      "tsconfig.base.json",
+      "apps/portfolio/tsconfig.json",
+      "apps/portfolio/tsconfig.spec.json"
+    ]
+  },
   "rules": {
     "@next/next/no-html-link-for-pages": ["error", "apps/portfolio/pages"],
     "dot-notation": "off"
