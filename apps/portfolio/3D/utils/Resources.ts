@@ -5,7 +5,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 import assetsList, { IAssetsListKey } from "3D/assets";
 
-type LoadedAssetList = { [name in IAssetsListKey]?: any };
+export type LoadedAssetList = { [name in IAssetsListKey]?: any };
 
 export default class Resources extends EventEmitter
 {

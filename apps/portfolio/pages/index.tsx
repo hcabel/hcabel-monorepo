@@ -66,6 +66,7 @@ export function Index({ staticProps }: IndexProps) {
 						onConstruct={(self: any) => {
 							self._ScenePosition = new THREE.Vector3(0, 2, 0);
 
+							// get 3d camera
 							self._Camera = new Experience().World.Camera;
 							self._CamPath = new THREE.CatmullRomCurve3([
 								new THREE.Vector3(-0.4, 0.5, -0.825),
@@ -101,7 +102,9 @@ export function Index({ staticProps }: IndexProps) {
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 						}}
 						onLeave={(self: any, direction: number) => {
+							// Cancel Anim in case your scrolling fast
 							self._Camera.CancelAnimation();
+							// unfocus from the scene center
 							self._Camera.Unfocus();
 						}}
 						Length={200}
@@ -120,6 +123,7 @@ export function Index({ staticProps }: IndexProps) {
 					{/* HUGO MEET */}
 					<Slide
 						onConstruct={(self: any) => {
+							// get 3d camera
 							self._Camera = new Experience().World.Camera;
 
 							self._ScenePosition = new THREE.Vector3(0, -33, 0);
@@ -132,6 +136,7 @@ export function Index({ staticProps }: IndexProps) {
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
 						}}
 						onEnter={(self: any, direction: number) => {
+							// Change background color
 							UpdateBackground(Style.Background_Peach);
 
 							// Get either the start or the end of the path depending on the direction where the scroll is from
@@ -150,7 +155,9 @@ export function Index({ staticProps }: IndexProps) {
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 						}}
 						onLeave={(self: any, direction: number) => {
+							// Cancel Anim in case your scrolling fast
 							self._Camera.CancelAnimation();
+							// unfocus from the scene center
 							self._Camera.Unfocus();
 						}}
 						LeaveTransition={{
@@ -170,40 +177,47 @@ export function Index({ staticProps }: IndexProps) {
 					{/* PROCEDURAL TERRAIN */}
 					<Slide
 						onConstruct={(self: any) => {
+							// get 3d camera
 							self._Camera = new Experience().World.Camera;
 
 							self._ScenePosition = new THREE.Vector3(0, -75, 0);
-							// The path to follow, only represente direction not the actual position
-							self._CamPath = new THREE.CatmullRomCurve3([
-								new THREE.Vector3(-1, 1, -1),
-								new THREE.Vector3(1, 1, -1),
-								new THREE.Vector3(1, 1, 1),
-								new THREE.Vector3(-1, 1, 1),
-								new THREE.Vector3(-1, 1, -1),
-							]);
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
+
+							// Fetch all the 3D object that compose the Procedural terrain scene
+							new Experience().on('ready', () => {
+								self.SceneObjs = [];
+								const meshs = new Experience().World.Assets.scene.children;
+								for (let i = 0; i < meshs.length; i++) {
+									const mesh = meshs[i];
+									if (mesh.name === "Terrain" || mesh.name === "Water001") {
+										self.SceneObjs.push(mesh);
+									}
+								}
+							});
 						}}
 						onEnter={(self: any, direction: number) => {
+							// Change background color
 							UpdateBackground(Style.Background_SunToOcean);
 
-							// Get either the start or the end of the path depending on the direction where the scroll is from
-							const camPosition = self._CamPath
-								.getPointAt(direction === -1 ? 1 : 0)
-								.multiply(self._PathDistance)
-								.add(self._ScenePosition);
-							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
+							// Move the camera to look at the scene
+							self._Camera.AnimatesToFocalPoint(
+								new THREE.Vector3(-1, 1, 0)
+									.multiply(self._PathDistance)
+									.add(self._ScenePosition),
+								self._ScenePosition,
+								slideTransitionSpeed);
 						}}
 						onScroll={(self: any, progress: number) => {
-							// follow path
-							const camPosition = self._CamPath
-								.getPointAt(progress)
-								.multiply(self._PathDistance)
-								.add(self._ScenePosition);
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+							// Rotate the scene from 45 deg to 405 deg
+							self.SceneObjs.forEach((obj: THREE.Mesh) => {
+								obj.rotation.y = progress * (Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
+							});
 						}}
 						onLeave={(self: any, direction: number) => {
+							// Cancel Anim in case your scrolling fast
 							self._Camera.CancelAnimation();
+							// unfocus from the scene center
 							self._Camera.Unfocus();
 						}}
 						Length={200}

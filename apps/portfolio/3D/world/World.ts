@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import Resources from '3D/utils/Resources';
+import Resources, { LoadedAssetList } from '3D/utils/Resources';
 import Camera from '3D/world/Camera';
 import Renderer from '3D/world/Renderer';
 import Experience from '3D/Experience';
@@ -19,6 +19,7 @@ class World
 	get Scene(): THREE.Scene { return this._Scene; }
 	get Camera(): Camera { return this._Camera; }
 	get Renderer(): Renderer { return this._Renderer; }
+	get Assets(): LoadedAssetList { return this._Resources.Assets; }
 
 	constructor()
 	{
