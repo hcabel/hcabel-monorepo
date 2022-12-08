@@ -55,12 +55,54 @@ export function Index({ staticProps }: IndexProps) {
 		<section className="Page">
 			<canvas id="Canvas3D" className={Style.ThreeJsCanvas3D}></canvas>
 			<div className={Style.Background} ref={_BackgroundRef}>
+				<div className={`${Style.Background_NightClub} ${Style.Background}`} />
 				<div className={`${Style.Background_Ocean} ${Style.Background}`} />
 				<div className={`${Style.Background_Peach} ${Style.Background}`} />
-				<div className={`${Style.Background_SunToOcean} ${Style.Background}`} />
+				<div className={`${Style.Background_Meadow} ${Style.Background}`} />
 			</div>
 			<main className={Style.HtmlPageContent} id="HtmlPageContent" >
 				<SlideShow>
+					{/* WELCOME INTRO */}
+					<Slide
+						onConstruct={(self: any) => {
+							self._ScenePosition = new THREE.Vector3(0, 30, 0);
+
+							// get 3d camera
+							self._Camera = new Experience().World.Camera;
+						}}
+						onEnter={(self: any, direction: number) => {
+							UpdateBackground(Style.Background_NightClub);
+
+							// Same position has the start of the next slide
+							const camPosition = new THREE.Vector3(-10, 12.5, -20.625)
+								.add(self._ScenePosition);
+
+							if (direction === 1 /* Top to bottom */) {
+								// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
+								self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+								self._Camera.Focus(self._ScenePosition, true);
+							}
+							else {
+								self._Camera.AnimatesToFocalPoint(
+									camPosition,
+									self._ScenePosition,
+									slideTransitionSpeed);
+							}
+						}}
+						onLeave={(self: any, direction: number) => {
+							// Cancel Anim in case your scrolling fast
+							self._Camera.CancelAnimation();
+							// unfocus from the scene center
+							self._Camera.Unfocus();
+						}}
+					>
+						<div className={Style.SlideIntro}>
+							<div className={Style.Description}>
+								<h1 className={Style.Name}>Hugo Cabel</h1>
+								<h3 className={Style.Job}>Software engineer</h3>
+							</div>
+						</div>
+					</Slide>
 					{/* UNREAL VSCODE HELPER */}
 					<Slide
 						onConstruct={(self: any) => {
@@ -78,21 +120,10 @@ export function Index({ staticProps }: IndexProps) {
 						}}
 						onEnter={(self: any, direction: number) => {
 							UpdateBackground(Style.Background_Ocean);
-
-							if (direction === 1 /* Top to bottom */) {
-								// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
-								const camPosition = self._CamPath.getPointAt(0)
-									.multiply(self._PathDistance)
-									.add(self._ScenePosition);
-								self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
-								self._Camera.Focus(self._ScenePosition, true);
-							}
-							else {
-								const camPosition = self._CamPath.getPointAt(1)
-									.multiply(self._PathDistance)
-									.add(self._ScenePosition);
-								self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
-							}
+							const camPosition = self._CamPath.getPointAt(direction === 1 ? 0 : 1)
+								.multiply(self._PathDistance)
+								.add(self._ScenePosition);
+							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
 						}}
 						onScroll={(self: any, progress: number) => {
 							// follow path
@@ -112,7 +143,7 @@ export function Index({ staticProps }: IndexProps) {
 							duration: 0.75,
 						}}
 					>
-						<div className={Style.FirstImpressionArea}>
+						<div className={Style.Slide}>
 							<ProjectFirstImpression
 								staticProps={staticProps["Unreal VsCode Helper"]}
 								className={Style.ProjectUVCH}
@@ -165,7 +196,7 @@ export function Index({ staticProps }: IndexProps) {
 						}}
 						Length={200}
 					>
-						<div className={Style.FirstImpressionArea}>
+						<div className={Style.Slide}>
 							<ProjectFirstImpression
 								staticProps={staticProps["HugoMeet"]}
 								className={Style.ProjectHugoMeet}
@@ -198,7 +229,7 @@ export function Index({ staticProps }: IndexProps) {
 						}}
 						onEnter={(self: any, direction: number) => {
 							// Change background color
-							UpdateBackground(Style.Background_SunToOcean);
+							UpdateBackground(Style.Background_Meadow);
 
 							// Move the camera to look at the scene
 							self._Camera.AnimatesToFocalPoint(
@@ -220,9 +251,9 @@ export function Index({ staticProps }: IndexProps) {
 							// unfocus from the scene center
 							self._Camera.Unfocus();
 						}}
-						Length={200}
+						Length={300}
 					>
-						<div className={Style.FirstImpressionArea}>
+						<div className={Style.Slide}>
 							<ProjectFirstImpression
 								staticProps={staticProps["Procedural Terrain"]}
 								className={Style.ProjectProceduralTerrain}

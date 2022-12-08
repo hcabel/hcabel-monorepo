@@ -9,7 +9,7 @@
 
 	margin-left: 8px;
 
-	color: $SecondaryTextColor;
+	color: $PrimaryTextColor;
 	font-family: "Roboto", sans-serif;
 
 	.StatField {
@@ -22,7 +22,7 @@
 			margin-right: 8px;
 		}
 		.StatIcon svg path {
-			fill: $SecondaryTextColor;
+			fill: $PrimaryTextColor;
 		}
 		.StatValue {
 			font-weight: bold;

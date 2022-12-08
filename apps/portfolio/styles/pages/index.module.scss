@@ -10,6 +10,14 @@
 	z-index: -1000;
 }
 
+.Background_NightClub {
+	background-image: radial-gradient(ellipse at 15% 0%,
+		#db9eff 0%,
+		#5c6cc6 100%);
+	-webkit-transition: opacity 0.75s;
+	transition: opacity 0.75s;
+}
+
 .Background_Ocean {
 	background-image: radial-gradient(ellipse at 15% 0%,
 		#5fecee 0%,
@@ -26,7 +34,7 @@
 	transition: opacity 0.75s;
 }
 
-.Background_SunToOcean {
+.Background_Meadow {
 	background-image: radial-gradient(ellipse at 15% 0%,
 		#96e083 0%,
 		#5cd5db 100%);
@@ -71,7 +79,7 @@
 	flex-direction: column;
 }
 
-.FirstImpressionArea {
+.Slide, .SlideIntro {
 	position: relative;
 	padding: 5%;
 	box-sizing: border-box;
@@ -79,6 +87,11 @@
 	width: 100vh;
 }
 
+@media (max-width: $breakpoint-tablet) {
+	.Slide {
+		width: 100vw;
+	}
+}
 .ProjectUVCH,
 .ProjectHugoMeet,
 .ProjectProceduralTerrain {

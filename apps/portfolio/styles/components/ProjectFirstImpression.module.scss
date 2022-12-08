@@ -22,11 +22,11 @@
 	font-family: 'Inter var', sans-serif;
 	font-size: 1.75vw;
 
-	color: $SecondaryTextColor;
+	color: $PrimaryTextColor;
 }
 
 .ProjectMoreButton {
-	$MoreButtonColor: $SecondaryTextColor;
+	$MoreButtonColor: $PrimaryTextColor;
 
 	width: fit-content;
 	cursor: pointer;
