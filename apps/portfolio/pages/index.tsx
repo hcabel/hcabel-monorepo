@@ -173,13 +173,16 @@ export function Index({ staticProps }: IndexProps) {
 							self._Camera = new Experience().World.Camera;
 
 							self._ScenePosition = new THREE.Vector3(0, -33, 0);
-							// The path to follow, only represente direction not the actual position
-							self._CamPath = new THREE.CatmullRomCurve3([
-								new THREE.Vector3(-1, 1, -0.75),
-								new THREE.Vector3(-1, 0.5, 0.75),
-							]);
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
+
+							// Fetch all the 3D object that compose the Procedural terrain scene
+							new Experience().on('ready', () => {
+								self._MeshScene = new Experience().World.MeshScenes["HugoMeet"];
+							});
+
+							self._StartRotationY = Math.PI / 180 * 60;
+							self._EndRotationY = Math.PI / 180 * -120;
 						}}
 						onEnter={(self: any, direction: number) => {
 							// Move canvas to the right
@@ -188,19 +191,13 @@ export function Index({ staticProps }: IndexProps) {
 							UpdateBackground(Style.Background_Peach);
 
 							// Get either the start or the end of the path depending on the direction where the scroll is from
-							const camPosition = self._CamPath
-								.getPointAt(direction === -1 ? 1 : 0)
+							const camPosition = new THREE.Vector3(-1, 0.25, 0)
 								.multiply(self._PathDistance)
 								.add(self._ScenePosition);
 							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
 						}}
 						onScroll={(self: any, progress: number) => {
-							// follow path
-							const camPosition = self._CamPath
-								.getPointAt(progress)
-								.multiply(self._PathDistance)
-								.add(self._ScenePosition);
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+							self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
 						}}
 						onLeave={(self: any, direction: number) => {
 							// Cancel Anim in case your scrolling fast
