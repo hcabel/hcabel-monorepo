@@ -45,6 +45,14 @@ export function Index({ staticProps }: IndexProps) {
 
 	}
 
+	function MoveCanvas(val: number) {
+		const canvas = document.getElementById("Canvas3D");
+		// move canvas only if the screen is big enough
+		if (canvas && window.screenX >= 920) {
+			canvas.style.transform = `translateX(${val}%)`;
+		}
+	}
+
 	useEffect(() => {
 		new Experience(document.getElementById("Canvas3D") as HTMLCanvasElement);
 	}, []);
@@ -71,6 +79,9 @@ export function Index({ staticProps }: IndexProps) {
 							self._Camera = new Experience().World.Camera;
 						}}
 						onEnter={(self: any, direction: number) => {
+							// Move canvas to the center
+							MoveCanvas(0);
+							// Change background
 							UpdateBackground(Style.Background_NightClub);
 
 							// Same position has the start of the next slide
@@ -119,8 +130,10 @@ export function Index({ staticProps }: IndexProps) {
 							self._PathDistance = new THREE.Vector3(25, 25, 25);
 						}}
 						onEnter={(self: any, direction: number) => {
+							// Change background
 							UpdateBackground(Style.Background_Ocean);
-							const camPosition = self._CamPath.getPointAt(direction === 1 ? 0 : 1)
+							// Move canvas to the right
+							MoveCanvas(20);
 								.multiply(self._PathDistance)
 								.add(self._ScenePosition);
 							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
@@ -167,6 +180,8 @@ export function Index({ staticProps }: IndexProps) {
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
 						}}
 						onEnter={(self: any, direction: number) => {
+							// Move canvas to the right
+							MoveCanvas(20);
 							// Change background color
 							UpdateBackground(Style.Background_Peach);
 
@@ -221,6 +236,8 @@ export function Index({ staticProps }: IndexProps) {
 							});
 						}}
 						onEnter={(self: any, direction: number) => {
+							// Move canvas to the right
+							MoveCanvas(20);
 							// Change background color
 							UpdateBackground(Style.Background_Meadow);
 
