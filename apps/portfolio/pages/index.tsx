@@ -217,14 +217,7 @@ export function Index({ staticProps }: IndexProps) {
 
 							// Fetch all the 3D object that compose the Procedural terrain scene
 							new Experience().on('ready', () => {
-								self.SceneObjs = [];
-								const meshs = new Experience().World.Assets.scene.children;
-								for (let i = 0; i < meshs.length; i++) {
-									const mesh = meshs[i];
-									if (mesh.name === "Terrain" || mesh.name === "Water001") {
-										self.SceneObjs.push(mesh);
-									}
-								}
+								self._MeshScene = new Experience().World.MeshScenes["Procedural Terrain"];
 							});
 						}}
 						onEnter={(self: any, direction: number) => {
@@ -241,9 +234,7 @@ export function Index({ staticProps }: IndexProps) {
 						}}
 						onScroll={(self: any, progress: number) => {
 							// Rotate the scene from 45 deg to 405 deg
-							self.SceneObjs.forEach((obj: THREE.Mesh) => {
-								obj.rotation.y = progress * (Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
-							});
+							self._MeshScene.rotation.y = progress * (Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
 						}}
 						onLeave={(self: any, direction: number) => {
 							// Cancel Anim in case your scrolling fast
