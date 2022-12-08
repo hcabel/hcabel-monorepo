@@ -85,7 +85,7 @@ export function Index({ staticProps }: IndexProps) {
 							UpdateBackground(Style.Background_NightClub);
 
 							// Same position has the start of the next slide
-							const camPosition = new THREE.Vector3(-10, 12.5, -20.625)
+							const camPosition = new THREE.Vector3(-25, 6.25, 0)
 								.add(self._ScenePosition);
 
 							if (direction === 1 /* Top to bottom */) {
@@ -121,29 +121,31 @@ export function Index({ staticProps }: IndexProps) {
 
 							// get 3d camera
 							self._Camera = new Experience().World.Camera;
-							self._CamPath = new THREE.CatmullRomCurve3([
-								new THREE.Vector3(-0.4, 0.5, -0.825),
-								new THREE.Vector3(-0.675, 0.225, -0.675),
-								new THREE.Vector3(-0.825, 0.5, 0),
-							]);
+
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(25, 25, 25);
+
+							// Fetch all the 3D object that compose the Procedural terrain scene
+							new Experience().on('ready', () => {
+								self._MeshScene = new Experience().World.MeshScenes["Unreal VsCode Helper"];
+							});
+
+							self._StartRotationY = Math.PI / 180 * 70;
+							self._EndRotationY = Math.PI / 180 * -70;
 						}}
 						onEnter={(self: any, direction: number) => {
 							// Change background
 							UpdateBackground(Style.Background_Ocean);
 							// Move canvas to the right
 							MoveCanvas(20);
+
+							const camPosition = new THREE.Vector3(-1, 0.25, 0)
 								.multiply(self._PathDistance)
 								.add(self._ScenePosition);
 							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
 						}}
 						onScroll={(self: any, progress: number) => {
-							// follow path
-							const camPosition = self._CamPath.getPointAt(progress)
-								.multiply(self._PathDistance)
-								.add(self._ScenePosition);
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+							self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
 						}}
 						onLeave={(self: any, direction: number) => {
 							// Cancel Anim in case your scrolling fast
