@@ -92,6 +92,58 @@
 		width: 100vw;
 	}
 }
+
+.SlideIntro {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100vw;
+	justify-content: space-between;
+
+	.Description {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.Name, .Job {
+			width: fit-content;
+
+			// text
+			font-family: 'Inter var', sans-serif;
+			font-size: 100%;
+			font-size: 3.584vw;
+			font-weight: bold;
+			letter-spacing: -0.035em;
+		}
+		.Job {
+			font-size: 1.75vw;
+			font-weight: normal;
+		}
+	}
+
+	.TechnoContainer {
+		height: 50%;
+		position: absolute;
+		right: 0;
+		top: 50%;
+		margin-right: 5%;
+		transform: translate(0, -50%);
+
+		.TechnoTitle {
+			margin-bottom: 10vh;
+
+			// text
+			color: $PrimaryTextColor;
+			font-family: 'Inter var', sans-serif;
+			font-size: 100%;
+			font-size: 1rem;
+			font-weight: bold;
+			text-align: center;
+			letter-spacing: -0.035em;
+		}
+	}
+}
+
 .ProjectUVCH,
 .ProjectHugoMeet,
 .ProjectProceduralTerrain {
