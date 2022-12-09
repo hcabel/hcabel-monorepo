@@ -57,7 +57,7 @@ export function Index({ staticProps }: IndexProps) {
 	function MoveCanvas(val: number) {
 		const canvas = document.getElementById("Canvas3D");
 		// move canvas only if the screen is big enough
-		if (canvas && window.screenX >= 920) {
+		if (canvas && window.screen.width >= 920) {
 			canvas.style.transform = `translateX(${val}%)`;
 		}
 	}
