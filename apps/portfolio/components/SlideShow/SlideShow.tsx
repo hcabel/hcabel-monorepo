@@ -4,10 +4,11 @@ import { ISlideProps } from './Slide';
 
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import GSAP from 'gsap';
-import Experience from '3D/Experience';
+import EventEmitter from 'events';
 
 export interface ISlideShowProps {
 	children: React.ReactElement<ISlideProps>[];
+	actions?: EventEmitter;
 }
 
 export interface ISlideClass {
@@ -19,9 +20,13 @@ export interface ISlideClass {
 	onScroll: (self: any, progress: number) => void;
 	onResize: (self: any) => void;
 	[key: string]: any;
+
+	index: number;
+	active: boolean;
+	progess: number;
 }
 
-export default function SlideShow({ children }: ISlideShowProps)
+export default function SlideShow({ children, actions }: ISlideShowProps)
 {
 	const [_Slides] = useState<ISlideClass[]>(
 		children.map((jsx, i) => {
@@ -35,7 +40,8 @@ export default function SlideShow({ children }: ISlideShowProps)
 				onScroll: jsx.props.onScroll || (() => {}),
 				onResize: jsx.props.onResize || (() => {}),
 				index: i,
-				active: false
+				active: false,
+				progess: 0
 			};
 			return slide;
 		})
@@ -58,8 +64,10 @@ export default function SlideShow({ children }: ISlideShowProps)
 					// Call slide events
 					const slideBefore = _Slides[i - 1];
 					slideBefore?.onLeave?.(slideBefore, 1);
+					slideBefore.progress = 1;
 					slideBefore.active = false;
 					slide.onEnter?.(slide, 1);
+					slide.progress = 0;
 					slide.active = true;
 
 					// Move UI
@@ -74,9 +82,11 @@ export default function SlideShow({ children }: ISlideShowProps)
 				onLeaveBack: (i === 0 ? undefined : () => {
 					// Call slide events
 					slide.onLeave?.(slide, -1);
+					slide.progress = 0;
 					slide.active = false;
 					const slideBefore = _Slides[i - 1];
 					slideBefore?.onEnter?.(slideBefore, -1);
+					slideBefore.progress = 1;
 					slideBefore.active = true;
 
 					// Move UI
@@ -88,6 +98,7 @@ export default function SlideShow({ children }: ISlideShowProps)
 					});
 				}),
 				onUpdate: ({ progress }) => {
+					slide.progress = progress;
 					// Call slide events if onEnter has been triggered before
 					if (slide.active) {
 						slide.onScroll?.(slide, progress);
@@ -96,8 +107,62 @@ export default function SlideShow({ children }: ISlideShowProps)
 			});
 		});
 		_Slides[0].onEnter(_Slides[0], 1);
+		_Slides[0].progress = 0;
 		_Slides[0].active = true;
-	}, [_Slides]);
+
+		// Move to another slide
+		actions.on('move', (direction: number) => {
+			if (!direction && direction !== 0) {
+				return;
+			}
+
+			// get active slide
+			const activeSlide = _Slides.find(slide => slide.active);
+			if (activeSlide) {
+				// get next slide
+				const nextSlide = _Slides[activeSlide.index + direction];
+				if (nextSlide) {
+					// scroll to the next slide
+					document.getElementById(`InvisibleDiv_${nextSlide.index}`).scrollIntoView({
+						behavior: 'smooth',
+						block: 'center'
+					});
+				}
+			}
+		});
+
+		// Refresh the current slide
+		actions?.on('refresh', () => {
+			_Slides.forEach(slide => {
+				if (slide.active) {
+					// Call all the life cycle events
+					slide.onConstruct(slide);
+					slide.onEnter(slide, 1);
+					slide.onUpdate?.(slide, slide.progess);
+				}
+			});
+		});
+
+		// Go to a specific slide
+		actions?.on('goto', (index: number) => {
+			if (!index && index !== 0) {
+				return;
+			}
+
+			// get active slide
+			const activeSlide = _Slides.find(slide => slide.active);
+			if (activeSlide) {
+				// get goto slide
+				const gotoSlide = _Slides[index];
+				if (gotoSlide) {
+					// Find direction to the goto slide
+					const direction = gotoSlide.index - activeSlide.index;
+					actions.emit('move', direction);
+					console.log(direction);
+				}
+			}
+		});
+	}, [_Slides, actions]);
 
 	return (
 		<>
