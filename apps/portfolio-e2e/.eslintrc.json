@@ -6,6 +6,13 @@
 	"plugins": [
 		"cypress"
 	],
+	"parserOptions": {
+		"project": [
+			"(../../|./)tsconfig.base.json",
+			"(apps/portfolio-e2e/|./)tsconfig.json",
+			"(apps/portfolio-e2e/|./)tsconfig.spec.json"
+		]
+	},
 	"overrides": [
 		{
 			"files": [
