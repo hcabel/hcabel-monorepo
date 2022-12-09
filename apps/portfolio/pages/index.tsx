@@ -75,8 +75,10 @@ export function Index({ staticProps }: IndexProps) {
 						onConstruct={(self: any) => {
 							self._ScenePosition = new THREE.Vector3(0, 30, 0);
 
-							// get 3d camera
-							self._Camera = new Experience().World.Camera;
+							new Experience().on('ready', () => {
+								// get 3d camera
+								self._Camera = new Experience().World.Camera;
+							});
 						}}
 						onEnter={(self: any, direction: number) => {
 							// Move canvas to the center
@@ -84,27 +86,30 @@ export function Index({ staticProps }: IndexProps) {
 							// Change background
 							UpdateBackground(Style.Background_NightClub);
 
-							// Same position has the start of the next slide
-							const camPosition = new THREE.Vector3(-25, 6.25, 0)
-								.add(self._ScenePosition);
-
-							if (direction === 1 /* Top to bottom */) {
-								// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
-								self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
-								self._Camera.Focus(self._ScenePosition, true);
-							}
-							else {
-								self._Camera.AnimatesToFocalPoint(
-									camPosition,
-									self._ScenePosition,
-									slideTransitionSpeed);
+							if (self._Camera) {
+								// Same position has the start of the next slide
+								const camPosition = new THREE.Vector3(-25, 6.25, 0)
+									.add(self._ScenePosition);
+								if (direction === 1 /* Top to bottom */) {
+									// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
+									self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+									self._Camera.Focus(self._ScenePosition, true);
+								}
+								else {
+									self._Camera.AnimatesToFocalPoint(
+										camPosition,
+										self._ScenePosition,
+										slideTransitionSpeed);
+								}
 							}
 						}}
 						onLeave={(self: any, direction: number) => {
-							// Cancel Anim in case your scrolling fast
-							self._Camera.CancelAnimation();
-							// unfocus from the scene center
-							self._Camera.Unfocus();
+							if (self._Camera) {
+								// Cancel Anim in case your scrolling fast
+								self._Camera.CancelAnimation();
+								// unfocus from the scene center
+								self._Camera.Unfocus();
+							}
 						}}
 					>
 						<div className={Style.SlideIntro}>
@@ -117,21 +122,21 @@ export function Index({ staticProps }: IndexProps) {
 					{/* UNREAL VSCODE HELPER */}
 					<Slide
 						onConstruct={(self: any) => {
+							// The position of the scene in the 3d world
 							self._ScenePosition = new THREE.Vector3(0, 2, 0);
-
-							// get 3d camera
-							self._Camera = new Experience().World.Camera;
-
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(25, 25, 25);
-
-							// Fetch all the 3D object that compose the Procedural terrain scene
-							new Experience().on('ready', () => {
-								self._MeshScene = new Experience().World.MeshScenes["Unreal VsCode Helper"];
-							});
-
+							// Camera movements
 							self._StartRotationY = Math.PI / 180 * 70;
 							self._EndRotationY = Math.PI / 180 * -70;
+
+							new Experience().on('ready', () => {
+								// get 3d camera
+								self._Camera = new Experience().World.Camera;
+
+								// Fetch all the 3D object that compose the Procedural terrain scene
+								self._MeshScene = new Experience().World.MeshScenes["Unreal VsCode Helper"];
+							});
 						}}
 						onEnter={(self: any, direction: number) => {
 							// Change background
@@ -139,19 +144,25 @@ export function Index({ staticProps }: IndexProps) {
 							// Move canvas to the right
 							MoveCanvas(20);
 
-							const camPosition = new THREE.Vector3(-1, 0.25, 0)
-								.multiply(self._PathDistance)
-								.add(self._ScenePosition);
-							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
+							if (self._Camera) {
+								const camPosition = new THREE.Vector3(-1, 0.25, 0)
+									.multiply(self._PathDistance)
+									.add(self._ScenePosition);
+								self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
+							}
 						}}
 						onScroll={(self: any, progress: number) => {
-							self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
+							if (self._MeshScene) {
+								self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
+							}
 						}}
 						onLeave={(self: any, direction: number) => {
-							// Cancel Anim in case your scrolling fast
-							self._Camera.CancelAnimation();
-							// unfocus from the scene center
-							self._Camera.Unfocus();
+							if (self._Camera) {
+								// Cancel Anim in case your scrolling fast
+								self._Camera.CancelAnimation();
+								// unfocus from the scene center
+								self._Camera.Unfocus();
+							}
 						}}
 						Length={200}
 						LeaveTransition={{
@@ -169,20 +180,20 @@ export function Index({ staticProps }: IndexProps) {
 					{/* HUGO MEET */}
 					<Slide
 						onConstruct={(self: any) => {
-							// get 3d camera
-							self._Camera = new Experience().World.Camera;
-
+							// The position of the scene in the 3d world
 							self._ScenePosition = new THREE.Vector3(0, -33, 0);
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
-
-							// Fetch all the 3D object that compose the Procedural terrain scene
-							new Experience().on('ready', () => {
-								self._MeshScene = new Experience().World.MeshScenes["HugoMeet"];
-							});
-
+							// Camera movements
 							self._StartRotationY = Math.PI / 180 * 60;
 							self._EndRotationY = Math.PI / 180 * -120;
+
+							new Experience().on('ready', () => {
+								// get 3d camera
+								self._Camera = new Experience().World.Camera;
+								// Fetch all the 3D object that compose the Procedural terrain scene
+								self._MeshScene = new Experience().World.MeshScenes["HugoMeet"];
+							});
 						}}
 						onEnter={(self: any, direction: number) => {
 							// Move canvas to the right
@@ -190,20 +201,27 @@ export function Index({ staticProps }: IndexProps) {
 							// Change background color
 							UpdateBackground(Style.Background_Peach);
 
-							// Get either the start or the end of the path depending on the direction where the scroll is from
-							const camPosition = new THREE.Vector3(-1, 0.25, 0)
-								.multiply(self._PathDistance)
-								.add(self._ScenePosition);
-							self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
+							if (self._Camera) {
+								// Get either the start or the end of the path depending on the direction where the scroll is from
+								const camPosition = new THREE.Vector3(-1, 0.25, 0)
+									.multiply(self._PathDistance)
+									.add(self._ScenePosition);
+								self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, slideTransitionSpeed);
+							}
 						}}
 						onScroll={(self: any, progress: number) => {
-							self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
+							if (self._MeshScene) {
+								// Rotate the scene from 45 deg to 405 deg
+								self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
+							}
 						}}
 						onLeave={(self: any, direction: number) => {
-							// Cancel Anim in case your scrolling fast
-							self._Camera.CancelAnimation();
-							// unfocus from the scene center
-							self._Camera.Unfocus();
+							if (self._Camera) {
+								// Cancel Anim in case your scrolling fast
+								self._Camera.CancelAnimation();
+								// unfocus from the scene center
+								self._Camera.Unfocus();
+							}
 						}}
 						LeaveTransition={{
 							duration: 0.75,
@@ -222,15 +240,15 @@ export function Index({ staticProps }: IndexProps) {
 					{/* PROCEDURAL TERRAIN */}
 					<Slide
 						onConstruct={(self: any) => {
-							// get 3d camera
-							self._Camera = new Experience().World.Camera;
-
+							// Position of the scene in the 3d world
 							self._ScenePosition = new THREE.Vector3(0, -75, 0);
 							// Distance from the middle of the scene
 							self._PathDistance = new THREE.Vector3(20, 20, 20);
 
-							// Fetch all the 3D object that compose the Procedural terrain scene
 							new Experience().on('ready', () => {
+								// get 3d camera
+								self._Camera = new Experience().World.Camera;
+								// get Procedural terrain scene
 								self._MeshScene = new Experience().World.MeshScenes["Procedural Terrain"];
 							});
 						}}
@@ -240,23 +258,29 @@ export function Index({ staticProps }: IndexProps) {
 							// Change background color
 							UpdateBackground(Style.Background_Meadow);
 
-							// Move the camera to look at the scene
-							self._Camera.AnimatesToFocalPoint(
-								new THREE.Vector3(-1, 1, 0)
-									.multiply(self._PathDistance)
-									.add(self._ScenePosition),
-								self._ScenePosition,
-								slideTransitionSpeed);
+							if (self._Camera) {
+								// Move the camera to look at the scene
+								self._Camera.AnimatesToFocalPoint(
+									new THREE.Vector3(-1, 1, 0)
+										.multiply(self._PathDistance)
+										.add(self._ScenePosition),
+									self._ScenePosition,
+									slideTransitionSpeed);
+							}
 						}}
 						onScroll={(self: any, progress: number) => {
-							// Rotate the scene from 45 deg to 405 deg
-							self._MeshScene.rotation.y = progress * (Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
+							if (self._MeshScene) {
+								// Rotate the scene from 45 deg to 405 deg
+								self._MeshScene.rotation.y = progress * (Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
+							}
 						}}
 						onLeave={(self: any, direction: number) => {
-							// Cancel Anim in case your scrolling fast
-							self._Camera.CancelAnimation();
-							// unfocus from the scene center
-							self._Camera.Unfocus();
+							if (self._Camera) {
+								// Cancel Anim in case your scrolling fast
+								self._Camera.CancelAnimation();
+								// unfocus from the scene center
+								self._Camera.Unfocus();
+							}
 						}}
 						Length={300}
 					>

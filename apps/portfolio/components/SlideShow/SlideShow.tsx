@@ -42,63 +42,61 @@ export default function SlideShow({ children }: ISlideShowProps)
 	);
 
 	useEffect(() => {
-		new Experience().on('initialized', () => {
-			GSAP.registerPlugin(ScrollTrigger);
+		GSAP.registerPlugin(ScrollTrigger);
 
-			_Slides.forEach((slide, i) => {
-				slide.onConstruct(slide);
+		_Slides.forEach((slide, i) => {
+			slide.onConstruct(slide);
 
-				// The first element dont need onEnter/OnLeaveBack, but still need to track the process
-				// note: onEnter and onLeaveBack are not setted in the first slide because it will never be triggered.
-				ScrollTrigger.create({
-					trigger: document.getElementById(`InvisibleDiv_${i}`),
-					start: "top top",
-					end: "bottom top",
-					// Trigger when you come from the top
-					onEnter: (i === 0 ? undefined : () => {
-						// Call slide events
-						const slideBefore = _Slides[i - 1];
-						slideBefore?.onLeave?.(slideBefore, 1);
-						slideBefore.active = false;
-						slide.onEnter?.(slide, 1);
-						slide.active = true;
+			// The first element dont need onEnter/OnLeaveBack, but still need to track the process
+			// note: onEnter and onLeaveBack are not setted in the first slide because it will never be triggered.
+			ScrollTrigger.create({
+				trigger: document.getElementById(`InvisibleDiv_${i}`),
+				start: "top top",
+				end: "bottom top",
+				// Trigger when you come from the top
+				onEnter: (i === 0 ? undefined : () => {
+					// Call slide events
+					const slideBefore = _Slides[i - 1];
+					slideBefore?.onLeave?.(slideBefore, 1);
+					slideBefore.active = false;
+					slide.onEnter?.(slide, 1);
+					slide.active = true;
 
-						// Move UI
-						GSAP.to(".slide", {
-							y: `${-100 * i}vh`,
-							ease: "expo",
-							overwrite: true,
-							...slideBefore.LeaveTransition
-						});
-					}),
-					// Trigger when you leave from the top
-					onLeaveBack: (i === 0 ? undefined : () => {
-						// Call slide events
-						slide.onLeave?.(slide, -1);
-						slide.active = false;
-						const slideBefore = _Slides[i - 1];
-						slideBefore?.onEnter?.(slideBefore, -1);
-						slideBefore.active = true;
+					// Move UI
+					GSAP.to(".slide", {
+						y: `${-100 * i}vh`,
+						ease: "expo",
+						overwrite: true,
+						...slideBefore.LeaveTransition
+					});
+				}),
+				// Trigger when you leave from the top
+				onLeaveBack: (i === 0 ? undefined : () => {
+					// Call slide events
+					slide.onLeave?.(slide, -1);
+					slide.active = false;
+					const slideBefore = _Slides[i - 1];
+					slideBefore?.onEnter?.(slideBefore, -1);
+					slideBefore.active = true;
 
-						// Move UI
-						GSAP.to(".slide", {
-							y: `${-100 * (i - 1) }vh`,
-							ease: "expo",
-							overwrite: true,
-							...(_Slides[i - 1].LeaveTransition || {})
-						});
-					}),
-					onUpdate: ({ progress }) => {
-						// Call slide events if onEnter has been triggered before
-						if (slide.active) {
-							slide.onScroll?.(slide, progress);
-						}
+					// Move UI
+					GSAP.to(".slide", {
+						y: `${-100 * (i - 1) }vh`,
+						ease: "expo",
+						overwrite: true,
+						...(_Slides[i - 1].LeaveTransition || {})
+					});
+				}),
+				onUpdate: ({ progress }) => {
+					// Call slide events if onEnter has been triggered before
+					if (slide.active) {
+						slide.onScroll?.(slide, progress);
 					}
-				});
+				}
 			});
-			_Slides[0].onEnter(_Slides[0], 1);
-			_Slides[0].active = true;
 		});
+		_Slides[0].onEnter(_Slides[0], 1);
+		_Slides[0].active = true;
 	}, [_Slides]);
 
 	return (
