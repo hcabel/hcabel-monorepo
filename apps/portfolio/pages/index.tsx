@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import * as THREE from 'three';
 
@@ -16,6 +16,7 @@ import TranslateIcon from 'Images/TranslateIcon.svg';
 import Link from 'next/link';
 import Selector from 'Components/Selector';
 import { useRouter } from 'next/router';
+import EventEmitter from 'events';
 
 interface IStaticProps {
 	[key: string]: IRouteGetProjectById;
@@ -26,6 +27,7 @@ interface IndexProps {
 }
 
 export function Index({ staticProps }: IndexProps) {
+	const [ _SlideShowController ] = useState(new EventEmitter());
 	const { locale, locales } = useRouter();
 	const _BackgroundRef = useRef<HTMLDivElement>(null);
 
@@ -61,9 +63,29 @@ export function Index({ staticProps }: IndexProps) {
 	}
 
 	useEffect(() => {
+		// get url hashid
+		const hashId = window.location.hash.slice(1);
+		// Move to the right slide
+		let index = 0;
+		switch (hashId) {
+		default: index = 0; break;
+		case "uvch": index = 1; break;
+		case "hugomeet": index = 2; break;
+		case "procedural-terrain": index = 3; break;
+		}
+		_SlideShowController.emit('goto', index);
+
 		// Init the exprerience
 		new Experience(document.getElementById("Canvas3D") as HTMLCanvasElement);
 	}, []);
+
+	useEffect(() => {
+		new Experience()
+			.on('ready', () => {
+				// Refresh canvas to makesure that the 3d camera is well positioned
+				_SlideShowController.emit('refresh');
+			});
+	}, [_SlideShowController]);
 
 	const slideTransitionSpeed = 0.025;
 
@@ -77,7 +99,7 @@ export function Index({ staticProps }: IndexProps) {
 				<div className={`${Style.Background_Meadow} ${Style.Background}`} />
 			</div>
 			<main className={Style.HtmlPageContent} id="HtmlPageContent" >
-				<SlideShow>
+				<SlideShow actions={_SlideShowController} >
 					{/* WELCOME INTRO */}
 					<Slide
 						onConstruct={(self: any) => {
@@ -381,7 +403,7 @@ export async function getStaticProps(): Promise<GetStaticPropsResult<IStaticProp
 			// This may occure when API is not found/started
 			console.error("GetStaticProps failed: API is not reachable");
 			return ({
-				notFound: true
+				// notFound: true
 			});
 		});
 
