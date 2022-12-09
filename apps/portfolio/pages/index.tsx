@@ -9,7 +9,13 @@ import ProjectFirstImpression from 'Components/ProjectFirstImpression';
 import { IRouteGetProjectById } from '@hcabel/types/ProjectApi';
 import SlideShow from 'Components/SlideShow/SlideShow';
 import Slide from 'Components/SlideShow/Slide';
+
 import { GetStaticPropsResult } from 'next';
+
+import TranslateIcon from 'Images/TranslateIcon.svg';
+import Link from 'next/link';
+import Selector from 'Components/Selector';
+import { useRouter } from 'next/router';
 
 interface IStaticProps {
 	[key: string]: IRouteGetProjectById;
@@ -20,6 +26,7 @@ interface IndexProps {
 }
 
 export function Index({ staticProps }: IndexProps) {
+	const { locale, locales } = useRouter();
 	const _BackgroundRef = useRef<HTMLDivElement>(null);
 
 	// Hide all the background exect the one with the class that we specified
@@ -54,6 +61,7 @@ export function Index({ staticProps }: IndexProps) {
 	}
 
 	useEffect(() => {
+		// Init the exprerience
 		new Experience(document.getElementById("Canvas3D") as HTMLCanvasElement);
 	}, []);
 
@@ -293,6 +301,25 @@ export function Index({ staticProps }: IndexProps) {
 					</Slide>
 				</SlideShow>
 			</main>
+			<Selector
+				className={Style.LocalSelector}
+				renderSelected={(selected) => (
+					<div className={Style.LocalSelected}>
+						<TranslateIcon />
+						<span>{selected || "language"}</span>
+					</div>
+				)}
+				firstHasDefault
+			>
+				{[locale, ...locales.filter((lang) => lang !== locale)]
+					.map((lang, index) => {
+						const regionNamesInEnglish = new Intl.DisplayNames([locale], { type: 'language' });
+						return (
+							<Link key={index} href="/" locale={lang}>{regionNamesInEnglish.of(lang)}</Link>
+						);
+					})
+				}
+			</Selector>
 		</section>
 	);
 }
