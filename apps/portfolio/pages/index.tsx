@@ -144,7 +144,7 @@ export function Index({ staticProps }: IndexProps) {
 					>
 						<div className={Style.SlideIntro}>
 							<div className={Style.Description}>
-								<h1 className={Style.Name}>Hugo Cabel</h1>
+								<h1 className={Style.Name} data-cy="my-real-name">Hugo Cabel</h1>
 								<h3 className={Style.Job}>Software engineer</h3>
 							</div>
 						</div>
