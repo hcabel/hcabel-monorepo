@@ -71,7 +71,7 @@ export default function Selector(props: ISelectorProps)
 				{props.children.map((child, index) => {
 					// Render all child in a li element
 					return (
-						<li key={index}>
+						<li key={index} onClick={() => Select(child)}>
 							{child}
 						</li>
 					);
