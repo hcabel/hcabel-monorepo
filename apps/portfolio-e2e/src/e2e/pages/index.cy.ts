@@ -60,7 +60,7 @@ describe("The landing page should show all the projects infos", () => {
 		});
 
 		it("Should go to the project HugoMeet when using '#hugomeet' in the landing page url", () => {
-			cy.visit(`/#uvch`);
+			cy.visit(`/#hugomeet`);
 			cy.get("[data-cy='Project-HugoMeet-Title']", {
 				timeout: 5000 /* 5second */,
 			}).should('be.visible');
