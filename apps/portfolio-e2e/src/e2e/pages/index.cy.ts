@@ -1,5 +1,15 @@
 
-describe("The landing page should show all the projects infos", () => {
+describe("The Landing page", () => {
+
+	it("Should show my name and job in first ", () => {
+		cy.visit("/");
+		cy.get("[data-cy='my-real-name']")
+			.should("be.visible")
+			.should("have.text", "Hugo Cabel");
+		cy.get("[data-cy='my-job']")
+			.should("be.visible")
+			.should("have.text", "Software Engineer");
+	});
 
 	it("should show all my project's name and desc", () => {
 		cy.visit("/");
