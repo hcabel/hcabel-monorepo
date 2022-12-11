@@ -10,6 +10,11 @@
         "devServerTarget": "portfolio:serve:PROD:OnComputer",
         "testingType": "e2e",
         "watch": true
+      },
+      "configurations": {
+        "chrome": {
+          "browser": "chrome"
+        }
       }
     },
     "lint": {
