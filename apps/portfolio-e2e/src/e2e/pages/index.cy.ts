@@ -47,7 +47,7 @@ describe("The Landing page", () => {
 			});
 	});
 
-	describe('Should go directly to the project specifed in the url has', () => {
+	describe('Should go directly to the project specifed in the url hash', () => {
 
 		it("Should go to the intro when there is no hash or an invalid one in the landing page url", () => {
 			const invalidHashes = [
@@ -85,5 +85,22 @@ describe("The Landing page", () => {
 				.should('be.visible');
 		});
 
+	});
+
+	describe("Translation", () => {
+		// TODO: Should be translated in english by default
+
+		it("Should be able to change the language of the website", () => {
+			cy.visit("/");
+
+			// Open language selector
+			cy.get("[data-cy='language-selector']").click();
+			// Click on the french option
+			cy.get("[data-cy='language-selector-option-fr']").trigger("click");
+			// should be redirect to the french version of the website
+			cy.url().should("contain", "/fr");
+		});
+
+		// TODO: Should be translated in french when using the french language
 	});
 });

@@ -326,7 +326,7 @@ export function Index({ staticProps }: IndexProps) {
 			<Selector
 				className={Style.LocalSelector}
 				renderSelected={(selected) => (
-					<div className={Style.LocalSelected}>
+					<div data-cy='language-selector'className={Style.LocalSelected}>
 						<TranslateIcon />
 						<span>{selected || "language"}</span>
 					</div>
@@ -335,9 +335,11 @@ export function Index({ staticProps }: IndexProps) {
 			>
 				{[locale, ...locales.filter((lang) => lang !== locale)]
 					.map((lang, index) => {
-						const regionNamesInEnglish = new Intl.DisplayNames([locale], { type: 'language' });
+						const regionNamesInEnglish = new Intl.DisplayNames(locales, { type: 'language' });
 						return (
-							<Link key={index} href="/" locale={lang}>{regionNamesInEnglish.of(lang)}</Link>
+							<span key={index} data-cy={`language-selector-option-${lang}`}>
+								<Link href="/" locale={lang}>{regionNamesInEnglish.of(lang)}</Link>
+							</span>
 						);
 					})
 				}
