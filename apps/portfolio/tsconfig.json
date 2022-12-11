@@ -22,8 +22,12 @@
       "3D/*": ["apps/portfolio/3D/*"],
       "Images/*": ["apps/portfolio/assets/images/*"],
       "Interfaces/*": ["apps/portfolio/interfaces/*"],
-    }
+    },
+    "plugins": [{
+        "name": "next"
+      }
+    ]
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", "**/*.glsl"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", "**/*.glsl", ".next/types/**/*.ts"],
   "exclude": ["node_modules", "next.config.js"]
 }

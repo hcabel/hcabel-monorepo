@@ -1,14 +1,16 @@
-//@ts-check
+// @ts-check
 
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 
 const nextConfig = {
+	experimental: {
+		appDir: true,
+	},
 	distDir: "dist/apps/portfolio/.next",
 	nx: {
 		svgr: false,
 	},
 	webpack: (config, options) => {
-
 		config.module.rules.push({
 			test: /\.glsl$/,
 			use: ['raw-loader', 'glslify-loader'],
