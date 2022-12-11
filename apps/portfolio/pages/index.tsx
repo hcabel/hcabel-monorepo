@@ -335,7 +335,7 @@ export function Index({ staticProps }: IndexProps) {
 			>
 				{[locale, ...locales.filter((lang) => lang !== locale)]
 					.map((lang, index) => {
-						const regionNamesInEnglish = new Intl.DisplayNames(locales, { type: 'language' });
+						const regionNamesInEnglish = new Intl.DisplayNames(lang, { type: 'language' });
 						return (
 							<span key={index} data-cy={`language-selector-option-${lang}`}>
 								<Link href="/" locale={lang}>{regionNamesInEnglish.of(lang)}</Link>
