@@ -3,6 +3,7 @@
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 
 const nextConfig = {
+	distDir: "dist/apps/portfolio/.next",
 	nx: {
 		svgr: false,
 	},
