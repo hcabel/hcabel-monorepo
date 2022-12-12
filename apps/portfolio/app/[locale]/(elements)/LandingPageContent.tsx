@@ -24,7 +24,7 @@ import Project from './project/Projects';
 
 // Interfaces
 import { IProjectDatas } from '../page';
-import Selector from 'Components/Selector';
+import Selector from 'Components/Selector/Selector';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,

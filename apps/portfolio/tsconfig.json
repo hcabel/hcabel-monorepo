@@ -17,11 +17,10 @@
       "@hcabel/types/ProjectApi": ["libs/types/types-project-api/src/index.ts"],
 
       // App local path
-      "Styles/*": ["apps/portfolio/styles/*"],
+      "App/*": ["apps/portfolio/app/*"],
       "Components/*": ["apps/portfolio/components/*"],
       "3D/*": ["apps/portfolio/3D/*"],
       "Images/*": ["apps/portfolio/assets/images/*"],
-      "Interfaces/*": ["apps/portfolio/interfaces/*"],
     },
     "plugins": [{
         "name": "next"

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import gsap from 'gsap/dist/gsap';
 
 export interface ISlideProps {
 	children?: React.ReactNode;

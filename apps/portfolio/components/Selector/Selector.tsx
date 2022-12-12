@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Style from "Styles/components/Selector.module.scss";
+import Style from "./Selector.module.scss";
 
 interface ISelectorProps {
 	children: React.ReactNode[];

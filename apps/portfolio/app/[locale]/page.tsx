@@ -39,3 +39,11 @@ export default async function LandingPage(props: any)
 		/>
 	);
 }
+
+export async function generateStaticParams()
+{
+	return ([
+		{ locale: "en" },
+		{ locale: "fr" },
+	]);
+}
