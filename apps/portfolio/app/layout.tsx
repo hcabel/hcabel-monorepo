@@ -1,3 +1,6 @@
+
+import './global.scss';
+
 import Head from "./head";
 
 interface RootLayoutProps {
@@ -8,7 +11,9 @@ export default function RootLayout({ children, }: RootLayoutProps) {
 	return (
 		<html>
 			<Head />
-			<body>{children}</body>
+			<body className="root">
+				{children}
+			</body>
 		</html>
 	);
 }

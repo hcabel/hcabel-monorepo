@@ -6,7 +6,7 @@ const nextConfig = {
 	experimental: {
 		appDir: true,
 	},
-	distDir: "dist/apps/portfolio/.next",
+	distDir: "../../dist/apps/portfolio/.next",
 	nx: {
 		svgr: false,
 	},
@@ -37,10 +37,11 @@ const nextConfig = {
 			}
 		];
 	},
-	i18n: {
-		locales: ['en', 'fr'],
-		defaultLocale: 'en',
-	},
+	// Does not yet work with app directory
+	// i18n: {
+	// 	locales: ['en', 'fr'],
+	// 	defaultLocale: 'en',
+	// },
 };
 
 module.exports = withNx(nextConfig);

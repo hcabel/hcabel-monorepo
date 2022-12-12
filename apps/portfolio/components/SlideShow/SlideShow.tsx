@@ -8,10 +8,10 @@ import EventEmitter from 'events';
 
 export interface ISlideShowProps {
 	children: React.ReactElement<ISlideProps>[];
-	actions?: EventEmitter;
+	controller?: EventEmitter;
 }
 
-export interface ISlideClass {
+export interface ISlideObject {
 	jsx: React.ReactElement<ISlideProps>;
 	onConstruct: (self: any) => void;
 	onUpdate: (self: any, progress: number) => void;
@@ -26,11 +26,11 @@ export interface ISlideClass {
 	progess: number;
 }
 
-export default function SlideShow({ children, actions }: ISlideShowProps)
+export default function SlideShow({ children, controller }: ISlideShowProps)
 {
-	const [_Slides] = useState<ISlideClass[]>(
+	const [_Slides] = useState<ISlideObject[]>(
 		children.map((jsx, i) => {
-			const slide: ISlideClass = {
+			const slide: ISlideObject = {
 				jsx: jsx,
 				...jsx.props,
 				onConstruct: jsx.props.onConstruct || (() => {}),
@@ -111,7 +111,7 @@ export default function SlideShow({ children, actions }: ISlideShowProps)
 		_Slides[0].active = true;
 
 		// Move to another slide
-		actions.on('move', (direction: number) => {
+		controller.on('move', (direction: number) => {
 			if (!direction && direction !== 0) {
 				return;
 			}
@@ -132,7 +132,7 @@ export default function SlideShow({ children, actions }: ISlideShowProps)
 		});
 
 		// Refresh the current slide
-		actions?.on('refresh', () => {
+		controller.on('refresh', () => {
 			_Slides.forEach(slide => {
 				if (slide.active) {
 					// Call all the life cycle events
@@ -144,7 +144,7 @@ export default function SlideShow({ children, actions }: ISlideShowProps)
 		});
 
 		// Go to a specific slide
-		actions?.on('goto', (index: number) => {
+		controller.on('goto', (index: number) => {
 			if (!index && index !== 0) {
 				return;
 			}
@@ -157,12 +157,12 @@ export default function SlideShow({ children, actions }: ISlideShowProps)
 				if (gotoSlide) {
 					// Find direction to the goto slide
 					const direction = gotoSlide.index - activeSlide.index;
-					actions.emit('move', direction);
+					controller.emit('move', direction);
 					console.log(direction);
 				}
 			}
 		});
-	}, [_Slides, actions]);
+	}, [_Slides, controller]);
 
 	return (
 		<>
@@ -171,10 +171,10 @@ export default function SlideShow({ children, actions }: ISlideShowProps)
 			</div>
 			{/* Generate X invisible div for scrolling */}
 			{children.map((child, index) =>
-				<div key={index} id={`InvisibleDiv_${index}`} style={{ width: "100vw", height: `${child.props.Length || 100}vh` }} />
+				<div key={index} id={`InvisibleDiv_${index}`} style={{ width: "100vw", height: `${child.props.length + 100}vh` }} />
 			)}
 			{/* We add one more to allow the last one to have a scroll animation */}
-			<div key={children.length} id={`InvisibleDiv_${children.length}`} style={{ width: "100vw", height: "100vh" }} />
+			<div key={children.length} id={`InvisibleDiv_${children.length}`} style={{ width: "100vw", height: `${children[children.length - 1].props.length + 100}vh` }} />
 		</>
 	);
 }

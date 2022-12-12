@@ -1,5 +1,10 @@
+"use client";
+
+// Libs
 import Link from 'next/link';
-import Style from 'Styles/components/ProjectStats.module.scss';
+
+// Design
+import Style from './Stats.module.scss';
 
 export interface IStatField {
 	name: string;
@@ -11,7 +16,7 @@ export interface IStatField {
 export default function StatField(props: IStatField)
 {
 	return (
-		<Link className={Style.StatField} href={props.url}>
+		<Link className={`a ${Style.StatField}`} href={props.url}>
 			{props.icon &&
 					<div className={Style.StatIcon}>
 						{props.icon}
