@@ -16,9 +16,17 @@ export function middleware(request: NextRequest) {
 			return (undefined);
 		}
 
-		// If the url start with one of the locales, we dont do anything
-		if (LOCALES.includes(url.pathname.split("/")[1])) {
-			return (undefined);
+		// If the local is specified in the url
+		const urlLocale = url.pathname.split("/")[1];
+		if (urlLocale) {
+			// if it's a supported language dont do anything
+			if (LOCALES.includes(urlLocale)) {
+				return (undefined);
+			}
+
+			// But if it's a wrong language we redirect to the url with the default language
+			url.pathname = url.pathname.replace(`/${urlLocale}`, "/en");
+			return (NextResponse.redirect(url));
 		}
 
 		// get client language, en is not specified in the url
@@ -39,9 +47,7 @@ export function middleware(request: NextRequest) {
 			return (NextResponse.redirect(url));
 		}
 
-		// if language is not supported we redirect to the url with the default language
-		url.pathname = `/en${url.pathname}`;
-		return (NextResponse.redirect(url));
+		return (undefined);
 	} catch (error) {
 		console.log(error);
 	}
