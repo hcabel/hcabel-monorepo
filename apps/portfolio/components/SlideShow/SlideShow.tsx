@@ -158,7 +158,6 @@ export default function SlideShow({ children, controller }: ISlideShowProps)
 					// Find direction to the goto slide
 					const direction = gotoSlide.index - activeSlide.index;
 					controller.emit('move', direction);
-					console.log(direction);
 				}
 			}
 		});
@@ -173,8 +172,6 @@ export default function SlideShow({ children, controller }: ISlideShowProps)
 			{children.map((child, index) =>
 				<div key={index} id={`InvisibleDiv_${index}`} style={{ width: "100vw", height: `${child.props.length + 100}vh` }} />
 			)}
-			{/* We add one more to allow the last one to have a scroll animation */}
-			<div key={children.length} id={`InvisibleDiv_${children.length}`} style={{ width: "100vw", height: `${children[children.length - 1].props.length + 100}vh` }} />
 		</>
 	);
 }
