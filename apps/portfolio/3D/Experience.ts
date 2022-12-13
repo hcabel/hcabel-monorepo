@@ -40,6 +40,7 @@ class Experience extends EventEmitter
 		}
 
 		super();
+		this.setMaxListeners(20);
 
 		Experience.instance = this;
 		// Init experience if a canvas has been passed

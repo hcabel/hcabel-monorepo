@@ -2,7 +2,7 @@
 
 // Libs
 import EventEmitter from 'events';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import * as THREE from 'three';
 import Link from 'next/link';
 
@@ -25,6 +25,7 @@ import Project from './project/Projects';
 // Interfaces
 import { IProjectDatas } from '../page';
 import Selector from 'Components/Selector/Selector';
+import { useState } from 'react';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -33,7 +34,7 @@ interface ILandingPageContentProps {
 
 export default function LandingPageContent(props: ILandingPageContentProps)
 {
-	const slideShowController = useMemo(() => new EventEmitter(), []);
+	const [slideShowController] = useState(new EventEmitter());
 
 	// Hide all the background exect the one with the class that we specified
 	function	UpdateBackground(className: string)
@@ -188,7 +189,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				// The position of the scene in the 3d world
 				self._ScenePosition = new THREE.Vector3(0, -33, 0);
 				// Distance from the middle of the scene
-				self._PathDistance = new THREE.Vector3(20, 20, 20);
+				self._PathDistance = new THREE.Vector3(25, 25, 25);
 				// Camera movements
 				self._StartRotationY = Math.PI / 180 * 60;
 				self._EndRotationY = Math.PI / 180 * -120;
@@ -365,12 +366,15 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				)}
 				firstHasDefault
 			>
-				{[props.locale, ...["fr", "en"].filter((lang) => lang !== props.locale)]
+				{[props.locale, ...["fr", "en"]
+					.filter((lang) => lang !== props.locale)]
 					.map((lang, index) => {
 						const regionNamesInEnglish = new Intl.DisplayNames(lang, { type: 'language' });
 						return (
 							<span key={index} data-cy={`language-selector-option-${lang}`}>
-								<Link className={Style.LocalLink} href={`/${lang}`} locale={lang}>{regionNamesInEnglish.of(lang)}</Link>
+								<Link className={Style.LocalLink} href={`/${lang}`} locale={lang}>
+									{regionNamesInEnglish.of(lang)}
+								</Link>
 							</span>
 						);
 					})
