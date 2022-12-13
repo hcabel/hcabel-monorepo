@@ -2,7 +2,7 @@
 
 // Libs
 import EventEmitter from 'events';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import Link from 'next/link';
 
@@ -12,6 +12,7 @@ import { Locales } from '@hcabel/types/ProjectApi';
 // Design
 import Style from '../page.module.scss';
 import TranslateIcon from 'Images/TranslateIcon.svg';
+import ArrowIcon from 'Images/arrow.svg';
 
 import Experience from '3D/Experience';
 
@@ -25,7 +26,6 @@ import Project from './project/Projects';
 // Interfaces
 import { IProjectDatas } from '../page';
 import Selector from 'Components/Selector/Selector';
-import { useState } from 'react';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -306,6 +306,11 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 							<div className={Style.Description}>
 								<h1 className={`h1 ${Style.Name}`} data-cy="my-real-name">Hugo Cabel</h1>
 								<h4 className={`h4 ${Style.Job}`} data-cy="my-job">Software Engineer</h4>
+							</div>
+							<div className={Style.MyProject} onClick={() => slideShowController.emit('goto', 1)}>
+								<ArrowIcon />
+								<h5 className={`h5 ${Style.MyProjectText}`}>My projects</h5>
+								<ArrowIcon />
 							</div>
 						</div>
 					</Slide>

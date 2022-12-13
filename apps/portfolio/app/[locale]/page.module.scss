@@ -95,6 +95,7 @@
 }
 
 .SlideIntro {
+	padding-bottom: 0%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -179,5 +180,25 @@
 	.LocalLink {
 		color: $PrimaryTextColor;
 		text-decoration: none;
+	}
+}
+
+.MyProject {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 25%;
+	height: 5%;
+	text-align: center;
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, #dbdbdb 150%);
+	cursor: pointer;
+
+	.MyProjectText {
+		font-weight: normal;
+	}
+
+	.MyProjectArrow {
+		width: auto;
+		height: 100%;
 	}
 }
