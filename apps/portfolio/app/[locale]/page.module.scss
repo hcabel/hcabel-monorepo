@@ -190,15 +190,33 @@
 	width: 25%;
 	height: 5%;
 	text-align: center;
-	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, #dbdbdb 150%);
 	cursor: pointer;
+
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 16px 16px 0px 0px;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(4.8px);
+	-webkit-backdrop-filter: blur(4.8px);
+	border: 1px solid rgba(255, 255, 255, 0.27);
 
 	.MyProjectText {
 		font-weight: normal;
 	}
 
-	.MyProjectArrow {
+	svg {
 		width: auto;
-		height: 100%;
+		height: 50%;
+
+		// animation up and down
+		animation: upAndDown 1s ease-in-out infinite;
+
+		@keyframes upAndDown {
+			0%, 100% {
+				transform: translateY(-5%);
+			}
+			50% {
+				transform: translateY(5%);
+			}
+		}
 	}
 }
