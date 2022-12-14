@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
 
 	try {
 		// Early return if it is a public file such as an image or an api call
-		if (PUBLIC_FILE.test(nextUrl.pathname) || nextUrl.pathname.includes("/api")) {
+		if (PUBLIC_FILE.test(nextUrl.pathname) || nextUrl.pathname.includes("/api") || nextUrl.pathname.includes("/_next")) {
 			return (undefined);
 		}
 

@@ -1,4 +1,5 @@
 
+import CookiePopup from 'Components/CookiePopup/CookiePopup';
 import './global.scss';
 
 import Head from "./head";
@@ -13,6 +14,7 @@ export default function RootLayout({ children, }: RootLayoutProps) {
 			<Head />
 			<body className="root">
 				{children}
+				<CookiePopup />
 			</body>
 		</html>
 	);

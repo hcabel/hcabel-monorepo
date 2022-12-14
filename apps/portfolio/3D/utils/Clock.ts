@@ -34,9 +34,7 @@ class Clock extends EventEmitter {
 
 		if (this._Elapsed > 1000 / 30) {
 			this.emit("tick");
-			console.log(1000 / this._Delta);
 		}
-
 	}
 }
 
