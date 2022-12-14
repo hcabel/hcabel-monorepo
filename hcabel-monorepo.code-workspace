@@ -8,21 +8,25 @@
 			"path": "./apps/portfolio-e2e",
 			"name": "Apps/Portfolio/e2e",
 		},
-		{
-			"path": "./apps/hugomeet",
-			"name": "Apps/HugoMeet"
-		},
-		{
-			"path": "./apps/hugomeet-signalling-server",
-			"name": "Apps/HugoMeet-SS"
-		},
+		// {
+		// 	"path": "./apps/hugomeet",
+		// 	"name": "Apps/HugoMeet"
+		// },
+		// {
+		// 	"path": "./apps/hugomeet-signalling-server",
+		// 	"name": "Apps/HugoMeet-SS"
+		// },
 		{
 			"path": "./apps/project-api",
 			"name": "Apps/ProjectApi"
 		},
+		// {
+		// 	"path": "./libs/types/types-project-api",
+		// 	"name": "Libs/Types/ProjectApi"
+		// },
 		{
-			"path": "./libs/types/types-project-api",
-			"name": "Libs/Types/ProjectApi"
+			"path": "./apps/telemetry-api",
+			"name": "Apps/Telemetry"
 		},
 		{
 			"path": "./libs/rest-api-utils",
