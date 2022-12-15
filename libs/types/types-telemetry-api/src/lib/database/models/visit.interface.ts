@@ -14,6 +14,7 @@ export interface IVisitModel extends Omit<LeanDocument<IVisitDocument>, "id" | "
 }
 
 // Interface when the api is returning a visit model
-export interface IVisit extends Omit<IVisitModel, "__v" | "_id"> {
-	_id: string
+export interface IVisit extends Omit<IVisitModel, "__v" | "_id" | "date"> {
+	_id: string,
+	date: string
 }
