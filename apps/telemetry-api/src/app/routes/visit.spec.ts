@@ -14,7 +14,7 @@ const mockDatabase: IDatabase<Nested<any>> = {
 			create: jest.fn(() => generate_random_visit()),
 			delete_one: jest.fn(() => true),
 			read: jest.fn(() => []),
-			read_single: jest.fn(() => generate_random_visit()),
+			read_one: jest.fn(() => generate_random_visit()),
 			update_one: jest.fn(() => generate_random_visit()),
 		}
 	}

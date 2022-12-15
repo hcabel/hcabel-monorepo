@@ -25,7 +25,7 @@ export function read(filter: Partial<IVisitModel>): Promise<IVisitModel[] | null
  * @param filter {Partial<IVisitModel>} the data needed to find the visit to read
  * @returns {Promise<IVisitModel> | null} The visit found OR null if the query failed
  */
-export function read_single(filter: Partial<IVisitModel>): Promise<IVisitModel | null>
+export function read_one(filter: Partial<IVisitModel>): Promise<IVisitModel | null>
 {
 	return (
 		Visit.table
