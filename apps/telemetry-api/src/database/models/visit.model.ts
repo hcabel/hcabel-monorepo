@@ -15,7 +15,7 @@ const VisitSchema =
 
 const VisitModel = model<IVisitDocument>("visits", VisitSchema);
 
-export default {
+export const Visit = {
 	table: VisitModel,
 	schema: VisitSchema
 };
