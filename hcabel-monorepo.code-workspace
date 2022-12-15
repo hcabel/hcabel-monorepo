@@ -2,35 +2,39 @@
 	"folders": [
 		{
 			"path": "./apps/portfolio",
-			"name": "Apps/Portfolio"
-		},
-		{
-			"path": "./apps/portfolio-e2e",
-			"name": "Apps/Portfolio/e2e",
+			"name": "Apps / Portfolio"
 		},
 		// {
+		// 	"path": "./apps/portfolio-e2e",
+		// 	"name": "Apps / Portfolio / e2e",
+		// },
+		// {
 		// 	"path": "./apps/hugomeet",
-		// 	"name": "Apps/HugoMeet"
+		// 	"name": "Apps / HugoMeet"
 		// },
 		// {
 		// 	"path": "./apps/hugomeet-signalling-server",
-		// 	"name": "Apps/HugoMeet-SS"
+		// 	"name": "Apps / HugoMeet-SS"
 		// },
 		{
 			"path": "./apps/project-api",
-			"name": "Apps/ProjectApi"
+			"name": "Apps / ProjectApi"
 		},
-		// {
-		// 	"path": "./libs/types/types-project-api",
-		// 	"name": "Libs/Types/ProjectApi"
-		// },
+		{
+			"path": "./libs/types/types-project-api",
+			"name": "Libs / Types / ProjectApi"
+		},
 		{
 			"path": "./apps/telemetry-api",
-			"name": "Apps/Telemetry"
+			"name": "Apps / TelemetryApi"
+		},
+		{
+			"path": "./libs/types/types-telemetry-api",
+			"name": "Libs / Types / TelemetryApi"
 		},
 		{
 			"path": "./libs/rest-api-utils",
-			"name": "Libs/RestApiUtils",
+			"name": "Libs / RestApiUtils",
 		},
 		{
 			"path": ".",

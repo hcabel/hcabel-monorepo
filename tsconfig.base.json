@@ -1,27 +1,32 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "@hcabel/rest-api-utils": ["./libs/rest-api-utils/src/index.ts"],
-      "@hcabel/types/ProjectApi": ["libs/types/types-project-api/src/index.ts"]
-    },
-    "noImplicitAny": true,
-    "strict": true
-  },
-  "exclude": ["node_modules", "tmp", "dist"]
+	"compileOnSave": false,
+	"compilerOptions": {
+		"rootDir": ".",
+		"sourceMap": true,
+		"declaration": false,
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"target": "es2015",
+		"module": "esnext",
+		"lib": ["es2017", "dom"],
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
+		"paths": {
+			"@hcabel/rest-api-utils": ["./libs/rest-api-utils/src/index.ts"],
+			"@hcabel/types/ProjectApi": [
+				"libs/types/types-project-api/src/index.ts"
+			],
+			"@hcabel/types/types-telemetry-api": [
+				"libs/types/types-telemetry-api/src/index.ts"
+			]
+		},
+		"noImplicitAny": true,
+		"strict": true
+	},
+	"exclude": ["node_modules", "tmp", "dist"]
 }
