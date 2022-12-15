@@ -8,7 +8,7 @@ const RouteTree: IRoutingTreeBranch = {
 	__self__: {
 		get: useRoute(async() => ({ status: 200, json: { message: "Telemetry API is watching you ! 👁️👁️" }}))
 	},
-	Visit: {
+	visits: {
 		get: useRoute(GetAllVisit)
 	}
 };

@@ -13,4 +13,7 @@ export default {
 	},
 	moduleFileExtensions: ["ts", "js", "html"],
 	coverageDirectory: "../../coverage/apps/telemetry-api",
+	setupFiles: [
+		"<rootDir>/src/testing/setup.ts"
+	],
 };
