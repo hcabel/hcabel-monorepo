@@ -1,6 +1,7 @@
 import { IDatabase } from "@hcabel/rest-api-utils";
 import { ITelemetryApiQueries } from "@hcabel/types/TelemetryApi";
 import mongoose from "mongoose";
+import queries from "./queries";
 
 function connect()
 {
@@ -27,7 +28,7 @@ export type ITelemetryApiDatabase = IDatabase<ITelemetryApiQueries>;
 
 const database: IDatabase<any> = {
 	connect,
-	queries: {}
+	queries: queries
 };
 
 export default database;
