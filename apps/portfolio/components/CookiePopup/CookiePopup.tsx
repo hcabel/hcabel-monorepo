@@ -3,6 +3,7 @@ import Image from "next/image";
 // Design
 import Style from "./CookiePopup.module.scss";
 import CookiesBackground from "Images/CookiesBackground.png";
+import Link from "next/link";
 
 interface ICookiePopupProps {
 	onAccept: () => void,
@@ -28,6 +29,12 @@ export default function CookiePopup(props: ICookiePopupProps)
 					<li><b>{"Privacy safe"}</b>{", very little data are collected"}</li>
 				</ul>
 			</div>
+			<h5 className={`h5 ${Style.Title}`}>
+				{"If you dont believe me => "}
+				<Link href="https://github.com/hcabel/hcabel-monorepo">
+					source code
+				</Link>
+			</h5>
 			<div className={Style.Buttons}>
 				<button onClick={props.onDeny}>
 					<h5 className={`h5 ${Style.BtnText}`}>Deny 😞</h5>
