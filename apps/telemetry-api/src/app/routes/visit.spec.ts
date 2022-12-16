@@ -5,6 +5,7 @@ import { IDatabase, Nested } from '@hcabel/rest-api-utils';
 
 import { create_app } from '../app';
 import { IVisitModelToIVisit } from './utils/formating.utils';
+import { IRouteCreateVisitArgs } from '@hcabel/types/TelemetryApi';
 
 // TODO: replace any by mock interface
 const mockDatabase: IDatabase<Nested<any>> = {
@@ -27,26 +28,26 @@ describe('visits', () => {
 	describe('Get All visits', () => {
 
 		it("Should return a 200 status code with a json content type", async () => {
-			const response = await supertest(app).get('/visit');
+			const response = await supertest(app).get('/visits');
 			expect(response.status).toBe(200);
 			expect(response.type).toBe('application/json');
 		});
 
 		it("Should return an array of visits", async () => {
-			const response = await supertest(app).get('/visit');
+			const response = await supertest(app).get('/visits');
 			expect(response.body).toBeInstanceOf(Array);
 		});
 
 		it("Should call the read query once", async () => {
 			mockDatabase.queries.Visit.read.mockReset();
-			await supertest(app).get('/visit');
+			await supertest(app).get('/visits');
 			expect(mockDatabase.queries.Visit.read).toHaveBeenCalledTimes(1);
 		});
 
 		it("Should return 500 is the query failed", async () => {
 			mockDatabase.queries.Visit.read.mockReset();
 			mockDatabase.queries.Visit.read.mockResolvedValueOnce(null);
-			const response = await supertest(app).get('/visit');
+			const response = await supertest(app).get('/visits');
 			expect(response.status).toBe(500);
 			expect(response.body.error).toBeDefined();
 		});
@@ -69,7 +70,7 @@ describe('visits', () => {
 				mockDatabase.queries.Visit.read.mockReset();
 				mockDatabase.queries.Visit.read.mockResolvedValueOnce(input);
 
-				const response = await supertest(app).get('/visit');
+				const response = await supertest(app).get('/visits');
 				expect(response.status).toBe(200);
 				expect(response.body).toEqual(input.map((visit) => (IVisitModelToIVisit(visit))));
 			}
@@ -109,11 +110,81 @@ describe('visits', () => {
 				mockDatabase.queries.Visit.read.mockReset();
 				mockDatabase.queries.Visit.read.mockResolvedValueOnce([]);
 
-				const response = await supertest(app).get('/visit').query(filter.send);
+				const response = await supertest(app).get('/visits').query(filter.send);
 				expect(response.status).toBe(200);
 				expect(mockDatabase.queries.Visit.read).toHaveBeenCalledWith(filter.expected);
 			}
 
+		});
+	});
+
+	describe("POST visits", () => {
+		const validInputs: IRouteCreateVisitArgs[] = [
+			{ href: "http://localhost:3000/page1" },
+			{ href: "http://localhost:3000/page1/page2/page3" },
+			{ href: "http://localhost:3000/page1/page2#testee" },
+			{ href: "http://localhost:3000/page1/page2?a=b&b=c&qe=897656" },
+			{ href: "http://localhost:3000/page1/page2?a=b&b=c&qe=897656" },
+			{ href: "http://localhost:3000/page1/page2#" },
+			{ href: "http://localhost:3000/page1/page2?" },
+			{ href: "http://localhost:3000" },
+			{ href: "http://localhost" },
+			{ href: "http://localhost.com" },
+		]
+		const invalidInputs: any[] = [
+			{ href: "" },
+			{ href: { name: "idk" } },
+			{ href: [] },
+			{ href: 123 },
+			{ href: true },
+			{ href: null },
+			{},
+			{ random: "http://localhost:3000" },
+			{ href: "/page1/page2#" },
+			{ href: "httpss://localhost.comcom" },
+			{ href: "https:localhost.com" },
+		];
+
+		for (const input of validInputs)
+		{
+			it(`Should return 204 with no content if the query succeed => ${input.href}`, async () => {
+				// reset the mock
+				mockDatabase.queries.Visit.create.mockReset();
+				mockDatabase.queries.Visit.create.mockResolvedValueOnce(generate_random_visit());
+
+				const response = await supertest(app).post('/visits').send(input);
+				expect(response.status).toBe(204);
+				expect(response.body).toEqual({});
+			});
+		}
+
+		for (const input of invalidInputs)
+		{
+			it(`Shoud return 400 if one of the input is invalid => ${JSON.stringify(input)}`, async () => {
+				const response = await supertest(app).post('/visits').send(input);
+				expect(response.status).toBe(400);
+				expect(response.body.error).toBeDefined();
+			});
+		}
+
+		it("Should call the create query once", async () => {
+			// reset the mock
+			mockDatabase.queries.Visit.create.mockReset();
+			mockDatabase.queries.Visit.create.mockResolvedValueOnce(generate_random_visit());
+
+			const response = await supertest(app).post('/visits').send(validInputs[0]);
+			expect(response.status).toBe(204);
+			expect(mockDatabase.queries.Visit.create).toHaveBeenCalledTimes(1);
+		});
+
+		it("Should return 500 if the query failed", async () => {
+			// reset the mock
+			mockDatabase.queries.Visit.create.mockReset();
+			mockDatabase.queries.Visit.create.mockRejectedValueOnce(null);
+
+			const response = await supertest(app).post('/visits').send(validInputs[0]);
+			expect(response.status).toBe(500);
+			expect(response.body.error).toBeDefined();
 		});
 	});
 });

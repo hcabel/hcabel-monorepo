@@ -1,5 +1,6 @@
 import express from "express";
 import helmet from "helmet";
+import bodyParser from "body-parser";
 
 import RouteTree from "./routes/tree";
 import { GenerateRouterFromRoutingTree } from "@hcabel/rest-api-utils";
@@ -8,6 +9,9 @@ export function create_app(database: any)
 {
 	// Create app
 	const app = express();
+
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({ extended: true}));
 
 	// Setup middlewares security
 	app.use(helmet());
