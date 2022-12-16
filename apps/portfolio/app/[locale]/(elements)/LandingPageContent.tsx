@@ -26,6 +26,7 @@ import Project from './project/Projects';
 // Interfaces
 import { IProjectDatas } from '../page';
 import Selector from 'Components/Selector/Selector';
+import { useCookie } from 'apps/portfolio/hooks/useCookies';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -280,6 +281,15 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			}
 		});
 	}
+
+	useCookie((value) => {
+		console.log("Cookie value", value)
+		if (value === "true") {
+			// Send post visit request to the telemetry server
+			// This will tell that someone has visited the page
+
+		}
+	}, "AllowCookies")
 
 	return (
 		<main className="Page">

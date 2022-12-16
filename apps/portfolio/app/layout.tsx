@@ -3,6 +3,7 @@
 import CookiePopup from 'Components/CookiePopup/CookiePopup';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import CookieManager from '../utils/CookieManager';
 import './global.scss';
 
 import Head from "./head";
@@ -30,14 +31,14 @@ export default function RootLayout({ children, }: RootLayoutProps) {
 					<CookiePopup
 						onAccept={() => {
 							// Create a cookie that remember for a year that the cookie policy was accepted
-							Cookies.set("AllowCookies", "yes", {
+							CookieManager.setCookie("AllowCookies", "true", {
 								expires: 365 /* 1 Year */
 							});
 							set_ShowCookiePopup(false);
 						}}
 						onDeny={() => {
 							// Create a session cookie that will be delete at the end of the session
-							Cookies.set("AllowCookies", "no");
+							CookieManager.setCookie("AllowCookies", "false");
 							set_ShowCookiePopup(false);
 						}}
 					/>
