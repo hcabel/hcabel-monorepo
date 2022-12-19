@@ -75,20 +75,20 @@ class Experience extends EventEmitter
 		});
 
 		// Performances stats
-		this._Stats = new Stats();
-		this._Stats.showPanel(0);
-		document.body.appendChild(this._Stats.dom);
+		// this._Stats = new Stats();
+		// this._Stats.showPanel(0);
+		// document.body.appendChild(this._Stats.dom);
 
 		this.emit('initialized');
 	}
 
 	private Update()
 	{
-		this._Stats.begin();
+		// this._Stats.begin();
 
 		this._World.Update();
 
-		this._Stats.end();
+		// this._Stats.end();
 	}
 
 	private Resize()
