@@ -13,6 +13,7 @@ import Style from './project.module.scss';
 import GithubStats from './GithubStats';
 import VsCodeStats from './VsCodeStats';
 import YoutubeStats from './YoutubeStats';
+import i18nText from 'Utils/i18Text';
 
 export interface IProjectProps {
 	id?: string;
@@ -48,7 +49,7 @@ export default function Project(props: IProjectProps)
 				}
 				{props.moreButtonRedirection &&
 					<Link className={Style.ProjectMoreButton} href={props.moreButtonRedirection}>
-						{props.moreTextOverride || "More details"}
+						{props.moreTextOverride || i18nText("MoreDetails", props.locale)}
 					</Link>
 				}
 			</div>

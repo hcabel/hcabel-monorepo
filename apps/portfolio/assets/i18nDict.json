@@ -2,5 +2,17 @@
 	"MyJob": {
 		"en": "Software Engineer",
 		"fr": "Ingénieur logiciel"
+	},
+	"MyProjects-Title" : {
+		"en": "My projects",
+		"fr": "Mes projets"
+	},
+	"MoreDetails": {
+		"en": "More details",
+		"fr": "Plus de détails"
+	},
+	"Go to HugoMeet": {
+		"en": "Go to HugoMeet",
+		"fr": "Aller sur HugoMeet"
 	}
 }

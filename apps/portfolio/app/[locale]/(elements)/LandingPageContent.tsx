@@ -28,7 +28,7 @@ import { IProjectDatas } from '../page';
 
 // Utils
 import CookieManager from 'Utils/CookieManager';
-import i18Text from 'Utils/i18Text';
+import i18nText from 'Utils/i18Text';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -325,11 +325,11 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 						<div className={Style.SlideIntro}>
 							<div className={Style.Description}>
 								<h1 className={`h1 ${Style.Name}`} data-cy="my-real-name">Hugo Cabel</h1>
-								<h4 className={`h4 ${Style.Job}`} data-cy="my-job">{i18Text("MyJob", props.locale)}</h4>
+								<h4 className={`h4 ${Style.Job}`} data-cy="my-job">{i18nText("MyJob", props.locale)}</h4>
 							</div>
 							<div className={Style.MyProject} onClick={() => slideShowController.emit('goto', 1)}>
 								<ArrowIcon />
-								<h5 className={`h5 ${Style.MyProjectText}`}>My projects</h5>
+								<h5 className={`h5 ${Style.MyProjectText}`}>{i18nText("MyProjects-Title", props.locale)}</h5>
 								<ArrowIcon />
 							</div>
 						</div>
@@ -365,7 +365,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 								project={props.projects["HugoMeet"]}
 								className={Style.ProjectHugoMeet}
 								moreButtonRedirection={"/projects/hugomeet"}
-								moreTextOverride="Explore HugoMeet"
+								moreTextOverride={i18nText("Go to HugoMeet", props.locale)}
 							/>
 						</div>
 					</Slide>
