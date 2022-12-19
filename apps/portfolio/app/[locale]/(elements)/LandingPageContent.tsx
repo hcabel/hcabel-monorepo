@@ -85,7 +85,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			if (cookieValue === "true") {
 				// Send post visit request to the telemetry server
 				// This will tell that someone has visited the page
-				console.log("Send !!", cookieValue)
 				fetch(`${process.env.NX_TELEMETRY_API_ENDPOINT}/visits`, {
 					method: "POST",
 					headers: {
