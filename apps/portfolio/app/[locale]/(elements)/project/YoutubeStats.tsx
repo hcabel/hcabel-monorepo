@@ -1,7 +1,7 @@
 "use client";
 
 // External project
-import { IStat } from '@hcabel/types/ProjectApi';
+import { IStat, Locales } from '@hcabel/types/ProjectApi';
 
 // Design
 import Style from './Stats.module.scss';
@@ -12,6 +12,7 @@ import StatField from './StatField';
 
 export interface IYoutubeStatsProps {
 	stats: IStat[];
+	locale: Locales;
 }
 
 export default function YoutubeStats(props: IYoutubeStatsProps)
@@ -24,7 +25,7 @@ export default function YoutubeStats(props: IYoutubeStatsProps)
 					return (
 						<StatField
 							key={`youtube-${stat.name.en}`}
-							name={stat.name["en"]}
+							name={stat.name[props.locale]}
 							value={stat.value}
 							url={stat.url}
 						/>

@@ -342,6 +342,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					>
 						<div className={Style.Slide}>
 							<Project
+								locale={props.locale}
 								project={props.projects["Unreal VsCode Helper"]}
 								className={Style.SlideProjectUVCH}
 								moreButtonRedirection="/projects/unreal-vscode-helper"
@@ -358,6 +359,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					>
 						<div className={Style.Slide}>
 							<Project
+								locale={props.locale}
 								project={props.projects["HugoMeet"]}
 								className={Style.ProjectHugoMeet}
 								moreButtonRedirection={"/projects/hugomeet"}
@@ -372,6 +374,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					>
 						<div className={Style.Slide}>
 							<Project
+								locale={props.locale}
 								project={props.projects["Procedural Terrain"]}
 								className={Style.ProjectProceduralTerrain}
 							/>

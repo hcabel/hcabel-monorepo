@@ -1,7 +1,7 @@
 "use client";
 
 // External project
-import { IStat } from '@hcabel/types/ProjectApi';
+import { IStat, Locales } from '@hcabel/types/ProjectApi';
 
 // Design
 import Style from './Stats.module.scss';
@@ -14,6 +14,7 @@ import StatField from './StatField';
 
 export interface IGithubStatsProps {
 	stats: IStat[];
+	locale: Locales;
 }
 
 export default function GithubStats(props: IGithubStatsProps)
@@ -26,7 +27,7 @@ export default function GithubStats(props: IGithubStatsProps)
 					return (
 						<StatField
 							key={`github-${stat.name.en}`}
-							name={stat.name["en"]}
+							name={stat.name[props.locale]}
 							value={stat.value}
 							url={stat.url}
 							icon={

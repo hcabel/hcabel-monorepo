@@ -4,7 +4,7 @@
 import Link from 'next/link';
 
 // External project
-import { IRouteGetProjectById } from '@hcabel/types/ProjectApi';
+import { IRouteGetProjectById, Locales } from '@hcabel/types/ProjectApi';
 
 // Design
 import Style from './project.module.scss';
@@ -27,6 +27,7 @@ export interface IProjectProps {
 
 	hideDescription?: boolean;
 	hideStats?: boolean;
+	locale: Locales;
 }
 
 export default function Project(props: IProjectProps)
@@ -42,7 +43,7 @@ export default function Project(props: IProjectProps)
 				</h1>
 				{!props.hideDescription &&
 					<h4 className={`h4 ${Style.ProjectDescription}`} data-cy={`Project-${props.project.name}-Description`}>
-						{props.project.description["en"]}
+						{props.project.description[props.locale]}
 					</h4>
 				}
 				{props.moreButtonRedirection &&
@@ -54,13 +55,22 @@ export default function Project(props: IProjectProps)
 			{!props.hideStats &&
 				<div className={Style.ProjectStats}>
 					{props.project.stats["youtube"] &&
-						<YoutubeStats stats={props.project.stats["youtube"]}/>
+						<YoutubeStats
+							stats={props.project.stats["youtube"]}
+							locale={props.locale}
+						/>
 					}
 					{props.project.stats["vscode marketplace"] &&
-						<VsCodeStats stats={props.project.stats["vscode marketplace"]}/>
+						<VsCodeStats
+							stats={props.project.stats["vscode marketplace"]}
+							locale={props.locale}
+						/>
 					}
 					{props.project.stats["github"] &&
-						<GithubStats stats={props.project.stats["github"]}/>
+						<GithubStats
+							stats={props.project.stats["github"]}
+							locale={props.locale}
+						/>
 					}
 				</div>
 			}
