@@ -26,7 +26,7 @@ import Project from './project/Projects';
 // Interfaces
 import { IProjectDatas } from '../page';
 import Selector from 'Components/Selector/Selector';
-import { useCookie } from 'apps/portfolio/hooks/useCookies';
+import CookieManager from 'apps/portfolio/utils/CookieManager';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -79,6 +79,24 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		case "procedural-terrain": index = 3; break;
 		}
 		slideShowController.emit('goto', index);
+
+		// subscribe to AllowCookies changes
+		CookieManager.onCookieChange('AllowCookies', (cookieValue) => {
+			if (cookieValue === "true") {
+				// Send post visit request to the telemetry server
+				// This will tell that someone has visited the page
+				console.log("Send !!", cookieValue)
+				fetch(`${process.env.NX_TELEMETRY_API_ENDPOINT}/visits`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						href: window.location.href,
+					})
+				})
+			}
+		});
 	}, []);
 
 	useEffect(() => {
@@ -281,15 +299,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			}
 		});
 	}
-
-	useCookie((value) => {
-		console.log("Cookie value", value)
-		if (value === "true") {
-			// Send post visit request to the telemetry server
-			// This will tell that someone has visited the page
-
-		}
-	}, "AllowCookies")
 
 	return (
 		<main className="Page">

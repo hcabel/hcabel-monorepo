@@ -25,9 +25,10 @@ class CookieManager {
 	}
 
 	public setCookie(name: string, value: string, options?: Cookies.CookieAttributes) {
+		const oldValue = this.getCookie(name);
 		Cookies.set(name, value, options);
-		// trigger all listeners
-		if (this.listeners.has(name)) {
+		// trigger all listeners if value changed
+		if (oldValue !== value && this.listeners.has(name)) {
 			this.listeners.get(name).forEach((callback) => callback(value));
 		}
 	}
@@ -48,12 +49,16 @@ class CookieManager {
 		CookieManager.instance.removeCookie(name, options);
 	}
 
-	public onCookieChange(name: string, callback: (value: string) => void) {
-		const id = Math.random();
+	public onCookieChange(name: string, callback: (value: string) => void, id: number = -1) {
+		if (id === -1) {
+			id = Math.random();
+		}
 		if (!this.listeners.has(name)) {
 			this.listeners.set(name, new Map());
 		}
 		this.listeners.get(name).set(id, callback);
+		// trigger the callback with the current value
+		callback(this.getCookie(name));
 		return id;
 	}
 	public static onCookieChange(name: string, callback: (value: string) => void) {
