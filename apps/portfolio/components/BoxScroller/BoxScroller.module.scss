@@ -1,0 +1,53 @@
+$spacer: 1rem;
+
+.ScrollerH {
+	display: grid;
+	grid-auto-flow: column;
+	gap: $spacer;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	padding: $spacer / 2 0;
+	width: 100%;
+}
+
+.ScrollerV {
+	display: grid;
+	grid-auto-flow: row;
+	gap: $spacer;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding: 0 $spacer / 2;
+	height: 100%;
+}
+
+.ScrollerV::-webkit-scrollbar, .ScrollerH::-webkit-scrollbar {
+	width: .35rem;
+}
+
+.ScrollerV::-webkit-scrollbar-track, .ScrollerH::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.ScrollerV::-webkit-scrollbar-thumb, .ScrollerH::-webkit-scrollbar-thumb {
+	background: rgb(255, 255, 255);
+	border-radius: 1rem;
+}
+
+.ScrollerV::-webkit-scrollbar-thumb:hover, .ScrollerH::-webkit-scrollbar-thumb:hover {
+	background: rgb(200, 200, 200);
+}
+
+.Element {
+	text-align: center;
+	align-self: center;
+	opacity: 75%;
+}
+
+.Snap {
+	scroll-snap-type: both mandatory;
+	scroll-padding: $spacer;
+}
+
+.Snap > * {
+	scroll-snap-align: start;
+}

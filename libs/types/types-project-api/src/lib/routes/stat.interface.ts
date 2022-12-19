@@ -1,5 +1,5 @@
 
-import { IStat, IStats } from '../models/stat.interface';
+import { IStat, IStats } from '../database/models/stat.interface';
 
 export type IRouteGetAllProjectPlatformStats = IStat[];
 

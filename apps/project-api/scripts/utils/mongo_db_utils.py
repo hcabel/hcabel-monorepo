@@ -6,7 +6,7 @@ def update_stats(db, project_id: str, platform: str, name: str, value: str) -> N
 		{
 			"project_id": project_id,
 			"platform": platform,
-			"name": name
+			"name.en": name
 		},
 		{
 			"$set": { "value": value }
@@ -17,7 +17,7 @@ def update_stats(db, project_id: str, platform: str, name: str, value: str) -> N
 		db.stats.insert_one({
 			"project_id": project_id,
 			"platform": platform,
-			"name": name,
+			"name.en": name,
 			"value": value,
 			"url": ""
 		})

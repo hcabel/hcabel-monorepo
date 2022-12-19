@@ -1,132 +1,112 @@
 import * as THREE from 'three';
 
-import Environements from '3D/world/Environements';
-import GLTFAsset from '3D/world/GLTFAsset';
+import Resources from '3D/utils/Resources';
+import Camera from '3D/world/Camera';
+import Renderer from '3D/world/Renderer';
+import Experience from '3D/Experience';
 
-import m_terrainV from '3D/world/materials/TerrainVertex.glsl';
-import m_terrainF from '3D/world/materials/TerrainFragment.glsl';
-
-class World {
+class World
+{
+	// Quick access
+	private _Resources: Resources;
 
 	// Own properties
 	private _Scene: THREE.Scene;
-	private _Assets: GLTFAsset[] = [];
-	private _Environements: Environements;
+	private _Camera: Camera;
+	private _Renderer: Renderer;
+	private _MeshScenes: { [projectName: string]: THREE.Group };
 
 	// Own properties getters
 	get Scene(): THREE.Scene { return this._Scene; }
+	get Camera(): Camera { return this._Camera; }
+	get Renderer(): Renderer { return this._Renderer; }
+	get MeshScenes(): { [projectName: string]: THREE.Group } { return this._MeshScenes; }
 
 	constructor()
 	{
+		this._Resources = new Experience().Resources;
 		this._Scene = new THREE.Scene();
-		this._Environements = new Environements(this._Scene);
-		this._Assets = [
-			new GLTFAsset("models/scene.glb")
-				.on("loaded", (asset: GLTFAsset) => {
-					if (!asset.Meshs || !asset.Scene) {
-						return;
-					}
+		this._Camera = new Camera(this._Scene);
+		this._Renderer = new Renderer(this._Scene, this._Camera);
 
-					asset.Scene.scale.set(0.1, 0.1, 0.1);
-					asset.Scene.position.set(0, 5, 0);
+		// Wait resources to be loaded before initializing the world
+		this._Resources.on('ready', () => {
+			(this._Resources.Assets.uvchBackedTexture as THREE.Texture).flipY = false;
+			const bakedMaterial = new THREE.MeshBasicMaterial({
+				map: this._Resources.Assets.uvchBackedTexture,
+				transparent: true
+			});
 
-					for (const [name, mesh] of asset.Meshs) {
-						// if single material wrap it in an array
-						const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+			const scene = this._Resources.Assets.scene as THREE.Group;
 
-						for (const material of materials) {
-							if (material instanceof THREE.MeshStandardMaterial) {
-								material.roughness = 0;
-								material.metalness = 0;
-							}
-						}
+			this._MeshScenes = {
+				intro: new THREE.Group(),
+				"Unreal VsCode Helper": new THREE.Group(),
+				HugoMeet: new THREE.Group(),
+				"Procedural Terrain": new THREE.Group(),
+			};
+			// create a group for all the meshs of the INTRO scene
+			this._MeshScenes.intro.add(scene.getObjectByName('Cube001'));
 
-						// Enable shadow
-						mesh.castShadow = true;
-						mesh.receiveShadow = true;
+			// create a group for all the meshs of the UVCH scene
+			this._MeshScenes["Unreal VsCode Helper"].add(
+				scene.getObjectByName('FloorCube'),
+				scene.getObjectByName('Logo'),
+				scene.getObjectByName('neon'),
+				scene.getObjectByName('neon001'),
+				scene.getObjectByName('RoofLamp'),
+				scene.getObjectByName('Window'),
+				scene.getObjectByName('Chair'),
+				scene.getObjectByName('Desk'),
+				scene.getObjectByName('Keyboard'),
+				scene.getObjectByName('MousePad'),
+				scene.getObjectByName('Screen'),
+				scene.getObjectByName('Books'),
+				scene.getObjectByName('H_shelves'),
+				scene.getObjectByName('Lamp'),
+				scene.getObjectByName('Rubix'),
+				scene.getObjectByName('V_shelves'),
+			);
 
-						if (name === "GroundTerrain") {
+			// create a group for all the meshs of the HUGOMEET scene
+			this._MeshScenes.HugoMeet.add(
+				scene.getObjectByName('HugoMeetLogo'),
+				scene.getObjectByName('Beach'),
+				scene.getObjectByName('Chara_Blue'),
+				scene.getObjectByName('Chara_Red'),
+				scene.getObjectByName('Montain'),
+				scene.getObjectByName('Palm-tree'),
+				scene.getObjectByName('Water'),
+			);
 
-							// Load terrain height map
-							const heightmap = new THREE.TextureLoader().load("images/terrain.png");
-							heightmap.wrapS = THREE.RepeatWrapping;
-							heightmap.wrapT = THREE.MirroredRepeatWrapping; // This is because I messed up the tilling in the texture (on the Y axis)
+			// create a group for all the meshs of the Procedural Terrain scene
+			this._MeshScenes["Procedural Terrain"].add(
+				scene.getObjectByName('Terrain'),
+				scene.getObjectByName('Water001'),
+			);
 
-							// https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders
-							mesh.material = new THREE.ShaderMaterial({
-								extensions: {
-									derivatives: true,
-								},
-
-								defines: {
-									STANDARD: '',
-									PHYSICAL: '',
-									USE_COLOR: '',
-									FLAT_SHADED: '',
-								},
-								lights: true,
-								vertexShader: THREE.ShaderChunk.meshphysical_vert
-									.replace('void main() {', m_terrainV)
-									.replace('#include <defaultnormal_vertex>', "vec3 transformedNormal = displacedNormal;")
-									.replace('#include <displacementmap_vertex>', "transformed = displacedPosition;"),
-								fragmentShader: THREE.ShaderChunk.meshphysical_frag
-									.replace('void main() {', m_terrainF)
-									.replace('#include <color_fragment>', "diffuseColor.rgb = fragment_color;"),
-								uniforms: {
-									...THREE.ShaderLib.physical.uniforms,
-									tHeightMap: { value: heightmap },
-									vOffset: { value: new THREE.Vector2(0, 0) },
-
-									boundingBoxMin: { value: mesh.geometry.boundingBox.min },
-									boundingBoxMax: { value: mesh.geometry.boundingBox.max },
-								},
-							});
-						}
-					}
-
-					this._Scene.add(asset.Scene);
-				}),
-		];
-
-		this.LoadAllAssets();
-	}
-
-	private async LoadAllAssets()
-	{
-		return new Promise<void>((resolve) => {
-			const itemToLoad = this._Assets.length;
-			let itemLoaded = 0;
-
-			console.log("Assets loading...");
-			this._Assets.forEach((asset: GLTFAsset) => {
-				asset.StartLoading();
-				asset.on('loaded', () => {
-					itemLoaded++;
-					if (itemLoaded === itemToLoad) {
-						console.log("Assets loaded!");
-						resolve();
+			// set bakedmaterial for every mesh of every scene
+			for (const sceneName in this._MeshScenes) {
+				this._MeshScenes[sceneName].traverse((child) => {
+					if (child instanceof THREE.Mesh) {
+						child.material = bakedMaterial;
 					}
 				});
-			});
+				this._Scene.add(this._MeshScenes[sceneName]);
+			}
 		});
 	}
 
 	public Update()
 	{
-		// Update GroundTerrainTop displacecment map offset
-		const ground = this._Assets[0].Meshs?.get("GroundTerrain");
-		if (ground) {
-			const material = (Array.isArray(ground.material) ? ground.material[0] : ground.material) as THREE.ShaderMaterial;
+		this._Camera.Update();
+		this._Renderer.Update();
+	}
 
-			if (material) {
-				const offset = material.uniforms.vOffset.value;
-				const speed = 0.001;
-
-				// Offset the texture
-				offset.x = (offset.x + speed) % 1;
-				offset.y = (offset.y + -speed) % 2;
-			}
-		}
+	public Resize()
+	{
+		this._Camera.Resize();
+		this._Renderer.Resize();
 	}
 }
 

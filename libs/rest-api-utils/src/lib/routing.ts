@@ -25,13 +25,18 @@ export function useRoute(callee: RequestHandler): Express.RequestHandler
 	return async(req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
 		try {
 			const result = await callee(req);
-			res.status(result.status).json(result.json);
-			next();
+			if (!result.json) {
+				res.sendStatus(result.status);
+			}
+			else {
+				res.status(result.status).json(result.json);
+			}
 		}
-		catch {
-			console.error(`${req.route.path}: CRASHED`);
-			res.status(500).json({ message: "Internal server error" });
+		catch (err) {
+			console.error(`${req.method} ${req.path} failed: ${err}`);
+			res.status(500).json({ error: "Internal server error" });
 		}
+		next();
 	};
 }
 

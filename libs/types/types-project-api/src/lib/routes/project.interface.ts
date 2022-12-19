@@ -1,6 +1,5 @@
-import { IProject } from '../models/project.interface';
-import { IStats } from '../models/stat.interface';
+import { IStats } from '../database';
+import { IProject } from '../database/models/project.interface';
 
-export interface IRouteGetProjectInfos extends IProject {
-	stats: IStats;
-}
+export type IRouteGetAllProjects = IProject[];
+export type IRouteGetProjectById = IProject & { stats: IStats };

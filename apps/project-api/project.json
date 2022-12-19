@@ -11,9 +11,8 @@
         "target": "node",
         "compiler": "tsc",
         "outputPath": "dist/apps/project-api",
-        "main": "apps/project-api/src/main.ts",
-        "tsConfig": "apps/project-api/tsconfig.json",
-        "assets": ["apps/project-api/src/assets"]
+        "main": "apps/project-api/src/server.ts",
+        "tsConfig": "apps/project-api/tsconfig.json"
       },
       "configurations": {
         "production": {
@@ -37,9 +36,7 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": [
-          "apps/project-api/src/**/*"
-        ]
+        "lintFilePatterns": ["apps/project-api/src/**/*"]
       },
       "defaultConfiguration": "test",
       "configurations": {
@@ -47,6 +44,14 @@
         "fix": {
           "fix": true
         }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/project-api"],
+      "options": {
+        "jestConfig": "apps/project-api/jest.config.ts",
+        "passWithNoTests": true
       }
     }
   },

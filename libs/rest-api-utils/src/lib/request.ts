@@ -1,12 +1,12 @@
 import Express from 'express';
 
 export interface IRequestError {
-	message: string;
+	error: string;
 }
 
 export interface IRequestResponse<T> {
 	status: number;
-	json: T | IRequestError;
+	json?: T | IRequestError;
 }
 
-export type RequestHandler = (req: Express.Request) => IRequestResponse<any> | Promise<IRequestResponse<any>>;
+export type RequestHandler<T = any> = (req: Express.Request) => Promise<IRequestResponse<T>>;

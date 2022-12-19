@@ -7,13 +7,13 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "apps/portfolio-e2e/cypress.config.ts",
-        "devServerTarget": "portfolio:serve:development",
+        "devServerTarget": "portfolio:serve:PROD:OnComputer",
         "testingType": "e2e",
         "watch": true
       },
       "configurations": {
-        "production": {
-          "devServerTarget": "portfolio:serve:production"
+        "chrome": {
+          "browser": "chrome"
         }
       }
     },

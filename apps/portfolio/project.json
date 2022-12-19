@@ -7,35 +7,29 @@
       "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
       "nextConfig": "apps/portfolio/next.config.js",
-      "defaultConfiguration": "production",
       "options": {
         "root": "apps/portfolio",
-        "outputPath": "dist/apps/portfolio",
-        "assets": "apps/portfolio/assets"
-      },
-      "configurations": {
-        "development": {
-          "outputPath": "apps/portfolio"
-        },
-        "production": {}
+        "outputPath": "dist/apps/portfolio"
       }
     },
     "serve": {
       "executor": "@nrwl/next:server",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "DEV:OnComputer",
       "options": {
         "buildTarget": "portfolio:build",
         "dev": true
       },
       "configurations": {
-        "development": {
-          "buildTarget": "portfolio:build:development",
-          "dev": true
+        "DEV:OnComputer": {
+          "buildTarget": "portfolio:build"
         },
-        "production": {
-          "buildTarget": "portfolio:build:production",
-          "dev": false,
+        "DEV:OnLocalNetwork": {
+          "buildTarget": "portfolio:build",
           "hostname": "10.0.0.78"
+        },
+        "PROD:OnComputer": {
+          "buildTarget": "portfolio:build",
+          "dev": false
         }
       }
     },

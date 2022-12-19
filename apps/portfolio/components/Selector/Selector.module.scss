@@ -1,0 +1,36 @@
+
+@import "App/vars.scss";
+
+.Selector {
+	cursor: pointer;
+
+	&:hover {
+		box-shadow: 0 0 4px white;
+		border: 1px solid white;
+	}
+
+	.Selected {
+		padding: 0.25rem 0.5rem;
+	}
+
+	.Dropdown {
+		display: none;
+		margin: 0;
+		padding: 0;
+
+		&.Open {
+			display: block;
+		}
+
+		li {
+			padding: 0.5rem 1rem;
+			display: block;
+			cursor: pointer;
+			border-top: 1px solid white;
+
+			&:hover {
+				background-color: rgba(100, 100, 100, 0.25);
+			}
+		}
+	}
+}
