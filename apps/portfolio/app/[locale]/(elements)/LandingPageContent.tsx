@@ -17,7 +17,7 @@ import ArrowIcon from 'Images/arrow.svg';
 import Experience from '3D/Experience';
 
 // Components
-// import Selector from 'Components/Selector';
+import Selector from 'Components/Selector/Selector';
 import SlideShow from 'Components/SlideShow/SlideShow';
 import ExperimentCanvas from './ExperiementCanvas';
 import Slide from 'Components/SlideShow/Slide';
@@ -25,8 +25,10 @@ import Project from './project/Projects';
 
 // Interfaces
 import { IProjectDatas } from '../page';
-import Selector from 'Components/Selector/Selector';
-import CookieManager from 'apps/portfolio/utils/CookieManager';
+
+// Utils
+import CookieManager from 'Utils/CookieManager';
+import i18Text from 'Utils/i18Text';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -323,7 +325,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 						<div className={Style.SlideIntro}>
 							<div className={Style.Description}>
 								<h1 className={`h1 ${Style.Name}`} data-cy="my-real-name">Hugo Cabel</h1>
-								<h4 className={`h4 ${Style.Job}`} data-cy="my-job">Software Engineer</h4>
+								<h4 className={`h4 ${Style.Job}`} data-cy="my-job">{i18Text("MyJob", props.locale)}</h4>
 							</div>
 							<div className={Style.MyProject} onClick={() => slideShowController.emit('goto', 1)}>
 								<ArrowIcon />
