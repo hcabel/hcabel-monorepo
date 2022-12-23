@@ -31,6 +31,7 @@
     "react-dom": "18.2.0",
     "react-router-dom": "^6.4.2",
     "regenerator-runtime": "0.13.7",
+    "sharp": "^0.31.2",
     "stats.js": "^0.17.0",
     "tslib": "^2.3.0",
     "webpack": "5",
