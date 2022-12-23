@@ -29,7 +29,9 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "telemetry-api:build:production"
+          "buildTarget": "telemetry-api:build:production",
+          "inspect": false,
+          "watch": false
         }
       }
     },
