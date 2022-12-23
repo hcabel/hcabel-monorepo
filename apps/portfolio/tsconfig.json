@@ -21,7 +21,7 @@
       "Components/*": ["apps/portfolio/components/*"],
       "3D/*": ["apps/portfolio/3D/*"],
       "Images/*": ["apps/portfolio/assets/images/*"],
-      "Utils/*": ["apps/portfolio/Utils/*"],
+      "Utils/*": ["apps/portfolio/utils/*"],
     },
     "plugins": [{
         "name": "next"

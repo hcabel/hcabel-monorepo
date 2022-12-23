@@ -394,8 +394,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				)}
 				firstHasDefault
 			>
-				{[props.locale, ...["fr", "en"]
-					.filter((lang) => lang !== props.locale)]
+				{[ props.locale, ...["fr", "en"].filter((lang) => lang !== props.locale) ]
 					.map((lang, index) => {
 						const regionNamesInEnglish = new Intl.DisplayNames(lang, { type: 'language' });
 						return (
