@@ -9,6 +9,13 @@ export function create_app(database: any)
 	// Create app
 	const app = express();
 
+	// Allow cross origin requests
+	app.use((req, res, next) => {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		next();
+	});
+
 	// Setup middlewares security
 	app.use(helmet());
 

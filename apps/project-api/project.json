@@ -29,7 +29,9 @@
       },
       "configurations": {
         "production": {
-          "buildTarget": "project-api:build:production"
+          "buildTarget": "project-api:build:production",
+          "inspect": false,
+          "watch": false
         }
       }
     },

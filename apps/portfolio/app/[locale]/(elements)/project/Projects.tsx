@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { IRouteGetProjectById, Locales } from '@hcabel/types/ProjectApi';
 
 // Design
-import Style from './project.module.scss';
+import Style from './Project.module.scss';
 
 // Components
 import GithubStats from './GithubStats';
