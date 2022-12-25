@@ -18,6 +18,13 @@ class Renderer
 	// Own properties getters
 	get WebGLRenderer(): THREE.WebGLRenderer { return this._WebGLRenderer; }
 
+	// Own properties setters
+	set Canvas(InCanvas: HTMLCanvasElement)
+	{
+		this._Canvas = InCanvas;
+		this.SetRenderer();
+	}
+
 	constructor(InScene: THREE.Scene, InCamera: Camera)
 	{
 		const experience = new Experience();

@@ -53,7 +53,14 @@ class Experience extends EventEmitter
 	{
 		// If already initialized
 		if (this.Canvas !== undefined) {
-			return;
+
+			// If the canvas is the same, return
+			if (this.Canvas === canvas) {
+				return;
+			}
+			this._Canvas = canvas;
+			this._Sizes.Canvas = canvas;
+			this._World.Renderer.Canvas = canvas;
 		}
 
 		// Init experience properties

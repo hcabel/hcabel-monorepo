@@ -12,6 +12,12 @@ class Sizes extends EventEmitter {
 	get Aspect(): number { return this._Aspect; }
 	get PixelRatio(): number { return this._PixelRatio; }
 
+	set Canvas(canvas: HTMLElement)
+	{
+		this._Canvas = canvas;
+		this.OnResize();
+	}
+
 	constructor(canvas: HTMLElement = undefined)
 	{
 		super(); // call EventEmitter constructor
