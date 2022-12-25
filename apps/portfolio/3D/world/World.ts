@@ -31,22 +31,48 @@ class World
 
 		// Wait resources to be loaded before initializing the world
 		this._Resources.on('ready', () => {
-			(this._Resources.Assets.uvchBackedTexture as THREE.Texture).flipY = false;
-			const bakedMaterial = new THREE.MeshBasicMaterial({
-				map: this._Resources.Assets.uvchBackedTexture,
-				transparent: true
-			});
+
+			// Create material with textures
+			(this._Resources.Assets.T_Intro as THREE.Texture).flipY = false;
+			(this._Resources.Assets.T_Uvch as THREE.Texture).flipY = false;
+			(this._Resources.Assets.T_HugoMeet as THREE.Texture).flipY = false;
+			(this._Resources.Assets.T_ProcGen as THREE.Texture).flipY = false;
+			const bakedMaterials = [
+				new THREE.MeshBasicMaterial({
+					map: this._Resources.Assets.T_Intro,
+					transparent: true
+				}),
+				new THREE.MeshBasicMaterial({
+					map: this._Resources.Assets.T_Uvch,
+					transparent: true
+				}),
+				new THREE.MeshBasicMaterial({
+					map: this._Resources.Assets.T_HugoMeet,
+					transparent: true
+				}),
+				new THREE.MeshBasicMaterial({
+					map: this._Resources.Assets.T_ProcGen,
+					transparent: true
+				}),
+			]
 
 			const scene = this._Resources.Assets.scene as THREE.Group;
 
 			this._MeshScenes = {
-				intro: new THREE.Group(),
+				"Intro": new THREE.Group(),
 				"Unreal VsCode Helper": new THREE.Group(),
-				HugoMeet: new THREE.Group(),
+				"HugoMeet": new THREE.Group(),
 				"Procedural Terrain": new THREE.Group(),
 			};
+
 			// create a group for all the meshs of the INTRO scene
-			this._MeshScenes.intro.add(scene.getObjectByName('Cube001'));
+			this._MeshScenes["Intro"].add(
+				scene.getObjectByName('GithubLogo'),
+				scene.getObjectByName('YtLogo'),
+				scene.getObjectByName('BigScreen')
+			);
+			// Apply material to the Intro scene
+			this._MeshScenes["Intro"].traverse((child: THREE.Mesh) => child.material = bakedMaterials[0]);
 
 			// create a group for all the meshs of the UVCH scene
 			this._MeshScenes["Unreal VsCode Helper"].add(
@@ -67,9 +93,11 @@ class World
 				scene.getObjectByName('Rubix'),
 				scene.getObjectByName('V_shelves'),
 			);
+			// Apply material to the UVCH scene
+			this._MeshScenes["Unreal VsCode Helper"].traverse((child: THREE.Mesh) => child.material = bakedMaterials[1]);
 
 			// create a group for all the meshs of the HUGOMEET scene
-			this._MeshScenes.HugoMeet.add(
+			this._MeshScenes["HugoMeet"].add(
 				scene.getObjectByName('HugoMeetLogo'),
 				scene.getObjectByName('Beach'),
 				scene.getObjectByName('Chara_Blue'),
@@ -78,22 +106,24 @@ class World
 				scene.getObjectByName('Palm-tree'),
 				scene.getObjectByName('Water'),
 			);
+			// Apply material to the HUGOMEET scene
+			this._MeshScenes["HugoMeet"].traverse((child: THREE.Mesh) => child.material = bakedMaterials[2]);
 
 			// create a group for all the meshs of the Procedural Terrain scene
 			this._MeshScenes["Procedural Terrain"].add(
-				scene.getObjectByName('Terrain'),
-				scene.getObjectByName('Water001'),
+				scene.getObjectByName('MarchingCubeTerrain'),
+				scene.getObjectByName('TerrainWater'),
 			);
+			// Apply material to the Procedural Terrain scene
+			this._MeshScenes["Procedural Terrain"].traverse((child: THREE.Mesh) => child.material = bakedMaterials[3]);
 
-			// set bakedmaterial for every mesh of every scene
-			for (const sceneName in this._MeshScenes) {
-				this._MeshScenes[sceneName].traverse((child) => {
-					if (child instanceof THREE.Mesh) {
-						child.material = bakedMaterial;
-					}
-				});
-				this._Scene.add(this._MeshScenes[sceneName]);
-			}
+			// add all the scenes to the world
+			this._Scene.add(
+				this._MeshScenes["Intro"],
+				this._MeshScenes["Unreal VsCode Helper"],
+				this._MeshScenes["HugoMeet"],
+				this._MeshScenes["Procedural Terrain"],
+			);
 		});
 	}
 
