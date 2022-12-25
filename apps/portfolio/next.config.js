@@ -27,7 +27,7 @@ const nextConfig = {
     return [
       {
         source: '/projects/hugomeet',
-        destination: 'https://hugomeet.com',
+        destination: 'https://meet.hugocabel.com',
         permanent: true,
       },
       {
