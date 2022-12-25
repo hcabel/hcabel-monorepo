@@ -8,8 +8,20 @@ const assetsList = {
 		path: 'SM_Scene.glb',
 		type: 'gltf',
 	},
-	uvchBackedTexture: {
-		path: 'T_Scene.png',
+	T_Intro: {
+		path: 'T_Intro.png',
+		type: 'texture',
+	},
+	T_Uvch: {
+		path: 'T_Uvch.png',
+		type: 'texture',
+	},
+	T_HugoMeet: {
+		path: 'T_HugoMeet.png',
+		type: 'texture',
+	},
+	T_ProcGen: {
+		path: 'T_ProcGen.png',
 		type: 'texture',
 	}
 };
