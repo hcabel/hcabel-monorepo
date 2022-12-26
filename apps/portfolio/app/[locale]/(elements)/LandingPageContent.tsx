@@ -249,7 +249,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				// Change background
 				UpdateBackground(Style.Background_Ocean);
 				// Move canvas to the right
-				MoveCanvas(20);
+				MoveCanvas(25);
 
 				if (self._Camera) {
 					const camPosition = new THREE.Vector3(-1, 0.25, 0)
@@ -281,7 +281,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				// The position of the scene in the 3d world
 				self._ScenePosition = new THREE.Vector3(0, -33, 0);
 				// Distance from the middle of the scene
-				self._PathDistance = new THREE.Vector3(25, 25, 25);
+				self._PathDistance = new THREE.Vector3(35, 35, 35);
 				// Camera movements
 				self._StartRotationY = Math.PI / 180 * 60;
 				self._EndRotationY = Math.PI / 180 * -120;
@@ -295,7 +295,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			},
 			onEnter: (self: any, direction: number) => {
 				// Move canvas to the right
-				MoveCanvas(20);
+				MoveCanvas(25);
 				// Change background color
 				UpdateBackground(Style.Background_Peach);
 
