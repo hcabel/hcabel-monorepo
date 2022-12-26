@@ -119,8 +119,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		// Set the position of the first cube, we shift it to the left by 50% of the total size
 		const pos = new THREE.Vector3(5, 33, -(weeks.length * (cubeSize + cubeSpacing)) / 2);
 
-		console.log(weeks);
-
 		for (let i = 0; i < weeks.length; i++) {
 			const week = weeks[i];
 			for (let j = 0; j < week.contributionDays.length; j++) {
@@ -129,6 +127,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				const cube = new THREE.Mesh(cubeGeometry, new THREE.MeshBasicMaterial({
 					color: day.color
 				}));
+				cube.visible = false; // hidden by default
 
 				// curve cube position on the left and the right
 				const curve = Math.sin((i / weeks.length) * Math.PI);
