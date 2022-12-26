@@ -9,19 +9,19 @@ const assetsList = {
 		type: 'gltf',
 	},
 	T_Intro: {
-		path: 'T_Intro.png',
+		path: 'T_Intro.webp',
 		type: 'texture',
 	},
 	T_Uvch: {
-		path: 'T_Uvch.png',
+		path: 'T_Uvch.webp',
 		type: 'texture',
 	},
 	T_HugoMeet: {
-		path: 'T_HugoMeet.png',
+		path: 'T_HugoMeet.webp',
 		type: 'texture',
 	},
 	T_ProcGen: {
-		path: 'T_ProcGen.png',
+		path: 'T_ProcGen.webp',
 		type: 'texture',
 	}
 };
