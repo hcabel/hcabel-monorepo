@@ -68,8 +68,7 @@ class World
 			// create a group for all the meshs of the INTRO scene
 			this._MeshScenes["Intro"].add(
 				scene.getObjectByName('GithubLogo'),
-				scene.getObjectByName('YtLogo'),
-				scene.getObjectByName('BigScreen')
+				scene.getObjectByName('YtLogo')
 			);
 			// Apply material to the Intro scene
 			this._MeshScenes["Intro"].traverse((child: THREE.Mesh) => child.material = bakedMaterials[0]);

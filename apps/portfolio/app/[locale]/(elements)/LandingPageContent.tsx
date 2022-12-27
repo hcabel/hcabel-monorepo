@@ -24,7 +24,7 @@ import Slide from 'Components/SlideShow/Slide';
 import Project from './project/Projects';
 
 // Interfaces
-import { IProjectDatas } from '../page';
+import { GithubActivities, IProjectDatas } from '../page';
 
 // Utils
 import CookieManager from 'Utils/CookieManager';
@@ -33,7 +33,8 @@ import i18nText from 'Utils/i18Text';
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
 	locale: Locales,
-}
+	activities: GithubActivities
+};
 
 export default function LandingPageContent(props: ILandingPageContentProps)
 {
@@ -98,7 +99,51 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				})
 			}
 		});
+
 	}, []);
+
+	// Using the weeks data, create a cube chart of 7 cube for each column where each column represent a week
+	function CreateGithubActivitiesChart()
+	{
+		// contants
+		const cubeSize = 0.5;
+		const cubeSpacing = 0.1;
+
+		const result: THREE.Mesh []= [];
+
+		// The data that github api provide us
+		const weeks = props.activities.data.user.contributionsCollection.contributionCalendar.weeks;
+		// the geometry of the cube
+		const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+
+		// Set the position of the first cube, we shift it to the left by 50% of the total size
+		const pos = new THREE.Vector3(5, 33, -(weeks.length * (cubeSize + cubeSpacing)) / 2);
+
+		for (let i = 0; i < weeks.length; i++) {
+			const week = weeks[i];
+			for (let j = 0; j < week.contributionDays.length; j++) {
+				const day = week.contributionDays[j];
+				// Set color
+				const cube = new THREE.Mesh(cubeGeometry, new THREE.MeshBasicMaterial({
+					color: day.color
+				}));
+				cube.visible = false; // hidden by default
+
+				// curve cube position on the left and the right
+				const curve = Math.sin((i / weeks.length) * Math.PI);
+
+				// Set position of the cube depending on the week, the day, and curve
+				cube.position.set(
+					pos.x + curve * 5,
+					pos.y + -(cubeSize + cubeSpacing) * j,
+					pos.z + (cubeSize + cubeSpacing) * i,
+				);
+
+				result.push(cube);
+			}
+		}
+		return (result);
+	}
 
 	useEffect(() => {
 		new Experience()
@@ -117,6 +162,13 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				// Get 3d camera ref
 				new Experience().on('ready', () => {
 					self._Camera = new Experience().World.Camera;
+					self._IntroScene = new Experience().World.MeshScenes["Intro"]
+
+					// add the github activities chart to the scene
+					CreateGithubActivitiesChart().forEach((cube) => {
+						self._IntroScene.add(cube);
+					});
+
 				});
 			},
 			onEnter: (self: any, direction: number) => {
@@ -127,7 +179,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 
 				if (self._Camera) {
 					// Same position has the start of the next slide
-					const camPosition = new THREE.Vector3(-25, 6.25, 0)
+					const camPosition = new THREE.Vector3(-25, 0, 0)
 						.add(self._ScenePosition);
 					if (direction === 1 /* Top to bottom */) {
 						// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
@@ -140,6 +192,25 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 							self._ScenePosition,
 							0.025);
 					}
+				}
+			},
+			onScroll: (self: any, progress: number) => {
+				if (self._IntroScene) {
+					const cubeToShow = Math.floor(progress * self._IntroScene.children.length) + 2;
+
+					(self._IntroScene.children as []).forEach((cube: any, index) => {
+						cube.visible = index < cubeToShow;
+					});
+				}
+
+				if (self._Camera) {
+					// move camera up to down by -5 units
+					const start = new THREE.Vector3(-25, 2.5, 0)
+						.add(self._ScenePosition);
+					const end = new THREE.Vector3(-25, -2.5, 0)
+						.add(self._ScenePosition);
+					const camPosition = start.clone().lerp(end, progress);
+					self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 				}
 			},
 			onLeave: (self: any, direction: number) => {
@@ -177,7 +248,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				// Change background
 				UpdateBackground(Style.Background_Ocean);
 				// Move canvas to the right
-				MoveCanvas(20);
+				MoveCanvas(25);
 
 				if (self._Camera) {
 					const camPosition = new THREE.Vector3(-1, 0.25, 0)
@@ -209,7 +280,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				// The position of the scene in the 3d world
 				self._ScenePosition = new THREE.Vector3(0, -33, 0);
 				// Distance from the middle of the scene
-				self._PathDistance = new THREE.Vector3(25, 25, 25);
+				self._PathDistance = new THREE.Vector3(35, 35, 35);
 				// Camera movements
 				self._StartRotationY = Math.PI / 180 * 60;
 				self._EndRotationY = Math.PI / 180 * -120;
@@ -223,7 +294,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			},
 			onEnter: (self: any, direction: number) => {
 				// Move canvas to the right
-				MoveCanvas(20);
+				MoveCanvas(25);
 				// Change background color
 				UpdateBackground(Style.Background_Peach);
 
