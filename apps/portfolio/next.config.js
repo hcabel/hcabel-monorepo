@@ -6,6 +6,18 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  headers: [
+    {
+      source: '/:all*(svg|jpg|png)',
+      locale: false,
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'public, max-age=31536000, must-revalidate',
+        }
+      ],
+    },
+  ],
   distDir: "../../dist/apps/portfolio/.next",
   nx: {
     svgr: false,
