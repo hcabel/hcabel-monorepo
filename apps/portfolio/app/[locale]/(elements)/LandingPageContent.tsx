@@ -5,6 +5,7 @@ import EventEmitter from 'events';
 import { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // Extenral project
 import { Locales } from '@hcabel/types/ProjectApi';
@@ -39,6 +40,7 @@ interface ILandingPageContentProps {
 export default function LandingPageContent(props: ILandingPageContentProps)
 {
 	const [slideShowController] = useState(new EventEmitter());
+	const router = useRouter();
 
 	// Hide all the background exect the one with the class that we specified
 	function	UpdateBackground(className: string)
@@ -227,11 +229,12 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		return ({
 			onConstruct: (self: any) => {
 				self._ScenePosition = new THREE.Vector3(0, 30, 0);
+				self._InitTrigger = new EventEmitter();
 
 				// Get 3d camera ref
 				new Experience().on('ready', () => {
 					self._Camera = new Experience().World.Camera;
-					self._IntroScene = new Experience().World.MeshScenes["Intro"]
+					self._IntroScene = new Experience().World.MeshScenes["Intro"];
 
 					// add the github activities chart to the scene
 					self._GithubChart = CreateGithubActivitiesChart(new THREE.Vector3(5, 33, 0));
@@ -241,29 +244,98 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 
 					self._CurrentDayCubeIndex = Math.floor(props.activities.data.user.contributionsCollection.contributionCalendar.weeks
 						.reduce((acc, week) => acc + week.contributionDays.length, 0));
+
+					self._FullyInitialized = true;
+					self._InitTrigger.emit('trigger');
 				});
 			},
 			onEnter: (self: any, direction: number) => {
-				// Move canvas to the center
-				MoveCanvas(0);
-				// Change background
-				UpdateBackground(Style.Background_NightClub);
+				function realEnterFunction() {
+					// Move canvas to the center
+					MoveCanvas(0);
+					// Change background
+					UpdateBackground(Style.Background_NightClub);
 
-				if (self._Camera) {
-					// Same position has the start of the next slide
-					const camPosition = new THREE.Vector3(-25, 0, 0)
+					if (self._Camera) {
+						// Same position has the start of the next slide
+						const camPosition = new THREE.Vector3(-25, 0, 0)
 						.add(self._ScenePosition);
-					if (direction === 1 /* Top to bottom */) {
-						// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
-						self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
-						self._Camera.Focus(self._ScenePosition, true);
-					}
-					else {
-						self._Camera.AnimatesToFocalPoint(
-							camPosition,
-							self._ScenePosition,
-							0.025);
-					}
+						if (direction === 1 /* Top to bottom */) {
+							// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
+							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+							self._Camera.Focus(self._ScenePosition, true);
+						}
+						else {
+							self._Camera.AnimatesToFocalPoint(
+								camPosition,
+								self._ScenePosition,
+								0.025);
+							}
+						}
+
+					const raycaster = new THREE.Raycaster();
+					const mouse = new THREE.Vector2();
+					const githubLogoObject = self._IntroScene.children[0];
+					const youtubeLogoObject = self._IntroScene.children[1];
+					const camera = new Experience().World.Camera.PerspectiveCamera;
+
+					// Listen on the mouse moving and check if the cursor is hovering the github or youtube logo
+					document.addEventListener('mousemove', (event) => {
+						event.preventDefault();
+
+						mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+						mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+						raycaster.setFromCamera(mouse, camera);
+
+						const interactableObjects = [githubLogoObject, youtubeLogoObject];
+						const intersects = raycaster.intersectObjects(interactableObjects);
+						if (intersects.length > 0) {
+							// Change the cursor to a pointer
+							document.body.style.cursor = 'pointer';
+						}
+						else {
+								document.body.style.cursor = 'default';
+						}
+
+						// increase the size of the object hover by 10% otherwise set it back to normal
+						interactableObjects.forEach((object) => {
+							if (intersects[0] && object === intersects[0].object) {
+								object.scale.set(1.1, 1.1, 1.1);
+							}
+							else {
+								object.scale.set(1, 1, 1);
+							}
+						});
+					});
+
+					// Listen on the mouse click and check if the cursor is hovering the github or youtube logo
+					document.addEventListener('click', (event) => {
+						event.preventDefault();
+
+						mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+						mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+						raycaster.setFromCamera(mouse, camera);
+
+						const interactableObjects = [githubLogoObject, youtubeLogoObject];
+						const intersects = raycaster.intersectObjects(interactableObjects);
+						if (intersects.length > 0) {
+							if (intersects[0].object === githubLogoObject) {
+								router.push('/redirects/github');
+							}
+							else if (intersects[0].object === youtubeLogoObject) {
+								router.push('/redirects/youtube');
+							}
+						}
+					});
+				}
+
+				if (self._FullyInitialized) {
+					realEnterFunction();
+				}
+				else {
+					self._InitTrigger.on('trigger', realEnterFunction);
 				}
 			},
 			onScroll: (self: any, progress: number) => {
@@ -296,6 +368,8 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					// unfocus from the scene center
 					self._Camera.Unfocus();
 				}
+
+				self._InitTrigger.removeAllListeners();
 			}
 		});
 	}
