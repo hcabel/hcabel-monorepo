@@ -418,7 +418,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 								locale={props.locale}
 								project={props.projects["Unreal VsCode Helper"]}
 								className={Style.SlideProjectUVCH}
-								moreButtonRedirection="/projects/unreal-vscode-helper"
+								moreButtonRedirection="/redirects/unreal-vscode-helper"
 							/>
 						</div>
 					</Slide>
@@ -435,7 +435,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 								locale={props.locale}
 								project={props.projects["HugoMeet"]}
 								className={Style.ProjectHugoMeet}
-								moreButtonRedirection={"/projects/hugomeet"}
+								moreButtonRedirection={"/redirects/hugomeet"}
 								moreTextOverride={i18nText("Go to HugoMeet", props.locale)}
 							/>
 						</div>
