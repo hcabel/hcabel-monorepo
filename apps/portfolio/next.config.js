@@ -6,6 +6,18 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  headers: [
+    {
+      source: '/:all*(svg|jpg|png)',
+      locale: false,
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'public, max-age=31536000, must-revalidate',
+        }
+      ],
+    },
+  ],
   distDir: "../../dist/apps/portfolio/.next",
   nx: {
     svgr: false,
@@ -26,14 +38,24 @@ const nextConfig = {
   redirects: async() => {
     return [
       {
-        source: '/projects/hugomeet',
-        destination: 'https://meet.hugocabel.com',
-        permanent: true,
+        source: '/redirects/youtube',
+        destination: 'https://youtube.com/c/hugocabel',
+        permanent: false
       },
       {
-        source: '/projects/unreal-vscode-helper',
+        source: '/redirects/github',
+        destination: 'https://github.com/hcabel',
+        permanent: false
+      },
+      {
+        source: '/redirects/hugomeet',
+        destination: 'https://meet.hugocabel.com',
+        permanent: false
+      },
+      {
+        source: '/redirects/unreal-vscode-helper',
         destination: 'https://marketplace.visualstudio.com/items?itemName=HugoCabel.uvch',
-        permanent: true,
+        permanent: false
       }
     ];
   },

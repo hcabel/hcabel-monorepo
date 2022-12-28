@@ -23,7 +23,7 @@ export default function RootLayout({ children, }: RootLayoutProps) {
 	}, []);
 
 	return (
-		<html>
+		<html lang="en">
 			<Head />
 			<body className="root">
 				{children}

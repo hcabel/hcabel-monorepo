@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
 		const urlLocale = url.pathname.split("/")[1];
 		if (urlLocale) {
 			// if it's a supported language dont do anything
-			if (LOCALES.includes(urlLocale)) {
+			if (LOCALES.includes(urlLocale) || urlLocale === "redirects") {
 				return (undefined);
 			}
 
