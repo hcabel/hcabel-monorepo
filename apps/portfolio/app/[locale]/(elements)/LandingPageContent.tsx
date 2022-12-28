@@ -103,46 +103,115 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 	}, []);
 
 	// Using the weeks data, create a cube chart of 7 cube for each column where each column represent a week
-	function CreateGithubActivitiesChart()
+	function CreateGithubActivitiesChart(chartPos: THREE.Vector3)
 	{
 		// contants
-		const cubeSize = 0.5;
-		const cubeSpacing = 0.1;
+		const cubeSize = 0.4;
+		const cubeSpacing = 0.2;
 
-		const result: THREE.Mesh []= [];
-
-		// The data that github api provide us
+		// The my github contributions for every week of this year
 		const weeks = props.activities.data.user.contributionsCollection.contributionCalendar.weeks;
+
 		// the geometry of the cube
 		const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+		const amountOfDayInThisYear = (new Date().getFullYear() % 4 === 0 ? 366 : 365)
 
-		// Set the position of the first cube, we shift it to the left by 50% of the total size
-		const pos = new THREE.Vector3(5, 33, -(weeks.length * (cubeSize + cubeSpacing)) / 2);
+		const chart = {
+			pos: new THREE.Vector3(chartPos.x, chartPos.y, chartPos.z + -((amountOfDayInThisYear / 7) * (cubeSize + cubeSpacing)) / 2),
+			cubes: [] as any,
+			materials: [
+				new THREE.MeshBasicMaterial({ color: 0x111111 }), // default
+			]
+		}
 
+		// create a cube for each week already passed (wheter it has a contribution or not)
 		for (let i = 0; i < weeks.length; i++) {
 			const week = weeks[i];
+
+			// create a cube for each day of the week
 			for (let j = 0; j < week.contributionDays.length; j++) {
 				const day = week.contributionDays[j];
-				// Set color
-				const cube = new THREE.Mesh(cubeGeometry, new THREE.MeshBasicMaterial({
-					color: day.color
-				}));
-				cube.visible = false; // hidden by default
+
+				// If not from the current year, don't create the cube
+				if (day.date.slice(0, 4) !== new Date().getFullYear().toString()) {
+					continue;
+				}
+
+				// convert day.color (which is a hexa color string starting with #) to a number
+				const color = parseInt(day.color.slice(1), 16);
+
+				// Check if the material already exist in 'char.materials' if not create it
+				let mat = chart.materials.find((mat) => mat.color.getHex() === color);
+				if (!mat) {
+					mat = new THREE.MeshBasicMaterial({ color: color });
+					chart.materials.push(mat);
+				}
+
+				// if it's today, change the mat to be a pale red
+				if (day.date === new Date().toISOString().slice(0, 10)) {
+					mat = new THREE.MeshBasicMaterial({ color: 0xff1111 });
+				}
+
+				// Create the cube using the default material (his color is controlled with the scroll animation)
+				const mesh = new THREE.Mesh(cubeGeometry, chart.materials[0]);
+
+				// Create an object that will contain all the usefull data related to the cube
+				const cubeData = {
+					mesh: mesh,
+					material: mat,
+					pos: { // The position of the cube in the chart
+						x: i,
+						y: j
+					}
+				};
+				// add the cube datas to the charts
+				chart.cubes.push(cubeData);
 
 				// curve cube position on the left and the right
-				const curve = Math.sin((i / weeks.length) * Math.PI);
+				const curve = Math.sin((cubeData.pos.x / weeks.length) * Math.PI);
 
-				// Set position of the cube depending on the week, the day, and curve
-				cube.position.set(
-					pos.x + curve * 5,
-					pos.y + -(cubeSize + cubeSpacing) * j,
-					pos.z + (cubeSize + cubeSpacing) * i,
+				// Set cube 3d position
+				mesh.position.set(
+					chart.pos.x + curve * 5,
+					// This seam confusing and your right, but the scene is not well rotated so the x and y axis are inverted
+					chart.pos.y - cubeData.pos.y * (cubeSize + cubeSpacing),
+					chart.pos.z + cubeData.pos.x * (cubeSize + cubeSpacing)
 				);
-
-				result.push(cube);
 			}
 		}
-		return (result);
+
+		// create a cube for each day of the year that his is coming
+		const lastCube = chart.cubes[chart.cubes.length - 1];
+		const cubeAlreadyCreated = chart.cubes.length;
+		for (let futureDayCubeIndex = 0; cubeAlreadyCreated + futureDayCubeIndex <= amountOfDayInThisYear; futureDayCubeIndex++) {
+			// Create the cube
+			const mesh = new THREE.Mesh(cubeGeometry, chart.materials[0]);
+
+			// Create an object that will contain all the usefull data related to the cube
+			const cubeData = {
+				mesh: mesh,
+				material: chart.materials[0],
+				pos: { // The position of the cube in the chart
+					x: lastCube.pos.x + Math.floor(futureDayCubeIndex / 7),
+					y: lastCube.pos.y + (futureDayCubeIndex % 7)
+				}
+			}
+			// add the cube and his data to the chart
+			chart.cubes.push(cubeData);
+
+			// curve cube position on the left and the right
+			const curve = Math.sin((cubeData.pos.x / weeks.length) * Math.PI);
+
+			// Set cube 3d position
+			mesh.position.set(
+				chart.pos.x + curve * 5,
+				// This seam confusing and your right, but the scene is not well rotated so the x and y axis are inverted
+				chart.pos.y - cubeData.pos.y * (cubeSize + cubeSpacing),
+				chart.pos.z + cubeData.pos.x * (cubeSize + cubeSpacing)
+			);
+		}
+
+		return (chart);
 	}
 
 	useEffect(() => {
@@ -165,10 +234,13 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					self._IntroScene = new Experience().World.MeshScenes["Intro"]
 
 					// add the github activities chart to the scene
-					CreateGithubActivitiesChart().forEach((cube) => {
-						self._IntroScene.add(cube);
+					self._GithubChart = CreateGithubActivitiesChart(new THREE.Vector3(5, 33, 0));
+					self._GithubChart.cubes.forEach((cube: any) => {
+						self._IntroScene.add(cube.mesh);
 					});
 
+					self._CurrentDayCubeIndex = Math.floor(props.activities.data.user.contributionsCollection.contributionCalendar.weeks
+						.reduce((acc, week) => acc + week.contributionDays.length, 0));
 				});
 			},
 			onEnter: (self: any, direction: number) => {
@@ -196,11 +268,15 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			},
 			onScroll: (self: any, progress: number) => {
 				if (self._IntroScene) {
-					const cubeToShow = Math.floor(progress * self._IntroScene.children.length) + 2;
+					// * 1.75 to allow the animation to end before the end of the scroll, so you can actually see the result
+					const scrollCubeProgress = Math.floor(progress * 365 * 1.75);
 
-					(self._IntroScene.children as []).forEach((cube: any, index) => {
-						cube.visible = index < cubeToShow;
-					});
+					for (let cubeIndex = 0; cubeIndex < self._GithubChart.cubes.length; cubeIndex++) {
+						const cube = self._GithubChart.cubes[cubeIndex];
+
+						// Change the color of the cube according to the scroll progress (default if bellow the scroll progress, or his color if it's a past/current day)
+						cube.mesh.material = (cubeIndex < scrollCubeProgress ? cube.material : self._GithubChart.materials[0]);
+					}
 				}
 
 				if (self._Camera) {
