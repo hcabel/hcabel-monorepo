@@ -128,7 +128,7 @@ export default function LandingPage()
 							<a className="LP-MI-S-Href" href="https://www.youtube.com/channel/UCuKL6gBO82AEBAFc5lWJQFg">Learn more</a> about HugoMeet
 						</span>
 						<span className="LP-MI-Span">
-							contact@hugomeet.com
+							contact@hugocabel.com
 						</span>
 					</div>
 				</div>
@@ -176,7 +176,7 @@ export default function LandingPage()
 							<a className="LP-MI-S-Href" href="https://www.youtube.com/channel/UCuKL6gBO82AEBAFc5lWJQFg">Learn more</a> about HugoMeet
 						</span>
 						<span className="LP-MI-Span">
-							contact@hugomeet.com
+							contact@hugocabel.com
 						</span>
 					</div>
 				</div>
