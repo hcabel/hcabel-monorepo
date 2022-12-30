@@ -98,7 +98,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					body: JSON.stringify({
 						href: window.location.href,
 					})
-				})
+				});
 			}
 		});
 
@@ -116,7 +116,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 
 		// the geometry of the cube
 		const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-		const amountOfDayInThisYear = (new Date().getFullYear() % 4 === 0 ? 366 : 365)
+		const amountOfDayInThisYear = (new Date().getFullYear() % 4 === 0 ? 366 : 365);
 
 		const chart = {
 			pos: new THREE.Vector3(chartPos.x, chartPos.y, chartPos.z + -((amountOfDayInThisYear / 7) * (cubeSize + cubeSpacing)) / 2),
@@ -124,7 +124,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			materials: [
 				new THREE.MeshBasicMaterial({ color: 0x111111 }), // default
 			]
-		}
+		};
 
 		// create a cube for each week already passed (wheter it has a contribution or not)
 		for (let i = 0; i < weeks.length; i++) {
@@ -197,7 +197,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					x: lastCube.pos.x + Math.floor(futureDayCubeIndex / 7),
 					y: lastCube.pos.y + (futureDayCubeIndex % 7)
 				}
-			}
+			};
 			// add the cube and his data to the chart
 			chart.cubes.push(cubeData);
 
@@ -259,7 +259,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					if (self._Camera) {
 						// Same position has the start of the next slide
 						const camPosition = new THREE.Vector3(-25, 0, 0)
-						.add(self._ScenePosition);
+							.add(self._ScenePosition);
 						if (direction === 1 /* Top to bottom */) {
 							// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
@@ -270,8 +270,8 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 								camPosition,
 								self._ScenePosition,
 								0.025);
-							}
 						}
+					}
 
 					const raycaster = new THREE.Raycaster();
 					const mouse = new THREE.Vector2();
@@ -295,7 +295,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 							document.body.style.cursor = 'pointer';
 						}
 						else {
-								document.body.style.cursor = 'default';
+							document.body.style.cursor = 'default';
 						}
 
 						// increase the size of the object hover by 10% otherwise set it back to normal
