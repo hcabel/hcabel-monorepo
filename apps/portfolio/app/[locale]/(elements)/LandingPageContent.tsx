@@ -67,7 +67,8 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 	function MoveCanvas(val: number) {
 		const canvas = document.getElementById("LandingPage3dIllustration");
 		// move canvas only if the screen is big enough
-		if (canvas && window.screen.width >= 920) {
+		val = window.screen.width >= 920 ? val : 0;
+		if (canvas) {
 			canvas.style.transform = `translateX(${val}%)`;
 		}
 	}
@@ -102,6 +103,17 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			}
 		});
 
+		function resize() {
+			slideShowController.emit('refresh');
+		}
+
+		// listen to resize and move canvas to 0 if the screen is too small
+		window.addEventListener('resize', resize);
+
+		return () => {
+			// unsubscribe from AllowCookies changes
+			window.removeEventListener('resize', resize);
+		};
 	}, []);
 
 	// Using the weeks data, create a cube chart of 7 cube for each column where each column represent a week
