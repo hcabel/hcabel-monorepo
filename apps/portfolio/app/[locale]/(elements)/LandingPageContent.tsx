@@ -508,7 +508,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			onScroll: (self: any, progress: number) => {
 				if (self._MeshScene) {
 					// Rotate the scene from 45 deg to 405 deg
-					self._MeshScene.rotation.y = progress * (Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
+					self._MeshScene.rotation.y = progress * -(Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
 				}
 			},
 			onLeave: (self: any, direction: number) => {
