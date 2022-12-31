@@ -21,15 +21,15 @@ export default function CookiePopup(props: ICookiePopupProps)
 			<h4 className={`h4 ${Style.Title}`}>🍪Cookie Policy🍪</h4>
 			<div className={Style.Grid2x2}>
 				<ul>
-					<li><b>{"Custom made"}</b>{", stored in my own database"}</li>
-					<li><b>{"Anonymous"}</b>{", I couldn't identify you even if I wanted"}</li>
+					<li><b>{"Custom made"}</b>{",\n stored in my own database"}</li>
+					<li><b>{"Anonymous"}</b>{",\n I couldn't identify you even if I wanted"}</li>
 				</ul>
 				<ul>
-					<li><b>{"Not selled to anyone"}</b>{", I dont know how to do so anyway"}</li>
-					<li><b>{"Privacy safe"}</b>{", very little data are collected"}</li>
+					<li><b>{"Not selled to anyone"}</b>{",\n I dont know how to do so anyway"}</li>
+					<li><b>{"Privacy safe"}</b>{",\n very little data are collected"}</li>
 				</ul>
 			</div>
-			<h5 className={`h5 ${Style.Title}`}>
+			<h5 className={`${Style.Title} ${Style.GoToSource} h5`}>
 				{"If you dont believe me => "}
 				<Link href="https://github.com/hcabel/hcabel-monorepo">
 					source code

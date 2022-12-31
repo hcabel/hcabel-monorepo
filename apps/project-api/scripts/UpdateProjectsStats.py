@@ -43,7 +43,7 @@ def update_hugomeet_stats_info(db) -> None:
 	# get project info
 	hugomeet = db.projects.find_one({"name": "HugoMeet"})
 	if (not hugomeet):
-		raise Exception("Failed to find project UVHC")
+		raise Exception("Failed to find project HugoMeet")
 
 	# update github stats stars
 	update_stats(db, hugomeet["_id"], "github", "stars", hugomeet_github_repo.stargazers_count)
@@ -64,7 +64,7 @@ def update_procedural_terrain_stats_info(db) -> None:
 	# get project info
 	procedural_terrain = db.projects.find_one({"name": "Procedural Terrain"})
 	if (not procedural_terrain):
-		raise Exception("Failed to find project UVHC")
+		raise Exception("Failed to find project Procedural Terrain")
 
 	# update youtube stats
 	update_stats(db, procedural_terrain["_id"], "youtube", "views", int(procedural_terrain_youtube_video.items[0].statistics.view_count))
@@ -73,7 +73,7 @@ def update_procedural_terrain_stats_info(db) -> None:
 
 def main():
 	# connect to db
-	db = Connect("dev")
+	db = Connect()
 
 	update_uvch_stats_info(db)
 	update_hugomeet_stats_info(db)

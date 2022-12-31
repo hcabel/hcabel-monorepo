@@ -23,13 +23,14 @@ def update_stats(db, project_id: str, platform: str, name: str, value: str) -> N
 		})
 
 
-def Connect(db_name):
+def Connect():
 	uri = os.environ["MONGO_URI"]
 	if (not uri):
 		raise Exception("MONGO_URI is not set")
 	client = MongoClient(uri)
 	if (not client):
 		raise Exception("unable to connect to mongodb (check URI)")
+	db_name = uri.split(".mongodb.net/")[1]
 	db = client[db_name]
 	if (db == None):
 		raise Exception("unable to find db " + db_name)

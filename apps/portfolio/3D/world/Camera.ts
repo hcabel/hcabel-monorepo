@@ -117,7 +117,7 @@ class Camera
 		this._Rotation.speed = speed;
 	}
 
-	public AnimatesToFocalPoint(InPosition: THREE.Vector3, InFocusPoint: THREE.Vector3, speed = 0.05)
+	public AnimatesToWhileFocusing(InPosition: THREE.Vector3, InFocusPoint: THREE.Vector3, speed = 0.05)
 	{
 		this._Position.start.copy(this._PerspectiveCamera.position);
 		this._Position.end.copy(InPosition);
