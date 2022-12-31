@@ -353,7 +353,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					const camera = new Experience().World.Camera.PerspectiveCamera;
 
 					// Listen on the mouse moving and check if the cursor is hovering the github or youtube logo
-					document.addEventListener('mousemove', (event) => {
+					self._MouseMoveListener = (event: MouseEvent) => {
 						event.preventDefault();
 
 						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -382,10 +382,11 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 								object.scale.set(1, 1, 1);
 							}
 						});
-					});
+					}
+					document.addEventListener('mousemove', self._MouseMoveListener);
 
 					// Listen on the mouse click and check if the cursor is hovering the github or youtube logo
-					document.addEventListener('click', (event) => {
+					self._ClickEventListener = (event: MouseEvent) => {
 						event.preventDefault();
 
 						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -407,7 +408,8 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 								router.push('/redirects/youtube');
 							}
 						}
-					});
+					}
+					document.addEventListener('click', self._ClickEventListener);
 				}
 
 				// if not fully initialized, wait for the trigger to be called
@@ -464,6 +466,9 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				}
 
 				self._InitTrigger.removeAllListeners();
+
+				document.removeEventListener('mousemove', self._MouseMoveListener);
+				document.removeEventListener('click', self._ClickEventListener);
 			}
 		});
 	}
