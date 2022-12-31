@@ -429,6 +429,21 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 						// Change the color of the cube according to the scroll progress (default if bellow the scroll progress, or his color if it's a past/current day)
 						cube.mesh.material = (cubeIndex < scrollCubeProgress ? cube.material : self._GithubChart.materials[0]);
 					}
+
+					// if the screen is not wide enough, rotate the camera to focus on the current cube
+					if (window.innerWidth < 920) {
+						// Get the current cube to focus on
+						const currentAnimationCube = self._GithubChart.cubes[Math.max(Math.min(scrollCubeProgress, self._GithubChart.cubes.length - 1), 0)];
+						// Get his position
+						let focusPos = new THREE.Vector3();
+						currentAnimationCube.mesh.getWorldPosition(focusPos);
+						// Do not change the heigth and the depth of the focus point
+						focusPos.x = self._ScenePosition.x;
+						focusPos.y = self._ScenePosition.y;
+						// Divide the width by 2 to follow the cube but not keeping it in the center of the screen
+						focusPos.z = focusPos.z / 2;
+						self._Camera.Focus(focusPos, true);
+					}
 				}
 
 				if (self._Camera) {
