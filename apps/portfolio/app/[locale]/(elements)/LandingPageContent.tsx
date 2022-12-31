@@ -228,6 +228,40 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		return (chart);
 	}
 
+	/**
+	 * This function will find the distance in a direction where the 3D box is fully in the fov of the camera
+	 * @param {Box3} fbox The focus box
+	 * @param {Vector3} direction The direction of the camera
+	* @return {Vector3} The position of the camera
+	 */
+	function GetCameraPositionToFocusBox(fbox: THREE.Box3, direction: THREE.Vector3): THREE.Vector3
+	{
+		// WARN: This function is not working perfectly, it's the closest I could get to the result I wanted
+		// And with some tweaking it's working well enough for my use case
+		const camera = new Experience().World.Camera.PerspectiveCamera;
+		const fov = camera.fov;
+		const aspect = camera.aspect;
+
+		const boxCenter = new THREE.Vector3();
+		fbox.getCenter(boxCenter);
+		const boxSizes = new THREE.Vector3();
+		fbox.getSize(boxSizes);
+		let radius = Math.max(boxSizes.x, boxSizes.y, boxSizes.z);
+
+		if (aspect > 1) {
+			radius /= aspect;
+		}
+
+		const halfFovRadian = THREE.MathUtils.degToRad(fov / 2);
+		const distance = radius / Math.tan(halfFovRadian);
+		const cameraOffset = direction.normalize().multiplyScalar(distance);
+
+		const pos = new THREE.Vector3();
+		pos.addVectors(boxCenter, cameraOffset);
+
+		return (pos);
+	}
+
 	useEffect(() => {
 		new Experience()
 			.on('ready', () => {
@@ -240,11 +274,31 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 	{
 		return ({
 			onConstruct: (self: any) => {
-				self._ScenePosition = new THREE.Vector3(0, 30, 0);
+				// Create a trigger that will be used to trigger the enter at the right time
+				// if I dont do this the enter function may be called before the initialisation of the experience is finished
+				// using this technique even if we enter the slide before the experience is ready this trigger will trigger the enter behavior when the experience is ready
 				self._InitTrigger = new EventEmitter();
+				// The position of the intro scene
+				self._ScenePosition = new THREE.Vector3(0, 30, 0);
+
+				// The bounding box of the intro scene
+				self._BoundingBox = new THREE.Box3();
+				self._BoundingBox.setFromCenterAndSize(
+					self._ScenePosition,
+					new THREE.Vector3(5, 5, 20)
+				);
+
+				// The direction of the camera when the scroll position is 0
+				self._CameraDirectionStart = new THREE.Vector3(-0.9, 0.1, 0);
+				// The direction of the camera when the scroll position is 1
+				self._CameraDirectionEnd = new THREE.Vector3(-0.9, -0.1, 0);
 
 				// Get 3d camera ref
 				new Experience().on('ready', () => {
+					// Boundingbox helper
+					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
+					// new Experience().World.Scene.add(helper);
+
 					self._Camera = new Experience().World.Camera;
 					self._IntroScene = new Experience().World.MeshScenes["Intro"];
 
@@ -257,31 +311,38 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					self._CurrentDayCubeIndex = Math.floor(props.activities.data.user.contributionsCollection.contributionCalendar.weeks
 						.reduce((acc, week) => acc + week.contributionDays.length, 0));
 
+
+					// Trigger the enter function
 					self._FullyInitialized = true;
 					self._InitTrigger.emit('trigger');
 				});
 			},
 			onEnter: (self: any, direction: number) => {
-				function realEnterFunction() {
-					// Move canvas to the center
-					MoveCanvas(0);
-					// Change background
-					UpdateBackground(Style.Background_NightClub);
+				// Change background
+				UpdateBackground(Style.Background_NightClub);
+				// Move canvas to the center
+				MoveCanvas(0);
 
+				function realEnterFunction() {
 					if (self._Camera) {
+
 						// Same position has the start of the next slide
-						const camPosition = new THREE.Vector3(-25, 0, 0)
-							.add(self._ScenePosition);
-						if (direction === 1 /* Top to bottom */) {
+						const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, direction === 1 ? self._CameraDirectionStart : self._CameraDirectionEnd);
+
+						if (direction === 1 /* From above */) {
 							// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
 							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 							self._Camera.Focus(self._ScenePosition, true);
 						}
 						else {
-							self._Camera.AnimatesToFocalPoint(
+							// Move the camera to look at the scene
+							self._Camera.AnimatesToWhileFocusing(
+								// Find camera position from the scene boundingbox and the camera direction
 								camPosition,
+								// where to look at
 								self._ScenePosition,
-								0.025);
+								0.025
+							);
 						}
 					}
 
@@ -295,13 +356,15 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					document.addEventListener('mousemove', (event) => {
 						event.preventDefault();
 
-						mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-						mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
 						raycaster.setFromCamera(mouse, camera);
 
+						// Check intersection
 						const interactableObjects = [githubLogoObject, youtubeLogoObject];
 						const intersects = raycaster.intersectObjects(interactableObjects);
+
 						if (intersects.length > 0) {
 							// Change the cursor to a pointer
 							document.body.style.cursor = 'pointer';
@@ -325,17 +388,21 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					document.addEventListener('click', (event) => {
 						event.preventDefault();
 
-						mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-						mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
 						raycaster.setFromCamera(mouse, camera);
 
+						// Check intersection
 						const interactableObjects = [githubLogoObject, youtubeLogoObject];
 						const intersects = raycaster.intersectObjects(interactableObjects);
+
 						if (intersects.length > 0) {
+							// redirect to my github if the client click on the github logo
 							if (intersects[0].object === githubLogoObject) {
 								router.push('/redirects/github');
 							}
+							// redirect to my youtube if the client click on the youtube logo
 							else if (intersects[0].object === youtubeLogoObject) {
 								router.push('/redirects/youtube');
 							}
@@ -343,6 +410,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					});
 				}
 
+				// if not fully initialized, wait for the trigger to be called
 				if (self._FullyInitialized) {
 					realEnterFunction();
 				}
@@ -364,12 +432,11 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				}
 
 				if (self._Camera) {
-					// move camera up to down by -5 units
-					const start = new THREE.Vector3(-25, 2.5, 0)
-						.add(self._ScenePosition);
-					const end = new THREE.Vector3(-25, -2.5, 0)
-						.add(self._ScenePosition);
-					const camPosition = start.clone().lerp(end, progress);
+					// Find the camera direction with the scroll progress
+					const lerpDirection = self._CameraDirectionStart.clone().lerp(self._CameraDirectionEnd, progress);
+					// Find the camera position of this direction with the bounding box
+					const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, lerpDirection);
+					// Move the camera to this position
 					self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 				}
 			},
@@ -392,13 +459,23 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			onConstruct: (self: any) => {
 				// The position of the scene in the 3d world
 				self._ScenePosition = new THREE.Vector3(0, 2, 0);
-				// Distance from the middle of the scene
-				self._PathDistance = new THREE.Vector3(25, 25, 25);
+
+				// Uvch scene bounding box
+				self._BoundingBox = new THREE.Box3();
+				self._BoundingBox.setFromCenterAndSize(
+					self._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+					new THREE.Vector3(10, (window.innerWidth >= 920 ? 20 : 15), 10)
+				);
+
 				// Camera movements
 				self._StartRotationY = Math.PI / 180 * 70;
 				self._EndRotationY = Math.PI / 180 * -70;
 
 				new Experience().on('ready', () => {
+					// Boundingbox helper
+					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
+					// new Experience().World.Scene.add(helper);
+
 					// get 3d camera
 					self._Camera = new Experience().World.Camera;
 
@@ -413,10 +490,8 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				MoveCanvas(25);
 
 				if (self._Camera) {
-					const camPosition = new THREE.Vector3(-1, 0.25, 0)
-						.multiply(self._PathDistance)
-						.add(self._ScenePosition);
-					self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, 0.025);
+					const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
+					self._Camera.AnimatesToWhileFocusing(camPosition, self._ScenePosition, 0.025);
 				}
 			},
 			onScroll: (self: any, progress: number) => {
@@ -441,13 +516,23 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			onConstruct: (self: any) => {
 				// The position of the scene in the 3d world
 				self._ScenePosition = new THREE.Vector3(0, -33, 0);
-				// Distance from the middle of the scene
-				self._PathDistance = new THREE.Vector3(35, 35, 35);
+
+				// Uvch scene bounding box
+				self._BoundingBox = new THREE.Box3();
+				self._BoundingBox.setFromCenterAndSize(
+					self._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+					new THREE.Vector3(10, 15, (window.innerWidth >= 920 ? 22.5 : 20))
+				);
+
 				// Camera movements
 				self._StartRotationY = Math.PI / 180 * 60;
 				self._EndRotationY = Math.PI / 180 * -120;
 
 				new Experience().on('ready', () => {
+					// Boundingbox helper
+					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
+					// new Experience().World.Scene.add(helper);
+
 					// get 3d camera
 					self._Camera = new Experience().World.Camera;
 					// Fetch all the 3D object that compose the Procedural terrain scene
@@ -462,10 +547,8 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 
 				if (self._Camera) {
 					// Get either the start or the end of the path depending on the direction where the scroll is from
-					const camPosition = new THREE.Vector3(-1, 0.25, 0)
-						.multiply(self._PathDistance)
-						.add(self._ScenePosition);
-					self._Camera.AnimatesToFocalPoint(camPosition, self._ScenePosition, 0.025);
+					const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
+					self._Camera.AnimatesToWhileFocusing(camPosition, self._ScenePosition, 0.025);
 				}
 			},
 			onScroll: (self: any, progress: number) => {
@@ -491,10 +574,22 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			onConstruct: (self: any) => {
 				// Position of the scene in the 3d world
 				self._ScenePosition = new THREE.Vector3(0, -75, 0);
-				// Distance from the middle of the scene
-				self._PathDistance = new THREE.Vector3(20, 20, 20);
+
+				// Create a box arround the scene to focus on
+				self._BoundingBox = new THREE.Box3();
+				self._BoundingBox.setFromCenterAndSize(
+					self._ScenePosition,
+					new THREE.Vector3(12.5, (window.innerWidth >= 920 ? 25 : 20), 12.5)
+				);
+
+				// Direction of the camera relavtive to the scene center
+				self._CameraDirection = new THREE.Vector3(-1, 1, 0);
 
 				new Experience().on('ready', () => {
+					// Debug to show the box to focus
+					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
+					// new Experience().World.Scene.add(helper);
+
 					// get 3d camera
 					self._Camera = new Experience().World.Camera;
 					// get Procedural terrain scene
@@ -509,17 +604,18 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 
 				if (self._Camera) {
 					// Move the camera to look at the scene
-					self._Camera.AnimatesToFocalPoint(
-						new THREE.Vector3(-1, 1, 0)
-							.multiply(self._PathDistance)
-							.add(self._ScenePosition),
+					self._Camera.AnimatesToWhileFocusing(
+						// Find camera position from the scene boundingbox and the camera direction
+						GetCameraPositionToFocusBox(self._BoundingBox, self._CameraDirection),
+						// where to look at
 						self._ScenePosition,
-						0.025);
+						0.025
+					);
 				}
 			},
 			onScroll: (self: any, progress: number) => {
 				if (self._MeshScene) {
-					// Rotate the scene from 45 deg to 405 deg
+					// Rotate the scene from 45 deg to -315 deg
 					self._MeshScene.rotation.y = progress * -(Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
 				}
 			},

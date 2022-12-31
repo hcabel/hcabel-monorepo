@@ -18,6 +18,7 @@ class Experience extends EventEmitter
 	private _Sizes: Sizes;
 	private _Resources: Resources;
 	private _World: World;
+	private _Ready = false;
 
 	private _Stats: Stats;
 
@@ -78,6 +79,7 @@ class Experience extends EventEmitter
 				this.Resize();
 			});
 
+			this._Ready = true;
 			this.emit('ready');
 		});
 
@@ -101,6 +103,16 @@ class Experience extends EventEmitter
 	private Resize()
 	{
 		this._World.Resize();
+	}
+
+	public OnReady(callback: () => void)
+	{
+		if (this._Ready) {
+			callback();
+		}
+		else {
+			this.on('ready', callback);
+		}
 	}
 }
 
