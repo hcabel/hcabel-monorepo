@@ -5,7 +5,6 @@ import EventEmitter from 'events';
 import { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 // Extenral project
 import { Locales } from '@hcabel/types/ProjectApi';
@@ -30,6 +29,7 @@ import { GithubActivities, IProjectDatas } from '../page';
 // Utils
 import CookieManager from 'Utils/CookieManager';
 import i18nText from 'Utils/i18Text';
+import IntroSlide from './slides/IntroSlide';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -40,7 +40,13 @@ interface ILandingPageContentProps {
 export default function LandingPageContent(props: ILandingPageContentProps)
 {
 	const [slideShowController] = useState(new EventEmitter());
-	const router = useRouter();
+	const [_IntroSlide] = useState<IntroSlide>(new IntroSlide(props.activities));
+
+	// If github activity data is changed, update the intro slide with the new data
+	useEffect(() => {
+		_IntroSlide.Activities = props.activities;
+	}, [JSON.stringify(props.activities)]);
+
 
 	// Hide all the background exect the one with the class that we specified
 	function	UpdateBackground(className: string)
@@ -64,7 +70,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		}
 	}
 
-	function MoveCanvas(val: number) {
+	function	MoveCanvas(val: number) {
 		const canvas = document.getElementById("LandingPage3dIllustration");
 		// move canvas only if the screen is big enough
 		val = window.screen.width >= 920 ? val : 0;
@@ -116,129 +122,11 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		};
 	}, []);
 
-	// Using the weeks data, create a cube chart of 7 cube for each column where each column represent a week
-	function CreateGithubActivitiesChart(chartPos: THREE.Vector3)
-	{
-		// contants
-		const cubeSize = 0.4;
-		const cubeSpacing = 0.2;
-		const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-
-		const amountOfDayInThisYear = (new Date().getFullYear() % 4 === 0 ? 366 : 365);
-
-		const chart = {
-			pos: new THREE.Vector3(
-				chartPos.x,
-				chartPos.y,
-				chartPos.z - (((amountOfDayInThisYear / 7) * (cubeSize + cubeSpacing)) / 2)
-			),
-			cubes: [] as any,
-			materials: [
-				new THREE.MeshBasicMaterial({ color: 0x111111 }), // default
-			]
-		};
-
-		// The my github contributions for every week of this year
-		const weeks = props.activities.data?.user?.contributionsCollection?.contributionCalendar?.weeks || [];
-		// create a cube for each week already passed (wheter it has a contribution or not)
-		for (let i = 0; i < weeks.length; i++) {
-			const week = weeks[i];
-
-			// create a cube for each day of the week
-			for (let j = 0; j < week.contributionDays.length; j++) {
-				const day = week.contributionDays[j];
-
-				// If not from the current year, don't create the cube
-				if (day.date.slice(0, 4) !== new Date().getFullYear().toString()) {
-					continue;
-				}
-
-				// convert day.color (which is a hexa color string starting with #) to a number
-				const color = parseInt(day.color.slice(1), 16);
-
-				// Check if the material already exist in 'char.materials' if not create it
-				let mat = chart.materials.find((mat) => mat.color.getHex() === color);
-				if (!mat) {
-					mat = new THREE.MeshBasicMaterial({ color: color });
-					chart.materials.push(mat);
-				}
-
-				// if it's today, change the mat to be a pale red
-				if (day.date === new Date().toISOString().slice(0, 10)) {
-					mat = new THREE.MeshBasicMaterial({ color: 0xff1111 });
-				}
-
-				// Create the cube using the default material (his color is controlled with the scroll animation)
-				const mesh = new THREE.Mesh(cubeGeometry, chart.materials[0]);
-
-				// Create an object that will contain all the usefull data related to the cube
-				const cubeData = {
-					mesh: mesh,
-					material: mat,
-					pos: { // The position of the cube in the chart
-						x: i,
-						y: j
-					}
-				};
-				// add the cube datas to the charts
-				chart.cubes.push(cubeData);
-
-				// curve cube position on the left and the right
-				const curve = Math.sin((cubeData.pos.x / weeks.length) * Math.PI);
-
-				// Set cube 3d position
-				mesh.position.set(
-					chart.pos.x + curve * 5,
-					// This seam confusing and your right, but the scene is not well rotated so the x and y axis are inverted
-					chart.pos.y - cubeData.pos.y * (cubeSize + cubeSpacing),
-					chart.pos.z + cubeData.pos.x * (cubeSize + cubeSpacing)
-				);
-			}
-		}
-
-		// create a cube for each day of the year that his is coming
-		const lastCubePos = (chart.cubes.length === 0 ? { x: 0, y: 0 } : chart.cubes[chart.cubes.length - 1].pos);
-		const cubeAlreadyCreated = chart.cubes.length;
-		for (let futureDayCubeIndex = 0; cubeAlreadyCreated + futureDayCubeIndex <= amountOfDayInThisYear; futureDayCubeIndex++) {
-			// Create the cube
-			const mesh = new THREE.Mesh(cubeGeometry, chart.materials[0]);
-
-			// Create an object that will contain all the usefull data related to the cube
-			const cubeData = {
-				mesh: mesh,
-				material: chart.materials[0],
-				pos: { // The position of the cube in the chart
-					x: lastCubePos.x + Math.floor(futureDayCubeIndex !== 0 ? futureDayCubeIndex / 7 : 0),
-					y: lastCubePos.y + (futureDayCubeIndex % 7)
-				}
-			};
-			// add the cube and his data to the chart
-			chart.cubes.push(cubeData);
-
-			// curve cube position on the left and the right
-			const curve = Math.sin((cubeData.pos.x / weeks.length) * Math.PI);
-
-			// Set cube 3d position
-			mesh.position.set(
-				chart.pos.x + curve * 5,
-				// This seam confusing and your right, but the scene is not well rotated so the x and y axis are inverted
-				chart.pos.y - cubeData.pos.y * (cubeSize + cubeSpacing),
-				chart.pos.z + cubeData.pos.x * (cubeSize + cubeSpacing)
-			);
-
-			if (futureDayCubeIndex === 0) {
-				console.log(mesh.position, lastCubePos.x, Math.floor(futureDayCubeIndex / 7), cubeData.pos.x);
-			}
-		}
-
-		return (chart);
-	}
-
 	/**
 	 * This function will find the distance in a direction where the 3D box is fully in the fov of the camera
 	 * @param {Box3} fbox The focus box
 	 * @param {Vector3} direction The direction of the camera
-	* @return {Vector3} The position of the camera
+	 * @return {Vector3} The position of the camera
 	 */
 	function GetCameraPositionToFocusBox(fbox: THREE.Box3, direction: THREE.Vector3): THREE.Vector3
 	{
@@ -275,209 +163,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				slideShowController.emit('refresh');
 			});
 	}, [slideShowController]);
-
-	function	IntroSlideBehavior()
-	{
-		return ({
-			onConstruct: (self: any) => {
-				// Create a trigger that will be used to trigger the enter at the right time
-				// if I dont do this the enter function may be called before the initialisation of the experience is finished
-				// using this technique even if we enter the slide before the experience is ready this trigger will trigger the enter behavior when the experience is ready
-				self._InitTrigger = new EventEmitter();
-				// The position of the intro scene
-				self._ScenePosition = new THREE.Vector3(0, 30, 0);
-
-				// The bounding box of the intro scene
-				self._BoundingBox = new THREE.Box3();
-				self._BoundingBox.setFromCenterAndSize(
-					self._ScenePosition,
-					new THREE.Vector3(5, 5, 20)
-				);
-
-				// The direction of the camera when the scroll position is 0
-				self._CameraDirectionStart = new THREE.Vector3(-0.9, 0.1, 0);
-				// The direction of the camera when the scroll position is 1
-				self._CameraDirectionEnd = new THREE.Vector3(-0.9, -0.1, 0);
-
-				// Get 3d camera ref
-				new Experience().on('ready', () => {
-					// Boundingbox helper
-					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
-					// new Experience().World.Scene.add(helper);
-
-					self._Camera = new Experience().World.Camera;
-					self._IntroScene = new Experience().World.MeshScenes["Intro"];
-
-					// add the github activities chart to the scene
-					self._GithubChart = CreateGithubActivitiesChart(new THREE.Vector3(5, 33, 0));
-					self._GithubChart.cubes.forEach((cube: any) => {
-						self._IntroScene.add(cube.mesh);
-					});
-
-					self._CurrentDayCubeIndex = Math.floor(props.activities.data.user.contributionsCollection.contributionCalendar.weeks
-						.reduce((acc, week) => acc + week.contributionDays.length, 0));
-
-
-					// Trigger the enter function
-					self._FullyInitialized = true;
-					self._InitTrigger.emit('trigger');
-				});
-			},
-			onEnter: (self: any, direction: number) => {
-				// Change background
-				UpdateBackground(Style.Background_NightClub);
-				// Move canvas to the center
-				MoveCanvas(0);
-
-				function realEnterFunction() {
-					if (self._Camera) {
-
-						// Same position has the start of the next slide
-						const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, direction === 1 ? self._CameraDirectionStart : self._CameraDirectionEnd);
-
-						if (direction === 1 /* From above */) {
-							// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
-							self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
-							self._Camera.Focus(self._ScenePosition, true);
-						}
-						else {
-							// Move the camera to look at the scene
-							self._Camera.AnimatesToWhileFocusing(
-								// Find camera position from the scene boundingbox and the camera direction
-								camPosition,
-								// where to look at
-								self._ScenePosition,
-								0.025
-							);
-						}
-					}
-
-					const raycaster = new THREE.Raycaster();
-					const mouse = new THREE.Vector2();
-					const githubLogoObject = self._IntroScene.children[0];
-					const youtubeLogoObject = self._IntroScene.children[1];
-					const camera = new Experience().World.Camera.PerspectiveCamera;
-
-					// Listen on the mouse moving and check if the cursor is hovering the github or youtube logo
-					self._MouseMoveListener = (event: MouseEvent) => {
-						event.preventDefault();
-
-						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-						raycaster.setFromCamera(mouse, camera);
-
-						// Check intersection
-						const interactableObjects = [githubLogoObject, youtubeLogoObject];
-						const intersects = raycaster.intersectObjects(interactableObjects);
-
-						if (intersects.length > 0) {
-							// Change the cursor to a pointer
-							document.body.style.cursor = 'pointer';
-						}
-						else {
-							document.body.style.cursor = 'default';
-						}
-
-						// increase the size of the object hover by 10% otherwise set it back to normal
-						interactableObjects.forEach((object) => {
-							if (intersects[0] && object === intersects[0].object) {
-								object.scale.set(1.1, 1.1, 1.1);
-							}
-							else {
-								object.scale.set(1, 1, 1);
-							}
-						});
-					}
-					document.addEventListener('mousemove', self._MouseMoveListener);
-
-					// Listen on the mouse click and check if the cursor is hovering the github or youtube logo
-					self._ClickEventListener = (event: MouseEvent) => {
-						event.preventDefault();
-
-						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-						raycaster.setFromCamera(mouse, camera);
-
-						// Check intersection
-						const interactableObjects = [githubLogoObject, youtubeLogoObject];
-						const intersects = raycaster.intersectObjects(interactableObjects);
-
-						if (intersects.length > 0) {
-							// redirect to my github if the client click on the github logo
-							if (intersects[0].object === githubLogoObject) {
-								router.push('/redirects/github');
-							}
-							// redirect to my youtube if the client click on the youtube logo
-							else if (intersects[0].object === youtubeLogoObject) {
-								router.push('/redirects/youtube');
-							}
-						}
-					}
-					document.addEventListener('click', self._ClickEventListener);
-				}
-
-				// if not fully initialized, wait for the trigger to be called
-				if (self._FullyInitialized) {
-					realEnterFunction();
-				}
-				else {
-					self._InitTrigger.on('trigger', realEnterFunction);
-				}
-			},
-			onScroll: (self: any, progress: number) => {
-				if (self._IntroScene) {
-					// * 1.75 to allow the animation to end before the end of the scroll, so you can actually see the result
-					const scrollCubeProgress = Math.floor(progress * 365 * 1.75);
-
-					for (let cubeIndex = 0; cubeIndex < self._GithubChart.cubes.length; cubeIndex++) {
-						const cube = self._GithubChart.cubes[cubeIndex];
-
-						// Change the color of the cube according to the scroll progress (default if bellow the scroll progress, or his color if it's a past/current day)
-						cube.mesh.material = (cubeIndex < scrollCubeProgress ? cube.material : self._GithubChart.materials[0]);
-					}
-
-					// if the screen is not wide enough, rotate the camera to focus on the current cube
-					if (window.innerWidth < 920) {
-						// Get the current cube to focus on
-						const currentAnimationCube = self._GithubChart.cubes[Math.max(Math.min(scrollCubeProgress, self._GithubChart.cubes.length - 1), 0)];
-						// Get his position
-						let focusPos = new THREE.Vector3();
-						currentAnimationCube.mesh.getWorldPosition(focusPos);
-						// Do not change the heigth and the depth of the focus point
-						focusPos.x = self._ScenePosition.x;
-						focusPos.y = self._ScenePosition.y;
-						// Divide the width by 2 to follow the cube but not keeping it in the center of the screen
-						focusPos.z = focusPos.z / 2;
-						self._Camera.Focus(focusPos, true);
-					}
-				}
-
-				if (self._Camera) {
-					// Find the camera direction with the scroll progress
-					const lerpDirection = self._CameraDirectionStart.clone().lerp(self._CameraDirectionEnd, progress);
-					// Find the camera position of this direction with the bounding box
-					const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, lerpDirection);
-					// Move the camera to this position
-					self._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
-				}
-			},
-			onLeave: (self: any, direction: number) => {
-				if (self._Camera) {
-					// Cancel Anim in case your scrolling fast
-					self._Camera.CancelAnimation();
-					// unfocus from the scene center
-					self._Camera.Unfocus();
-				}
-
-				self._InitTrigger.removeAllListeners();
-
-				document.removeEventListener('mousemove', self._MouseMoveListener);
-				document.removeEventListener('click', self._ClickEventListener);
-			}
-		});
-	}
 
 	function	UvchSlideBehavior()
 	{
@@ -671,7 +356,17 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				>
 					{/* INTRO */}
 					<Slide
-						{...IntroSlideBehavior()}
+						onConstruct={_IntroSlide.onConstruct}
+						onEnter={(self: any, direction: number) => {
+							// Change background
+							UpdateBackground(Style.Background_NightClub);
+							// Move canvas to the center
+							MoveCanvas(0);
+
+							_IntroSlide.onEnter(self, direction);
+						}}
+						onScroll={_IntroSlide.onScroll}
+						onLeave={_IntroSlide.onLeave}
 						length={100}
 						LeaveTransition={{
 							duration: 0.75,
