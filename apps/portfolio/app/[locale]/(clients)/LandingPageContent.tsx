@@ -30,6 +30,7 @@ import { GithubActivities, IProjectDatas } from '../page';
 import CookieManager from 'Utils/CookieManager';
 import i18nText from 'Utils/i18Text';
 import IntroSlide from './slides/IntroSlide';
+import UvchSlide from './slides/UvchSlide';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -41,6 +42,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 {
 	const [slideShowController] = useState(new EventEmitter());
 	const [_IntroSlide] = useState<IntroSlide>(new IntroSlide(props.activities));
+	const [_UvchSlide] = useState<UvchSlide>(new UvchSlide());
 
 	// If github activity data is changed, update the intro slide with the new data
 	useEffect(() => {
@@ -164,62 +166,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			});
 	}, [slideShowController]);
 
-	function	UvchSlideBehavior()
-	{
-		return ({
-			onConstruct: (self: any) => {
-				// The position of the scene in the 3d world
-				self._ScenePosition = new THREE.Vector3(0, 2, 0);
-
-				// Uvch scene bounding box
-				self._BoundingBox = new THREE.Box3();
-				self._BoundingBox.setFromCenterAndSize(
-					self._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
-					new THREE.Vector3(10, (window.innerWidth >= 920 ? 20 : 15), 10)
-				);
-
-				// Camera movements
-				self._StartRotationY = Math.PI / 180 * 70;
-				self._EndRotationY = Math.PI / 180 * -70;
-
-				new Experience().on('ready', () => {
-					// Boundingbox helper
-					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
-					// new Experience().World.Scene.add(helper);
-
-					// get 3d camera
-					self._Camera = new Experience().World.Camera;
-
-					// Fetch all the 3D object that compose the Procedural terrain scene
-					self._MeshScene = new Experience().World.MeshScenes["Unreal VsCode Helper"];
-				});
-			},
-			onEnter: (self: any, direction: number) => {
-				// Change background
-				UpdateBackground(Style.Background_Ocean);
-				// Move canvas to the right
-				MoveCanvas(25);
-
-				if (self._Camera) {
-					const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
-					self._Camera.AnimatesToWhileFocusing(camPosition, self._ScenePosition, 0.025);
-				}
-			},
-			onScroll: (self: any, progress: number) => {
-				if (self._MeshScene) {
-					self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
-				}
-			},
-			onLeave: (self: any, direction: number) => {
-				if (self._Camera) {
-					// Cancel Anim in case your scrolling fast
-					self._Camera.CancelAnimation();
-					// unfocus from the scene center
-					self._Camera.Unfocus();
-				}
-			}
-		});
-	}
 
 	function	HugoMeetSlideBehavior()
 	{
@@ -386,7 +332,17 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					</Slide>
 					{/* UVCH */}
 					<Slide
-						{...UvchSlideBehavior()}
+						onConstruct={_UvchSlide.onConstruct}
+						onEnter={(self: any, direction: number) => {
+							// Change background
+							UpdateBackground(Style.Background_Ocean);
+							// Move canvas to the right
+							MoveCanvas(25);
+
+							_UvchSlide.onEnter(self, direction);
+						}}
+						onScroll={_UvchSlide.onScroll}
+						onLeave={_UvchSlide.onLeave}
 						length={200}
 						LeaveTransition={{
 							duration: 0.75,
