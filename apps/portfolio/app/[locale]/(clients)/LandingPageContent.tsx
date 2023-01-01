@@ -189,17 +189,16 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				>
 					{/* INTRO */}
 					<Slide
-						onConstruct={_IntroSlide.onConstruct}
 						onEnter={(self: any, direction: number) => {
 							// Change background
 							UpdateBackground(Style.Background_NightClub);
 							// Move canvas to the center
 							MoveCanvas(0);
 
-							_IntroSlide.onEnter(self, direction);
+							_IntroSlide.onEnter(direction);
 						}}
-						onScroll={_IntroSlide.onScroll}
-						onLeave={_IntroSlide.onLeave}
+						onScroll={(self: any, progress: number) => _IntroSlide.onScroll(progress)}
+						onLeave={(self: any, direction: number) =>  _IntroSlide.onLeave(direction)}
 						length={100}
 						LeaveTransition={{
 							duration: 0.75,
