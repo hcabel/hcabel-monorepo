@@ -32,6 +32,7 @@ import i18nText from 'Utils/i18Text';
 import IntroSlide from './slides/IntroSlide';
 import UvchSlide from './slides/UvchSlide';
 import HugoMeetSlide from './slides/HugoMeetSlide';
+import ProceduralTerrainSlide from './slides/ProcGenSlide';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -45,6 +46,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 	const [_IntroSlide] = useState<IntroSlide>(new IntroSlide(props.activities));
 	const [_UvchSlide] = useState<UvchSlide>(new UvchSlide());
 	const [_HugoMeetSlide] = useState<HugoMeetSlide>(new HugoMeetSlide());
+	const [_ProceduralTerrainSlide] = useState<ProceduralTerrainSlide>(new ProceduralTerrainSlide());
 
 	// If github activity data is changed, update the intro slide with the new data
 	useEffect(() => {
@@ -168,68 +170,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 			});
 	}, [slideShowController]);
 
-	function	ProceduralTerrainSlideBehavior()
-	{
-		return ({
-			onConstruct: (self: any) => {
-				// Position of the scene in the 3d world
-				self._ScenePosition = new THREE.Vector3(0, -75, 0);
-
-				// Create a box arround the scene to focus on
-				self._BoundingBox = new THREE.Box3();
-				self._BoundingBox.setFromCenterAndSize(
-					self._ScenePosition,
-					new THREE.Vector3(12.5, (window.innerWidth >= 920 ? 25 : 20), 12.5)
-				);
-
-				// Direction of the camera relavtive to the scene center
-				self._CameraDirection = new THREE.Vector3(-1, 1, 0);
-
-				new Experience().on('ready', () => {
-					// Debug to show the box to focus
-					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
-					// new Experience().World.Scene.add(helper);
-
-					// get 3d camera
-					self._Camera = new Experience().World.Camera;
-					// get Procedural terrain scene
-					self._MeshScene = new Experience().World.MeshScenes["Procedural Terrain"];
-				});
-			},
-			onEnter: (self: any, direction: number) => {
-				// Move canvas to the right
-				MoveCanvas(20);
-				// Change background color
-				UpdateBackground(Style.Background_Meadow);
-
-				if (self._Camera) {
-					// Move the camera to look at the scene
-					self._Camera.AnimatesToWhileFocusing(
-						// Find camera position from the scene boundingbox and the camera direction
-						GetCameraPositionToFocusBox(self._BoundingBox, self._CameraDirection),
-						// where to look at
-						self._ScenePosition,
-						0.025
-					);
-				}
-			},
-			onScroll: (self: any, progress: number) => {
-				if (self._MeshScene) {
-					// Rotate the scene from 45 deg to -315 deg
-					self._MeshScene.rotation.y = progress * -(Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
-				}
-			},
-			onLeave: (self: any, direction: number) => {
-				if (self._Camera) {
-					// Cancel Anim in case your scrolling fast
-					self._Camera.CancelAnimation();
-					// unfocus from the scene center
-					self._Camera.Unfocus();
-				}
-			}
-		});
-	}
-
 	return (
 		<main className="Page">
 			<ExperimentCanvas id="LandingPage3dIllustration" /> {/* 3D ILLUSTATION */}
@@ -330,7 +270,17 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					</Slide>
 					{/* PROCEDURAL TERRAIN */}
 					<Slide
-						{...ProceduralTerrainSlideBehavior()}
+						onConstruct={_ProceduralTerrainSlide.onConstruct}
+						onEnter={(self: any, direction: number) => {
+							// Move canvas to the right
+							MoveCanvas(25);
+							// Change background color
+							UpdateBackground(Style.Background_Meadow);
+
+							_ProceduralTerrainSlide.onEnter(self, direction);
+						}}
+						onScroll={_ProceduralTerrainSlide.onScroll}
+						onLeave={_ProceduralTerrainSlide.onLeave}
 						length={300}
 					>
 						<div className={Style.Slide}>
