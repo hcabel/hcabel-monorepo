@@ -31,6 +31,7 @@ import CookieManager from 'Utils/CookieManager';
 import i18nText from 'Utils/i18Text';
 import IntroSlide from './slides/IntroSlide';
 import UvchSlide from './slides/UvchSlide';
+import HugoMeetSlide from './slides/HugoMeetSlide';
 
 interface ILandingPageContentProps {
 	projects: IProjectDatas,
@@ -43,6 +44,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 	const [slideShowController] = useState(new EventEmitter());
 	const [_IntroSlide] = useState<IntroSlide>(new IntroSlide(props.activities));
 	const [_UvchSlide] = useState<UvchSlide>(new UvchSlide());
+	const [_HugoMeetSlide] = useState<HugoMeetSlide>(new HugoMeetSlide());
 
 	// If github activity data is changed, update the intro slide with the new data
 	useEffect(() => {
@@ -165,65 +167,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				slideShowController.emit('refresh');
 			});
 	}, [slideShowController]);
-
-
-	function	HugoMeetSlideBehavior()
-	{
-		return ({
-			onConstruct: (self: any) => {
-				// The position of the scene in the 3d world
-				self._ScenePosition = new THREE.Vector3(0, -33, 0);
-
-				// Uvch scene bounding box
-				self._BoundingBox = new THREE.Box3();
-				self._BoundingBox.setFromCenterAndSize(
-					self._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
-					new THREE.Vector3(10, 15, (window.innerWidth >= 920 ? 22.5 : 20))
-				);
-
-				// Camera movements
-				self._StartRotationY = Math.PI / 180 * 60;
-				self._EndRotationY = Math.PI / 180 * -120;
-
-				new Experience().on('ready', () => {
-					// Boundingbox helper
-					// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
-					// new Experience().World.Scene.add(helper);
-
-					// get 3d camera
-					self._Camera = new Experience().World.Camera;
-					// Fetch all the 3D object that compose the Procedural terrain scene
-					self._MeshScene = new Experience().World.MeshScenes["HugoMeet"];
-				});
-			},
-			onEnter: (self: any, direction: number) => {
-				// Move canvas to the right
-				MoveCanvas(25);
-				// Change background color
-				UpdateBackground(Style.Background_Peach);
-
-				if (self._Camera) {
-					// Get either the start or the end of the path depending on the direction where the scroll is from
-					const camPosition = GetCameraPositionToFocusBox(self._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
-					self._Camera.AnimatesToWhileFocusing(camPosition, self._ScenePosition, 0.025);
-				}
-			},
-			onScroll: (self: any, progress: number) => {
-				if (self._MeshScene) {
-					// Rotate the scene from 45 deg to 405 deg
-					self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
-				}
-			},
-			onLeave: (self: any, direction: number) => {
-				if (self._Camera) {
-					// Cancel Anim in case your scrolling fast
-					self._Camera.CancelAnimation();
-					// unfocus from the scene center
-					self._Camera.Unfocus();
-				}
-			}
-		});
-	}
 
 	function	ProceduralTerrainSlideBehavior()
 	{
@@ -359,7 +302,17 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					</Slide>
 					{/* HUGO MEET */}
 					<Slide
-						{...HugoMeetSlideBehavior()}
+						onConstruct={_HugoMeetSlide.onConstruct}
+						onEnter={(self: any, direction: number) => {
+							// Move canvas to the right
+							MoveCanvas(25);
+							// Change background color
+							UpdateBackground(Style.Background_Peach);
+
+							_HugoMeetSlide.onEnter(self, direction);
+						}}
+						onScroll={_HugoMeetSlide.onScroll}
+						onLeave={_HugoMeetSlide.onLeave}
 						length={200}
 						LeaveTransition={{
 							duration: 0.75,

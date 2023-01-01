@@ -3,7 +3,8 @@ import * as THREE from 'three';
 import Experience from '3D/Experience';
 import EventEmitter from 'events';
 
-class IntroSlide {
+class IntroSlide
+{
 	private static _Instance: IntroSlide;
 
 	private _Activities: any = undefined;
@@ -16,9 +17,10 @@ class IntroSlide {
 
 	public constructor(activities: any)
 	{
-		if (!IntroSlide._Instance) {
-			IntroSlide._Instance = this;
+		if (IntroSlide._Instance) {
+			return (IntroSlide._Instance);
 		}
+		IntroSlide._Instance = this;
 
 		this._Activities = activities;
 	}
@@ -378,8 +380,6 @@ class IntroSlide {
 
 		return (pos);
 	}
-
-
 }
 
 export default IntroSlide;
