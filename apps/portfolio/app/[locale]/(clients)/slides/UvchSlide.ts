@@ -1,73 +1,94 @@
 import * as THREE from 'three';
 
 import Experience from "3D/Experience";
+import Camera from '3D/world/Camera';
 
 class UvchSlide
 {
-	private static _Instance: UvchSlide;
+	private _Experience: Experience;
+	private _Camera: Camera;
+
+	private _ScenePosition: THREE.Vector3;
+	private _BoundingBox: THREE.Box3;
+	private _StartRotationY: number;
+	private _EndRotationY: number;
+	private _Scene: THREE.Group;
+	private _Condensed: boolean = false;
 
 	// Getters
-	public static get Instance(): UvchSlide { return this._Instance; }
+	public get Condensed(): boolean { return this._Condensed; }
 
-	public constructor()
+	// Setters
+	public set Condensed(value: boolean)
 	{
-		if (UvchSlide._Instance) {
-			return (UvchSlide._Instance);
+		if (this._Condensed !== value) {
+			this._Condensed = value;
+			this.Resize();
 		}
-		UvchSlide._Instance = this;
 	}
 
-	public onConstruct(self: any)
+	private Resize()
 	{
+		this._BoundingBox.setFromCenterAndSize(
+			this._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+			new THREE.Vector3(10, (this._Condensed ? 15 : 20), 10)
+		);
+	}
+
+	public constructor(condensed = false)
+	{
+		this._Condensed = condensed;
+
 		// The position of the scene in the 3d world
-		self._ScenePosition = new THREE.Vector3(0, 2, 0);
+		this._ScenePosition = new THREE.Vector3(0, 2, 0);
 
 		// Uvch scene bounding box
-		self._BoundingBox = new THREE.Box3();
-		self._BoundingBox.setFromCenterAndSize(
-			self._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
-			new THREE.Vector3(10, (window.innerWidth >= 920 ? 20 : 15), 10)
+		this._BoundingBox = new THREE.Box3();
+		this._BoundingBox.setFromCenterAndSize(
+			this._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+			new THREE.Vector3(10, (this._Condensed ? 15 : 20), 10)
 		);
 
 		// Camera movements
-		self._StartRotationY = Math.PI / 180 * 70;
-		self._EndRotationY = Math.PI / 180 * -70;
+		this._StartRotationY = Math.PI / 180 * 70;
+		this._EndRotationY = Math.PI / 180 * -70;
 
-		new Experience().on('ready', () => {
+		this._Experience = new Experience();
+		this._Experience.on('ready', () => {
 			// Boundingbox helper
-			// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
+			// const helper = new THREE.Box3Helper(this._BoundingBox, new THREE.Color(0xff0000));
 			// new Experience().World.Scene.add(helper);
 
 			// get 3d camera
-			self._Camera = new Experience().World.Camera;
+			this._Camera = new Experience().World.Camera;
 
 			// Fetch all the 3D object that compose the Procedural terrain scene
-			self._MeshScene = new Experience().World.MeshScenes["Unreal VsCode Helper"];
+			this._Scene = new Experience().World.MeshScenes["Unreal VsCode Helper"];
 		});
 	}
 
-	public onEnter(self: any, direction: number)
+	public onEnter(direction: number)
 	{
-		if (self._Camera) {
-			const camPosition = UvchSlide.Instance.GetCameraPositionToFocusBox(self._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
-			self._Camera.AnimatesToWhileFocusing(camPosition, self._ScenePosition, 0.025);
+		if (this._Experience.IsReady) {
+			const camPosition = this.GetCameraPositionToFocusBox(this._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
+			this._Camera.AnimatesToWhileFocusing(camPosition, this._ScenePosition, 0.025);
 		}
 	}
 
-	public onScroll(self: any, progress: number)
+	public onScroll(progress: number)
 	{
-		if (self._MeshScene) {
-			self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
+		if (this._Experience.IsReady) {
+			this._Scene.rotation.y = progress * this._EndRotationY + this._StartRotationY;
 		}
 	}
 
-	public onLeave(self: any, direction: number)
+	public onLeave(direction: number)
 	{
-		if (self._Camera) {
+		if (this._Experience.IsReady) {
 			// Cancel Anim in case your scrolling fast
-			self._Camera.CancelAnimation();
+			this._Camera.CancelAnimation();
 			// unfocus from the scene center
-			self._Camera.Unfocus();
+			this._Camera.Unfocus();
 		}
 	}
 

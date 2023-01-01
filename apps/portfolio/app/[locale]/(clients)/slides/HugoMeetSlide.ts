@@ -30,7 +30,7 @@ class HugoMeetSlide
 	private Resize()
 	{
 		this._BoundingBox.setFromCenterAndSize(
-			this._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+			this._ScenePosition.clone(),
 			new THREE.Vector3(10, 15, (this._Condensed ? 20 : 22.5))
 		);
 	}
@@ -45,7 +45,7 @@ class HugoMeetSlide
 		// Uvch scene bounding box
 		this._BoundingBox = new THREE.Box3();
 		this._BoundingBox.setFromCenterAndSize(
-			this._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+			this._ScenePosition.clone(),
 			new THREE.Vector3(10, 15, (this._Condensed ? 20 : 22.5))
 		);
 

@@ -28,6 +28,7 @@ class Experience extends EventEmitter
 	get Sizes(): Sizes { return this._Sizes; }
 	get Resources(): Resources { return this._Resources; }
 	get World(): World { return this._World; }
+	get IsReady(): boolean { return this._Ready; }
 
 	constructor(canvas: HTMLCanvasElement | undefined = undefined)
 	{

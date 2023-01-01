@@ -219,17 +219,16 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					</Slide>
 					{/* UVCH */}
 					<Slide
-						onConstruct={_UvchSlide.onConstruct}
 						onEnter={(self: any, direction: number) => {
 							// Change background
 							UpdateBackground(Style.Background_Ocean);
 							// Move canvas to the right
 							MoveCanvas(25);
 
-							_UvchSlide.onEnter(self, direction);
+							_UvchSlide.onEnter(direction);
 						}}
-						onScroll={_UvchSlide.onScroll}
-						onLeave={_UvchSlide.onLeave}
+						onScroll={(self: any, progress: number) => _UvchSlide.onScroll(progress)}
+						onLeave={(self: any, direction: number) => _UvchSlide.onLeave(direction)}
 						length={200}
 						LeaveTransition={{
 							duration: 0.75,
