@@ -1,70 +1,92 @@
 import * as THREE from 'three';
 
 import Experience from "3D/Experience";
+import Camera from '3D/world/Camera';
 
 class HugoMeetSlide
 {
-	private static _Instance: HugoMeetSlide;
+	private _Camera: Camera;
+	private _Experience: Experience;
+
+	private _ScenePosition: THREE.Vector3;
+	private _BoundingBox: THREE.Box3;
+	private _StartRotationY: number;
+	private _EndRotationY: number;
+	private _Scene: THREE.Group;
+	private _Condensed: boolean = false;
 
 	// Getters
-	public static get Instance(): HugoMeetSlide { return this._Instance; }
+	public get Condensed(): boolean { return this._Condensed; }
 
-	public constructor()
+	// Setters
+	public set Condensed(value: boolean)
 	{
-		if (HugoMeetSlide._Instance) {
-			return (HugoMeetSlide._Instance);
+		if (this._Condensed !== value) {
+			this._Condensed = value;
+			this.Resize();
 		}
-		HugoMeetSlide._Instance = this;
 	}
 
-	public onConstruct(self: any) {
+	private Resize()
+	{
+		this._BoundingBox.setFromCenterAndSize(
+			this._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+			new THREE.Vector3(10, 15, (this._Condensed ? 20 : 22.5))
+		);
+	}
+
+	public constructor(condensed = false)
+	{
+		this._Condensed = condensed;
+
 		// The position of the scene in the 3d world
-		self._ScenePosition = new THREE.Vector3(0, -33, 0);
+		this._ScenePosition = new THREE.Vector3(0, -33, 0);
 
 		// Uvch scene bounding box
-		self._BoundingBox = new THREE.Box3();
-		self._BoundingBox.setFromCenterAndSize(
-			self._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
-			new THREE.Vector3(10, 15, (window.innerWidth >= 920 ? 22.5 : 20))
+		this._BoundingBox = new THREE.Box3();
+		this._BoundingBox.setFromCenterAndSize(
+			this._ScenePosition.clone().add(new THREE.Vector3(0, -2, 0)),
+			new THREE.Vector3(10, 15, (this._Condensed ? 20 : 22.5))
 		);
 
 		// Camera movements
-		self._StartRotationY = Math.PI / 180 * 60;
-		self._EndRotationY = Math.PI / 180 * -120;
+		this._StartRotationY = Math.PI / 180 * 60;
+		this._EndRotationY = Math.PI / 180 * -120;
 
-		new Experience().on('ready', () => {
+		this._Experience = new Experience();
+		this._Experience.on('ready', () => {
 			// Boundingbox helper
-			// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
+			// const helper = new THREE.Box3Helper(this._BoundingBox, new THREE.Color(0xff0000));
 			// new Experience().World.Scene.add(helper);
 
 			// get 3d camera
-			self._Camera = new Experience().World.Camera;
+			this._Camera = new Experience().World.Camera;
 			// Fetch all the 3D object that compose the Procedural terrain scene
-			self._MeshScene = new Experience().World.MeshScenes["HugoMeet"];
+			this._Scene = new Experience().World.MeshScenes["HugoMeet"];
 		});
 	}
 
-	public onEnter(self: any, direction: number) {
-		if (self._Camera) {
+	public onEnter(direction: number) {
+		if (this._Experience.IsReady) {
 			// Get either the start or the end of the path depending on the direction where the scroll is from
-			const camPosition = HugoMeetSlide.Instance.GetCameraPositionToFocusBox(self._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
-			self._Camera.AnimatesToWhileFocusing(camPosition, self._ScenePosition, 0.025);
+			const camPosition = this.GetCameraPositionToFocusBox(this._BoundingBox, new THREE.Vector3(-1, 0.25, 0));
+			this._Camera.AnimatesToWhileFocusing(camPosition, this._ScenePosition, 0.025);
 		}
 	}
 
-	public onScroll(self: any, progress: number) {
-		if (self._MeshScene) {
+	public onScroll(progress: number) {
+		if (this._Experience.IsReady) {
 			// Rotate the scene from 45 deg to 405 deg
-			self._MeshScene.rotation.y = progress * self._EndRotationY + self._StartRotationY;
+			this._Scene.rotation.y = progress * this._EndRotationY + this._StartRotationY;
 		}
 	}
 
-	public onLeave(self: any, direction: number) {
-		if (self._Camera) {
+	public onLeave(direction: number) {
+		if (this._Experience.IsReady) {
 			// Cancel Anim in case your scrolling fast
-			self._Camera.CancelAnimation();
+			this._Camera.CancelAnimation();
 			// unfocus from the scene center
-			self._Camera.Unfocus();
+			this._Camera.Unfocus();
 		}
 	}
 

@@ -117,6 +117,10 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 
 		function resize() {
 			slideShowController.emit('refresh');
+
+			// Set condensed mode if the screen is too small
+			_HugoMeetSlide.Condensed = window.innerWidth < 920;
+			_ProceduralTerrainSlide.Condensed = window.innerWidth < 920;
 		}
 
 		// listen to resize and move canvas to 0 if the screen is too small
@@ -242,17 +246,16 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					</Slide>
 					{/* HUGO MEET */}
 					<Slide
-						onConstruct={_HugoMeetSlide.onConstruct}
 						onEnter={(self: any, direction: number) => {
 							// Move canvas to the right
 							MoveCanvas(25);
 							// Change background color
 							UpdateBackground(Style.Background_Peach);
 
-							_HugoMeetSlide.onEnter(self, direction);
+							_HugoMeetSlide.onEnter(direction);
 						}}
-						onScroll={_HugoMeetSlide.onScroll}
-						onLeave={_HugoMeetSlide.onLeave}
+						onScroll={(self: any, progress: number) => _HugoMeetSlide.onScroll(progress)}
+						onLeave={(self: any, direction: number) => _HugoMeetSlide.onLeave(direction)}
 						length={200}
 						LeaveTransition={{
 							duration: 0.75,

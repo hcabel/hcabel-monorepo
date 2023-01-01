@@ -12,7 +12,6 @@ class ProceduralTerrainSlide
 	private _BoundingBox: THREE.Box3;
 	private _CameraDirection: THREE.Vector3;
 	private _Scene: THREE.Group;
-
 	private _Condensed: boolean = false;
 
 	// Getters
