@@ -1,78 +1,99 @@
 import * as THREE from 'three';
 
 import Experience from "3D/Experience";
+import Camera from '3D/world/Camera';
 
 class ProceduralTerrainSlide
 {
-	private static _Instance: ProceduralTerrainSlide;
+	private _Experience: Experience;
+	private _Camera: Camera;
+
+	private _ScenePosition: THREE.Vector3;
+	private _BoundingBox: THREE.Box3;
+	private _CameraDirection: THREE.Vector3;
+	private _Scene: THREE.Group;
+
+	private _Condensed: boolean = false;
 
 	// Getters
-	public static get Instance(): ProceduralTerrainSlide { return this._Instance; }
+	public get Condensed(): boolean { return this._Condensed; }
 
-	public constructor()
+	// Setters
+	public set Condensed(value: boolean)
 	{
-		if (ProceduralTerrainSlide._Instance) {
-			return (ProceduralTerrainSlide._Instance);
+		if (this._Condensed !== value) {
+			this._Condensed = value;
+			this.Resize();
 		}
-		ProceduralTerrainSlide._Instance = this;
 	}
 
-	public onConstruct(self: any)
+	private Resize()
 	{
+		this._BoundingBox.setFromCenterAndSize(
+			this._ScenePosition,
+			new THREE.Vector3(12.5, (this._Condensed ? 20 : 25), 12.5)
+		);
+	}
+
+	public constructor(condensed = false)
+	{
+		this._Condensed = condensed;
+
 		// Position of the scene in the 3d world
-		self._ScenePosition = new THREE.Vector3(0, -75, 0);
+		this._ScenePosition = new THREE.Vector3(0, -75, 0);
 
 		// Create a box arround the scene to focus on
-		self._BoundingBox = new THREE.Box3();
-		self._BoundingBox.setFromCenterAndSize(
-			self._ScenePosition,
-			new THREE.Vector3(12.5, (window.innerWidth >= 920 ? 25 : 20), 12.5)
+		this._BoundingBox = new THREE.Box3();
+		this._BoundingBox.setFromCenterAndSize(
+			this._ScenePosition,
+			new THREE.Vector3(12.5, (this._Condensed ? 20 : 25), 12.5)
 		);
 
 		// Direction of the camera relavtive to the scene center
-		self._CameraDirection = new THREE.Vector3(-1, 1, 0);
+		this._CameraDirection = new THREE.Vector3(-1, 1, 0);
 
-		new Experience().on('ready', () => {
+		this._Experience = new Experience();
+		this._Experience.on('ready', () => {
 			// Debug to show the box to focus
-			// const helper = new THREE.Box3Helper(self._BoundingBox, new THREE.Color(0xff0000));
+			// const helper = new THREE.Box3Helper(this._BoundingBox, new THREE.Color(0xff0000));
 			// new Experience().World.Scene.add(helper);
 
 			// get 3d camera
-			self._Camera = new Experience().World.Camera;
+			this._Camera = new Experience().World.Camera;
 			// get Procedural terrain scene
-			self._MeshScene = new Experience().World.MeshScenes["Procedural Terrain"];
+			this._Scene = new Experience().World.MeshScenes["Procedural Terrain"];
 		});
 	}
 
-	public onEnter(self: any, direction: number)
+	public onEnter(direction: number)
 	{
-		if (self._Camera) {
+		if (this._Experience.IsReady) {
 			// Move the camera to look at the scene
-			self._Camera.AnimatesToWhileFocusing(
+			this._Camera.AnimatesToWhileFocusing(
 				// Find camera position from the scene boundingbox and the camera direction
-				ProceduralTerrainSlide.Instance.GetCameraPositionToFocusBox(self._BoundingBox, self._CameraDirection),
+				this.GetCameraPositionToFocusBox(this._BoundingBox, this._CameraDirection),
 				// where to look at
-				self._ScenePosition,
+				this._ScenePosition,
 				0.025
 			);
 		}
 	}
 
-	public onScroll(self: any, progress: number)
+	public onScroll(progress: number)
 	{
-		if (self._MeshScene) {
+		if (this._Experience.IsReady) {
 			// Rotate the scene from 45 deg to -315 deg
-			self._MeshScene.rotation.y = progress * -(Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
+			this._Scene.rotation.y = progress * -(Math.PI * 2 /* 360deg */) + (Math.PI / 4 /* 45deg */);
 		}
 	}
 
-	public onLeave(self: any, direction: number)
+	public onLeave(direction: number)
 	{
-		if (self._Camera) {
+		if (this._Experience.IsReady) {
 			// Cancel Anim in case your scrolling fast
-			self._Camera.CancelAnimation();
+			this._Camera.CancelAnimation();
 			// unfocus from the scene center
-			self._Camera.Unfocus();
+			this._Camera.Unfocus();
 		}
 	}
 

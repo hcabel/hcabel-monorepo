@@ -270,17 +270,16 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 					</Slide>
 					{/* PROCEDURAL TERRAIN */}
 					<Slide
-						onConstruct={_ProceduralTerrainSlide.onConstruct}
 						onEnter={(self: any, direction: number) => {
 							// Move canvas to the right
 							MoveCanvas(25);
 							// Change background color
 							UpdateBackground(Style.Background_Meadow);
 
-							_ProceduralTerrainSlide.onEnter(self, direction);
+							_ProceduralTerrainSlide.onEnter(direction);
 						}}
-						onScroll={_ProceduralTerrainSlide.onScroll}
-						onLeave={_ProceduralTerrainSlide.onLeave}
+						onScroll={(self: any, progress: number) => _ProceduralTerrainSlide.onScroll(progress)}
+						onLeave={(self: any, direction: number) => _ProceduralTerrainSlide.onLeave(direction)}
 						length={300}
 					>
 						<div className={Style.Slide}>
