@@ -122,22 +122,24 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		// contants
 		const cubeSize = 0.4;
 		const cubeSpacing = 0.2;
-
-		// The my github contributions for every week of this year
-		const weeks = props.activities.data.user.contributionsCollection.contributionCalendar.weeks;
-
-		// the geometry of the cube
 		const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+
 		const amountOfDayInThisYear = (new Date().getFullYear() % 4 === 0 ? 366 : 365);
 
 		const chart = {
-			pos: new THREE.Vector3(chartPos.x, chartPos.y, chartPos.z + -((amountOfDayInThisYear / 7) * (cubeSize + cubeSpacing)) / 2),
+			pos: new THREE.Vector3(
+				chartPos.x,
+				chartPos.y,
+				chartPos.z - (((amountOfDayInThisYear / 7) * (cubeSize + cubeSpacing)) / 2)
+			),
 			cubes: [] as any,
 			materials: [
 				new THREE.MeshBasicMaterial({ color: 0x111111 }), // default
 			]
 		};
 
+		// The my github contributions for every week of this year
+		const weeks = props.activities.data?.user?.contributionsCollection?.contributionCalendar?.weeks || [];
 		// create a cube for each week already passed (wheter it has a contribution or not)
 		for (let i = 0; i < weeks.length; i++) {
 			const week = weeks[i];
@@ -195,7 +197,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		}
 
 		// create a cube for each day of the year that his is coming
-		const lastCube = chart.cubes[chart.cubes.length - 1];
+		const lastCubePos = (chart.cubes.length === 0 ? { x: 0, y: 0 } : chart.cubes[chart.cubes.length - 1].pos);
 		const cubeAlreadyCreated = chart.cubes.length;
 		for (let futureDayCubeIndex = 0; cubeAlreadyCreated + futureDayCubeIndex <= amountOfDayInThisYear; futureDayCubeIndex++) {
 			// Create the cube
@@ -206,8 +208,8 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				mesh: mesh,
 				material: chart.materials[0],
 				pos: { // The position of the cube in the chart
-					x: lastCube.pos.x + Math.floor(futureDayCubeIndex / 7),
-					y: lastCube.pos.y + (futureDayCubeIndex % 7)
+					x: lastCubePos.x + Math.floor(futureDayCubeIndex !== 0 ? futureDayCubeIndex / 7 : 0),
+					y: lastCubePos.y + (futureDayCubeIndex % 7)
 				}
 			};
 			// add the cube and his data to the chart
@@ -223,6 +225,10 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 				chart.pos.y - cubeData.pos.y * (cubeSize + cubeSpacing),
 				chart.pos.z + cubeData.pos.x * (cubeSize + cubeSpacing)
 			);
+
+			if (futureDayCubeIndex === 0) {
+				console.log(mesh.position, lastCubePos.x, Math.floor(futureDayCubeIndex / 7), cubeData.pos.x);
+			}
 		}
 
 		return (chart);

@@ -49,11 +49,13 @@ async function getContributions(username: string, options?: RequestInit): Promis
 	const headers = {
 		'Authorization': `bearer ${process.env.NX_GITHUB_TOKEN}`,
 	}
+	const date365DaysAgo = new Date();
+	date365DaysAgo.setDate(date365DaysAgo.getDate() - 365);
 	const body = {
 		"query": `query {
 			user(login: "${username}") {
 				name
-				contributionsCollection {
+				contributionsCollection($from: "${date365DaysAgo.toJSON()}") {
 					contributionCalendar {
 						totalContributions
 						weeks {
