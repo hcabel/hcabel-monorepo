@@ -114,6 +114,7 @@
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
+		flex: 0.75;
 
 		.Name, .Job {
 			width: fit-content;
@@ -236,5 +237,63 @@
 				transform: translateY(5%);
 			}
 		}
+	}
+}
+$text-color: rgb(252, 237, 237);
+$shadow-color: hsla(210, 40%, 52%, .4);
+$btn-color: #ff9b65;
+$bubble-color: $text-color;
+$bg-color: #141218;
+
+.Freelance {
+	position:relative;
+	padding: 10px 40px;
+	border: none;
+	background: none;
+	cursor: pointer;
+
+	background-color: $btn-color;
+	box-shadow: $shadow-color 2px 2px 22px;
+	border-radius: 4px;
+	z-index: 0;
+	overflow: hidden;
+	text-decoration: none;
+
+	.FreelanceText {
+		font-family: 'Inter var', sans-serif;
+		font-weight: 900;
+		text-transform: uppercase;
+		font-size: 30px;
+		color: $text-color;
+	}
+}
+
+.Freelance::before {
+	content: '';
+	pointer-events: none;
+	opacity: .6;
+	background:
+		radial-gradient(circle at 20% 35%, $bubble-color 4px, transparent 5px),
+		radial-gradient(circle at 75% 44%, $bubble-color 4px, transparent 5px),
+		radial-gradient(circle at 46% 52%, $bubble-color 7px, transparent 8px);
+
+	width: 100%;
+	height: 300%;
+	top: 0;
+	left: 0;
+	position: absolute;
+	animation: bubbles 4s linear infinite both;
+}
+
+.Freelance:hover {
+	background-color: $bg-color;
+}
+
+@keyframes bubbles {
+	from {
+		transform: translate();
+	}
+	to {
+		transform: translate(0, -66.666%);
 	}
 }

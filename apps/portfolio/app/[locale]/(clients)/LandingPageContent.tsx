@@ -132,40 +132,6 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 		};
 	}, []);
 
-	/**
-	 * This function will find the distance in a direction where the 3D box is fully in the fov of the camera
-	 * @param {Box3} fbox The focus box
-	 * @param {Vector3} direction The direction of the camera
-	 * @return {Vector3} The position of the camera
-	 */
-	function GetCameraPositionToFocusBox(fbox: THREE.Box3, direction: THREE.Vector3): THREE.Vector3
-	{
-		// WARN: This function is not working perfectly, it's the closest I could get to the result I wanted
-		// And with some tweaking it's working well enough for my use case
-		const camera = new Experience().World.Camera.PerspectiveCamera;
-		const fov = camera.fov;
-		const aspect = camera.aspect;
-
-		const boxCenter = new THREE.Vector3();
-		fbox.getCenter(boxCenter);
-		const boxSizes = new THREE.Vector3();
-		fbox.getSize(boxSizes);
-		let radius = Math.max(boxSizes.x, boxSizes.y, boxSizes.z);
-
-		if (aspect > 1) {
-			radius /= aspect;
-		}
-
-		const halfFovRadian = THREE.MathUtils.degToRad(fov / 2);
-		const distance = radius / Math.tan(halfFovRadian);
-		const cameraOffset = direction.normalize().multiplyScalar(distance);
-
-		const pos = new THREE.Vector3();
-		pos.addVectors(boxCenter, cameraOffset);
-
-		return (pos);
-	}
-
 	useEffect(() => {
 		new Experience()
 			.on('ready', () => {
@@ -207,8 +173,11 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 						<div className={Style.SlideIntro}>
 							<div className={Style.Description}>
 								<h1 className={`h1 ${Style.Name}`} data-cy="my-real-name">Hugo Cabel</h1>
-								<h4 className={`h4 ${Style.Job}`} data-cy="my-job">{i18nText("MyJob", props.locale)}</h4>
+								<h3 className={`h4 ${Style.Job}`} data-cy="my-job">{i18nText("MyJob", props.locale)}</h3>
 							</div>
+							<Link className={Style.Freelance} href={`/${props.locale}/freelance`}>
+								<h5 className={`h5 ${Style.FreelanceText}`}>{"Freelance"}</h5>
+							</Link>
 							<div className={Style.MyProject} onClick={() => slideShowController.emit('goto', 1)}>
 								<ArrowIcon />
 								<h5 className={`h5 ${Style.MyProjectText}`}>{i18nText("MyProjects-Title", props.locale)}</h5>
@@ -308,7 +277,7 @@ export default function LandingPageContent(props: ILandingPageContentProps)
 						const regionNamesInEnglish = new Intl.DisplayNames(lang, { type: 'language' });
 						return (
 							<span key={index} data-cy={`language-selector-option-${lang}`}>
-								<Link className={Style.LocalLink} href={`/${lang}`} locale={lang}>
+								<Link className={Style.LocalLink} href={`/${lang}`}>
 									{regionNamesInEnglish.of(lang)}
 								</Link>
 							</span>
