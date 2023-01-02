@@ -1,5 +1,5 @@
 import { IRouteGetAllProjects, IRouteGetProjectById } from "@hcabel/types/ProjectApi";
-import LandingPageContent from "./(elements)/LandingPageContent";
+import LandingPageContent from "./(clients)/LandingPageContent";
 
 export interface IProjectDatas {
 	[projectName: string]: IRouteGetProjectById
@@ -49,11 +49,18 @@ async function getContributions(username: string, options?: RequestInit): Promis
 	const headers = {
 		'Authorization': `bearer ${process.env.NX_GITHUB_TOKEN}`,
 	}
+
+	// UTC Date 365 days ago rounded to the start of the day
+	const date365DaysAgose = new Date(
+		new Date().setUTCDate(new Date().getUTCDate() - 365)
+	);
+	date365DaysAgose.setUTCHours(0, 0, 0, 0);
+
 	const body = {
 		"query": `query {
 			user(login: "${username}") {
 				name
-				contributionsCollection {
+				contributionsCollection(from: "${date365DaysAgose.toJSON()}", to: "${new Date().toJSON()}") {
 					contributionCalendar {
 						totalContributions
 						weeks {
@@ -75,6 +82,7 @@ async function getContributions(username: string, options?: RequestInit): Promis
 	return data
 }
 
+// This component is the landing page where data are fetched
 export default async function LandingPage(props: any)
 {
 	const projects = await GetProjectsData({
@@ -92,7 +100,6 @@ export default async function LandingPage(props: any)
 		}
 	})
 
-	// I had to wrap the content in a component to be able to fecth projects data on the server side
 	return (
 		<LandingPageContent
 			projects={projects}
@@ -102,6 +109,7 @@ export default async function LandingPage(props: any)
 	);
 }
 
+// Tell nextjs to pre-render the pages where the dynamic params [locale] is "en" and "fr"
 export async function generateStaticParams()
 {
 	return ([
