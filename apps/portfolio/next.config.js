@@ -6,6 +6,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  reactStrictMode: false, // otherwise the app is loaded twice
   headers: [
     {
       source: '/:all*(svg|jpg|png)',
@@ -40,22 +41,22 @@ const nextConfig = {
       {
         source: '/redirects/youtube',
         destination: 'https://youtube.com/c/hugocabel',
-        permanent: false
+        permanent: true
       },
       {
         source: '/redirects/github',
         destination: 'https://github.com/hcabel',
-        permanent: false
+        permanent: true
       },
       {
         source: '/redirects/hugomeet',
         destination: 'https://meet.hugocabel.com',
-        permanent: false
+        permanent: true
       },
       {
         source: '/redirects/unreal-vscode-helper',
         destination: 'https://marketplace.visualstudio.com/items?itemName=HugoCabel.uvch',
-        permanent: false
+        permanent: true
       }
     ];
   },

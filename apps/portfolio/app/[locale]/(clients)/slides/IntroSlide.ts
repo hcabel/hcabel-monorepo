@@ -1,15 +1,28 @@
 import * as THREE from 'three';
 
-import Experience from '3D/Experience';
 import EventEmitter from 'events';
 import { GithubActivities } from 'App/[locale]/page';
 import Slide3dBehavior from './Slide3dBehavior';
 
+interface IDailyActivityCube {
+	mesh: THREE.Mesh;
+	pos: {
+		x: number;
+		y: number;
+	},
+	material: number;
+}
+
+interface IGithubActivityChart {
+	pos: THREE.Vector3;
+	cubes: IDailyActivityCube[];
+	materials: THREE.MeshBasicMaterial[];
+}
+
 class IntroSlide extends Slide3dBehavior
 {
 	private _Activities: GithubActivities;
-	private _CameraDirectionEnd: THREE.Vector3;
-	private _GithubChart: any;
+	private _GithubChart: IGithubActivityChart;
 	private _Raycaster: THREE.Raycaster;
 	private _Mouse = new THREE.Vector2();
 	private _InitTrigger: EventEmitter;
@@ -26,13 +39,10 @@ class IntroSlide extends Slide3dBehavior
 			"Intro", // Scene name
 			new THREE.Vector3(0, 30, 0), // Scene position
 			new THREE.Vector3(5, 5, 20), // Scene size
-			new THREE.Vector3(-0.9, 0.1, 0) // Camera direction
+			new THREE.Vector3(-0.9, 0., 0) // Camera direction
 		);
 		// Data fetch from github
 		this._Activities = activities;
-
-		// The direction of the camera when the scroll is finish
-		this._CameraDirectionEnd = new THREE.Vector3(-0.9, -0.1, 0);
 
 		// Create a trigger that will be used to trigger the enter at the right time
 		// if I dont do this the enter function may be called before the initialisation of the experience is finished
@@ -43,11 +53,10 @@ class IntroSlide extends Slide3dBehavior
 	protected onExperienceReady()
 	{
 		// add the github activities chart to the scene
-		this._GithubChart = this.CreateGithubActivitiesChart(new THREE.Vector3(5, 33, 0));
-		this._GithubChart.cubes.forEach((cube: any) => {
+		this._GithubChart = this.CreateGithubActivitiesChart(new THREE.Vector3(0, 33, 0));
+		this._GithubChart.cubes.forEach((cube) => {
 			this._Scene.add(cube.mesh);
 		});
-
 		// Trigger the enter function
 		this._InitTrigger.emit('trigger');
 	}
@@ -57,7 +66,7 @@ class IntroSlide extends Slide3dBehavior
 		if (this._Experience.IsReady)
 		{
 			// Same position has the start of the next slide
-			const camPosition = this.GetCameraPositionToFocusBox(this._BoundingBox, direction === 1 ? this._CameraDirection : this._CameraDirectionEnd);
+			const camPosition = this.GetCameraPositionToFocusBox(this._BoundingBox, this._CameraDirection);
 
 			if (direction === 1 /* From above */) {
 				// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
@@ -78,7 +87,6 @@ class IntroSlide extends Slide3dBehavior
 
 		this._Raycaster = new THREE.Raycaster();
 		this._Mouse = new THREE.Vector2();
-		console.log(this._Mouse);
 		this._GithubLogoObject = this._Scene.children[0] as THREE.Mesh;
 		this._YoutubeLogoObject = this._Scene.children[1] as THREE.Mesh;
 
@@ -105,12 +113,10 @@ class IntroSlide extends Slide3dBehavior
 			// * 1.75 to allow the animation to end before the end of the scroll, so you can actually see the result
 			const scrollCubeProgress = Math.floor(progress * 365 * 1.75);
 
-			for (let cubeIndex = 0; cubeIndex < this._GithubChart.cubes.length; cubeIndex++) {
-				const cube = this._GithubChart.cubes[cubeIndex];
-
+			this._GithubChart.cubes.forEach((cube, index) => {
 				// Change the color of the cube according to the scroll progress (default if bellow the scroll progress, or his color if it's a past/current day)
-				cube.mesh.material = (cubeIndex < scrollCubeProgress ? cube.material : this._GithubChart.materials[0]);
-			}
+				cube.mesh.material = (index < scrollCubeProgress ? this._GithubChart.materials[cube.material] : this._GithubChart.materials[0]);
+			});
 
 			// if the screen is not wide enough, rotate the camera to focus on the current cube
 			if (this._Condensed) {
@@ -126,13 +132,6 @@ class IntroSlide extends Slide3dBehavior
 				focusPos.z = focusPos.z / 2;
 				this._Camera.Focus(focusPos, true);
 			}
-
-			// Find the camera direction with the scroll progress
-			const lerpDirection = this._CameraDirection.clone().lerp(this._CameraDirectionEnd, progress);
-			// Find the camera position of this direction with the bounding box
-			const camPosition = this.GetCameraPositionToFocusBox(this._BoundingBox, lerpDirection);
-			// Move the camera to this position
-			this._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
 		}
 	}
 
@@ -159,113 +158,64 @@ class IntroSlide extends Slide3dBehavior
 		const cubeSpacing = 0.2;
 		const cubeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
 
-		const amountOfDayInThisYear = (new Date().getFullYear() % 4 === 0 ? 366 : 365);
-
-		const chart = {
+		const chart: IGithubActivityChart = {
 			pos: new THREE.Vector3(
 				chartPos.x,
 				chartPos.y,
-				chartPos.z - (((amountOfDayInThisYear / 7) * (cubeSize + cubeSpacing)) / 2)
+				chartPos.z - ((52.2 /* weeks in a year */ ) * (cubeSize + cubeSpacing) / 2) // calculate half of the size of the chart to center it
 			),
-			cubes: [] as any,
+			cubes: [],
 			materials: [
 				new THREE.MeshBasicMaterial({ color: 0x111111 }), // default
 			]
 		};
 
-		// The my github contributions for every week of this year
+		// My github contributions for the past 365 days
 		const weeks = this._Activities.data?.user?.contributionsCollection?.contributionCalendar?.weeks || [];
-		// create a cube for each week already passed (wheter it has a contribution or not)
-		for (let i = 0; i < weeks.length; i++) {
-			const week = weeks[i];
 
-			// create a cube for each day of the week
-			for (let j = 0; j < week.contributionDays.length; j++) {
-				const day = week.contributionDays[j];
+		const dailyContributions = weeks.reduce((acc, week, index) => {
+			return acc.concat(
+				week.contributionDays.map((day) => ({ ...day, week: index }))
+			);
+		}, []);
+		for (const cube of dailyContributions) {
+			// convert day.color (which is a hexa color string starting with #) to a number
+			const color = parseInt(cube.color.slice(1), 16);
 
-				// If not from the current year, don't create the cube
-				if (day.date.slice(0, 4) !== new Date().getFullYear().toString()) {
-					continue;
-				}
-
-				// convert day.color (which is a hexa color string starting with #) to a number
-				const color = parseInt(day.color.slice(1), 16);
-
-				// Check if the material already exist in 'char.materials' if not create it
-				let mat = chart.materials.find((mat) => mat.color.getHex() === color);
-				if (!mat) {
-					mat = new THREE.MeshBasicMaterial({ color: color });
-					chart.materials.push(mat);
-				}
-
-				// if it's today, change the mat to be a pale red
-				if (day.date === new Date().toISOString().slice(0, 10)) {
-					mat = new THREE.MeshBasicMaterial({ color: 0xff1111 });
-				}
-
-				// Create the cube using the default material (his color is controlled with the scroll animation)
-				const mesh = new THREE.Mesh(cubeGeometry, chart.materials[0]);
-
-				// Create an object that will contain all the usefull data related to the cube
-				const cubeData = {
-					mesh: mesh,
-					material: mat,
-					pos: { // The position of the cube in the chart
-						x: i,
-						y: j
-					}
-				};
-				// add the cube datas to the charts
-				chart.cubes.push(cubeData);
-
-				// curve cube position on the left and the right
-				const curve = Math.sin((cubeData.pos.x / weeks.length) * Math.PI);
-
-				// Set cube 3d position
-				mesh.position.set(
-					chart.pos.x + curve * 5,
-					// This seam confusing and your right, but the scene is not well rotated so the x and y axis are inverted
-					chart.pos.y - cubeData.pos.y * (cubeSize + cubeSpacing),
-					chart.pos.z + cubeData.pos.x * (cubeSize + cubeSpacing)
-				);
+			// Check if the material already exist in 'char.materials'
+			let materialIndex = chart.materials.findIndex((material) => material.color.getHex() === color);
+			// If not, create it
+			if (materialIndex === -1) {
+				materialIndex = chart.materials.length;
+				chart.materials.push(new THREE.MeshBasicMaterial({ color }));
 			}
-		}
-
-		// create a cube for each day of the year that his is coming
-		const lastCubePos = (chart.cubes.length === 0 ? { x: 0, y: 0 } : chart.cubes[chart.cubes.length - 1].pos);
-		const cubeAlreadyCreated = chart.cubes.length;
-		for (let futureDayCubeIndex = 0; cubeAlreadyCreated + futureDayCubeIndex <= amountOfDayInThisYear; futureDayCubeIndex++) {
-			// Create the cube
-			const mesh = new THREE.Mesh(cubeGeometry, chart.materials[0]);
 
 			// Create an object that will contain all the usefull data related to the cube
-			const cubeData = {
-				mesh: mesh,
-				material: chart.materials[0],
+			const dailyCube: IDailyActivityCube = {
+				mesh: new THREE.Mesh(cubeGeometry, chart.materials[0]),
+				material: materialIndex,
 				pos: { // The position of the cube in the chart
-					x: lastCubePos.x + Math.floor(futureDayCubeIndex !== 0 ? futureDayCubeIndex / 7 : 0),
-					y: lastCubePos.y + (futureDayCubeIndex % 7)
+					x: cube.week,
+					y: cube.weekday,
 				}
 			};
-			// add the cube and his data to the chart
-			chart.cubes.push(cubeData);
+			// add the cube datas to the charts
+			chart.cubes.push(dailyCube);
+			// Set default material (his color will be controlled with the scroll animation)
+			dailyCube.mesh.material = chart.materials[0];
 
 			// curve cube position on the left and the right
-			const curve = Math.sin((cubeData.pos.x / weeks.length) * Math.PI);
+			const curve = Math.sin((dailyCube.pos.x / weeks.length) * Math.PI);
 
 			// Set cube 3d position
-			mesh.position.set(
+			dailyCube.mesh.position.set(
 				chart.pos.x + curve * 5,
 				// This seam confusing and your right, but the scene is not well rotated so the x and y axis are inverted
-				chart.pos.y - cubeData.pos.y * (cubeSize + cubeSpacing),
-				chart.pos.z + cubeData.pos.x * (cubeSize + cubeSpacing)
+				chart.pos.y - dailyCube.pos.y * (cubeSize + cubeSpacing),
+				chart.pos.z + dailyCube.pos.x * (cubeSize + cubeSpacing)
 			);
 
-			if (futureDayCubeIndex === 0) {
-				console.log(mesh.position, lastCubePos.x, Math.floor(futureDayCubeIndex / 7), cubeData.pos.x);
-			}
 		}
-
 		return (chart);
 	}
 
