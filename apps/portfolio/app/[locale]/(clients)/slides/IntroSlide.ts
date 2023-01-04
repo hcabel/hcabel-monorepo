@@ -57,32 +57,30 @@ class IntroSlide extends Slide3dBehavior
 		this._GithubChart.cubes.forEach((cube) => {
 			this._Scene.add(cube.mesh);
 		});
+
 		// Trigger the enter function
 		this._InitTrigger.emit('trigger');
 	}
 
 	private realEnterFunction(direction: number)
 	{
-		if (this._Experience.IsReady)
-		{
-			// Same position has the start of the next slide
-			const camPosition = this.GetCameraPositionToFocusBox(this._BoundingBox, this._CameraDirection);
+		// Same position has the start of the next slide
+		const camPosition = this.GetCameraPositionToFocusBox(this._BoundingBox, this._CameraDirection);
 
-			if (direction === 1 /* From above */) {
-				// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
-				this._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
-				this._Camera.Focus(this._ScenePosition, true);
-			}
-			else {
-				// Move the camera to look at the scene
-				this._Camera.AnimatesToWhileFocusing(
-					// Find camera position from the scene boundingbox and the camera direction
-					camPosition,
-					// where to look at
-					this._ScenePosition,
-					0.025
-				);
-			}
+		if (direction === 1 /* From above */) {
+			// Instant tp to the right first position (this will only be called by the slideshow constructor since it's the first slide)
+			this._Camera.MoveTo(camPosition.x, camPosition.y, camPosition.z, true);
+			this._Camera.Focus(this._ScenePosition, true);
+		}
+		else {
+			// Move the camera to look at the scene
+			this._Camera.AnimatesToWhileFocusing(
+				// Find camera position from the scene boundingbox and the camera direction
+				camPosition,
+				// where to look at
+				this._ScenePosition,
+				0.025
+			);
 		}
 
 		this._Raycaster = new THREE.Raycaster();

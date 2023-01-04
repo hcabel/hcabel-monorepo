@@ -16,6 +16,7 @@ import Controller from "Images/Controller.svg";
 import LightPurplePeaksStacked from "Images/LightPurplePeaksStacked.svg";
 import Malt from "Images/Malt.svg";
 import Linkedin from "Images/Linkedin.svg";
+import i18nText from "Utils/i18Text";
 
 export default async function freelance({ params: { locale } }: any)
 {
@@ -31,71 +32,37 @@ export default async function freelance({ params: { locale } }: any)
 				<OrangeWaveUpsideDown />
 			</header>
 			<section className={Style.WhatIdo}>
-				<h2>What I do :</h2>
+				<h2>{i18nText("What I do", locale)} :</h2>
 				<BoxScroller useSnap entryClassName={Style.CardsEntry}>
 					<ServicesCard
-						title="Unreal Engine Tools Programmer"
-						description={
-							<p>
-								As a tools programmer, I can create <b>custom plugins for Unreal Engine</b> that run within the editor environment.<br />
-								These plugins can help <b>streamline workflows</b> and <b>improve efficiency</b> for teams working on projects in Unreal Engine.<br />
-							</p>
-						}
+						title={i18nText("Unreal Engine Tools Programmer", locale)}
+						description={i18nText("Unreal Engine Tools Programmer - Description", locale)}
 						icon={<Tools />}
 					/>
 					<ServicesCard
-						title="Unreal Engine Gameplay Programmer"
-						description={
-							<p>
-								As a gameplay programmer with extensive experience in Unreal Engine.<br />
-								I have the skills and knowledge to <b>develop custom runtime gameplay</b> systems that enhance the player experience.<br />
-								My expertise in the Unreal Engine API and proficiency in C++ allows me to create tailored solutions that meet the specific needs of my clients.<br />
-							</p>
-						}
+						title={i18nText("Unreal Engine Gameplay Programmer", locale)}
+						description={i18nText("Unreal Engine Gameplay Programmer - Description", locale)}
 						icon={<Controller />}
 					/>
 					<ServicesCard
-						title="Front-End Design Implementation"
-						description={
-							<p>
-								As a front-end developer, I have the skills and experience to <b>implement mockups of design in existing websites</b>.<br />
-								My expertise extends to a wide range of web technologies, including Next.js, React.js, HTML, CSS, SCSS and more.<br />
-							</p>
-						}
+						title={i18nText("Front-End Design Implementation", locale)}
+						description={i18nText("Front-End Design Implementation - Description", locale)}
 						icon={<Monitor />}
 					/>
 					<ServicesCard
-						title="Backend Development"
-						description={
-							<p>
-								As a backend developer with skills and experience in <b>creating custom REST APIs</b>, I can enable data exchange between systems and applications.<br />
-								My expertise allows me to develop APIs that are  <b>scalable, reliable, and secure</b>.<br />
-								With the posibility of <b>real-time data exchange</b>, using technologies such as <b>WebSockets</b>.<br />
-							</p>
-						}
+						title={i18nText("Backend Development", locale)}
+						description={i18nText("Backend Development - Description", locale)}
 						icon={<Server />}
 					/>
 					<ServicesCard
-						title="WebRTC Development"
-						description={
-							<p>
-								As a skilled WebRTC developer, I have the expertise to <b>quickly create prototypes</b> for real-time communication applications.<br />
-								My experience in implementing WebRTC and setting up <b>STUN and TURN servers</b> allows me to rapidly develop functional prototypes.<br />
-								Whether you need to test out a new <b>video conferencing</b> feature, a <b>real-time chat</b> system, or another type of <b>real-time communication</b>, I can help you create a <b>working prototype</b> in a short amount of time.<br />
-							</p>
-						}
+						title={i18nText("WebRTC Development", locale)}
+						description={i18nText("WebRTC Development - Description", locale)}
 						icon={<Camera />}
 					/>
 					<ServicesCard
 						className={Style.CollaborateCard}
-						title="Let's Collaborate and Brainstorm!"
-						description={
-							<p>
-								I'm always looking for <b>new challenges and opportunities</b> to collaborate with clients and help bring their ideas to life.<br />
-								Whether you have a <b>clear vision</b> for your project <b>or</b> you're <b>still brainstorming</b> and looking for guidance, I'm here to listen and help you shape your ideas into a plan of action.<br />
-								Let's work together to turn your vision into a reality.<br />
-							</p>
-						}
+						title={i18nText("Let's Collaborate and Brainstorm!", locale)}
+						description={i18nText("Let's Collaborate and Brainstorm! - Description", locale)}
 						icon={<Handshake />}
 					/>
 				</BoxScroller>
@@ -103,12 +70,11 @@ export default async function freelance({ params: { locale } }: any)
 			<section className={Style.ContactMe}>
 				<LightPurplePeaksStacked />
 				<div className={Style.SectionInner}>
-					<h2>Contact me :</h2>
 					<div className={Style.Platforms}>
-						<a href="https://www.malt.fr/profile/hugocabel" aria-label="Go to my Malt profile">
+						<a href="https://www.malt.fr/profile/hugocabel" aria-label={i18nText("Go to my Malt profile", locale)}>
 							<Malt />
 						</a>
-						<a href="https://www.linkedin.com/in/hugo-cabel-553701202/" aria-label="Go to my LinkedIn profile">
+						<a href="https://www.linkedin.com/in/hugo-cabel-553701202/" aria-label={i18nText("Go to my LinkeIn profile", locale)}>
 							<Linkedin />
 						</a>
 					</div>
