@@ -5,23 +5,23 @@ export interface IAsset {
 
 const assetsList = {
 	scene: {
-		path: 'SM_Scene.glb',
+		path: '/SM_Scene.glb',
 		type: 'gltf',
 	},
 	T_Intro: {
-		path: 'T_Intro.webp',
+		path: '/T_Intro.webp',
 		type: 'texture',
 	},
 	T_Uvch: {
-		path: 'T_Uvch.webp',
+		path: '/T_Uvch.webp',
 		type: 'texture',
 	},
 	T_HugoMeet: {
-		path: 'T_HugoMeet.webp',
+		path: '/T_HugoMeet.webp',
 		type: 'texture',
 	},
 	T_ProcGen: {
-		path: 'T_ProcGen.webp',
+		path: '/T_ProcGen.webp',
 		type: 'texture',
 	}
 };

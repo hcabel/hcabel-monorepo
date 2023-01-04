@@ -93,10 +93,8 @@ export default async function LandingPage(props: any)
 	});
 	const activities = await getContributions(`hcabel`, {
 		next: {
-			// Revalidate every 6h (It is mainly for design purposes and ther is no point to be very accurate)
-			// TODO: Revalidate on demande every day, there is a time frame where a new day has come but the revalidate timeout is not finished
-			// so the red cube (how show the current day) does not appear.
-			revalidate: 60 * 60 * 6,
+			// Revalidate every 24h (It is mainly for design purposes and ther is no point to be very accurate)
+			revalidate: 60 * 60 * 24,
 		}
 	})
 

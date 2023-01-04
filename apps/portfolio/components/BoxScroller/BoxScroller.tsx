@@ -1,12 +1,13 @@
 import { ReactElement } from "react";
 
-import Style from "Styles/components/BoxScroller.module.scss";
+import Style from "./BoxScroller.module.scss";
 
 interface IBoxScrollerProps {
 	children: ReactElement[];
 	className?: string;
 	useSnap?: boolean;
 	vertical?: boolean;
+	entryClassName?: string;
 }
 
 export default function BoxScroller(props: IBoxScrollerProps)
@@ -18,7 +19,7 @@ export default function BoxScroller(props: IBoxScrollerProps)
 		>
 			{props.children.map((child, index) => {
 				return (
-					<div key={`BoxScroller-${index}`} className={Style.Element}>
+					<div key={`BoxScroller-${index}`} className={`${Style.Element} ${props.entryClassName}`}>
 						{child}
 					</div>
 				);
