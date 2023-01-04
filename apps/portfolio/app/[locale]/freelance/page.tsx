@@ -21,7 +21,7 @@ export default async function freelance({ params: { locale } }: any)
 {
 	return (
 		<main className={`Page ${Style.FreelancePage}`}>
-			<Link className={Style.BackArrow} href={`/${locale}`}>
+			<Link className={Style.BackToLandingPageArrow} href={`/${locale}`} aria-label="Go back to the landing page">
 				<Arrow />
 			</Link>
 			<header>
@@ -105,14 +105,14 @@ export default async function freelance({ params: { locale } }: any)
 				<div className={Style.SectionInner}>
 					<h2>Contact me :</h2>
 					<div className={Style.Platforms}>
-						<a /* href="https://www.malt.fr/profile/hugocabel"*/>
+						<a href="https://www.malt.fr/profile/hugocabel" aria-label="Go to my Malt profile">
 							<Malt />
 						</a>
-						<a /* href="https://www.linkedin.com/in/hugo-cabel-553701202/"*/>
+						<a href="https://www.linkedin.com/in/hugo-cabel-553701202/" aria-label="Go to my LinkedIn profile">
 							<Linkedin />
 						</a>
 					</div>
-					<h4 className={`h4 ${Style.Email}`}>freelance@hugocabel.com</h4>
+					<h3 className={`h3 ${Style.Email}`}>freelance@hugocabel.com</h3>
 				</div>
 			</section>
 		</main>
