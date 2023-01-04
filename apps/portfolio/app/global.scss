@@ -49,3 +49,16 @@
 	box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
 	transform: translateY(-0.25em);
 }
+
+.root {
+	margin: 0px;
+}
+
+.Page {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 100%;
+	overflow-x: hidden;
+}
