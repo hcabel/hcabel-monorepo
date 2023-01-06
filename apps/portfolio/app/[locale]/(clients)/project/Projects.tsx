@@ -48,7 +48,7 @@ export default function Project(props: IProjectProps)
 					</h4>
 				}
 				{props.moreButtonRedirection &&
-					<Link className={Style.ProjectMoreButton} href={props.moreButtonRedirection}>
+					<Link className={Style.ProjectMoreButton} href={props.moreButtonRedirection} prefetch={false}>
 						{props.moreTextOverride || i18nText("MoreDetails", props.locale)}
 					</Link>
 				}

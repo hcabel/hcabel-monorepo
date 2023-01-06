@@ -16,7 +16,7 @@ export interface IStatField {
 export default function StatField(props: IStatField)
 {
 	return (
-		<Link className={`a ${Style.StatField}`} href={props.url}>
+		<Link prefetch={false} className={`a ${Style.StatField}`} href={props.url}>
 			{props.icon &&
 					<div className={Style.StatIcon}>
 						{props.icon}
