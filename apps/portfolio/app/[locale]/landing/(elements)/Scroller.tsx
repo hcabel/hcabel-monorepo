@@ -1,21 +1,25 @@
 "use client";
 
+// Libs
 import { useEffect } from 'react';
-import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import GSAP from 'gsap';
-import { usePathname, useRouter } from 'next/navigation';
-import { Locales } from 'App/[locale]/layout';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 
+// Design
 import Style from '../page.module.scss';
+
+// Hooks
+import { usePathname, useRouter } from 'next/navigation';
+import { useLocale } from 'App/[locale]/LocaleContext';
 
 interface IScrollerProps {
 	children: React.ReactNode;
-	projectInfo: any[];
-	locale: Locales;
+	projectInfo: any[]
 }
 
 export default function Scroller(props: IScrollerProps)
 {
+	const { locale } = useLocale();
 	const router = useRouter();
 	const pathname = usePathname();
 
@@ -23,7 +27,7 @@ export default function Scroller(props: IScrollerProps)
 	function ScrollToPosition(): Promise<void>
 	{
 		// Get index of the current project
-		const i = props.projectInfo.findIndex((project) => (pathname === `/${props.locale}${project.url}`));
+		const i = props.projectInfo.findIndex((project) => (pathname === `/${locale}${project.url}`));
 		if (i === -1) {
 			throw new Error('Slide does not exist');
 		}
@@ -87,12 +91,12 @@ export default function Scroller(props: IScrollerProps)
 						end: "bottom top",
 						// Trigger when enter from the top
 						onEnter: () => {
-							router.push(`/${props.locale}${project.url}`);
+							router.push(`/${locale}${project.url}`);
 						},
 						// Trigger when leaving from the top
 						onLeaveBack: () => {
 							const previousProject = props.projectInfo[i - 1];
-							router.push(`/${props.locale}${previousProject.url}`);
+							router.push(`/${locale}${previousProject.url}`);
 						},
 					});
 				});
@@ -103,7 +107,7 @@ export default function Scroller(props: IScrollerProps)
 	// Prefetch All the slide so that the transition is near instant, and the user doesn't feel the switch of page when scrolling
 	useEffect(() => {
 		props.projectInfo.forEach((project, i) => {
-			router.prefetch(`${props.locale}${project.url}`);
+			router.prefetch(`${locale}${project.url}`);
 		});
 	}, [])
 

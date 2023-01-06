@@ -2,9 +2,8 @@ import CookiePopup from 'Components/CookiePopup/CookiePopup';
 import '../global.scss';
 
 import Head from "./head";
+import { LocaleProvider, Locales } from './LocaleContext';
 import LocaleSelector from './LocaleSelector';
-
-export type Locales = "en" | "fr";
 
 export interface LocaleLayoutParams {
 	locale: Locales;
@@ -33,9 +32,12 @@ export default function LocaleLayout(props: ILocaleLayoutProps)
 				"}
 			/>
 			<body className="root" style={{ background: "grey" }}>
-				<LocaleSelector locale={props.params.locale} />
-				{props.children}
-				<CookiePopup />
+				{/* Allow to access the local from every where easily */}
+				<LocaleProvider value={props.params.locale}>
+					<LocaleSelector />
+					{props.children}
+					<CookiePopup />
+				</LocaleProvider>
 			</body>
 		</html>
 	);

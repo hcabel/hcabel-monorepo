@@ -4,7 +4,7 @@
 import Link from 'next/link';
 
 // External project
-import { IRouteGetProjectById, Locales } from '@hcabel/types/ProjectApi';
+import { IRouteGetProjectById } from '@hcabel/types/ProjectApi';
 
 // Design
 import Style from './Project.module.scss';
@@ -14,6 +14,9 @@ import GithubStats from './GithubStats';
 import VsCodeStats from './VsCodeStats';
 import YoutubeStats from './YoutubeStats';
 import i18nText from 'Utils/i18Text';
+
+// Hooks
+import { useLocale } from 'App/[locale]/LocaleContext';
 
 export interface IProjectProps {
 	id?: string;
@@ -28,11 +31,12 @@ export interface IProjectProps {
 
 	hideDescription?: boolean;
 	hideStats?: boolean;
-	locale: Locales;
 }
 
 export default function Project(props: IProjectProps)
 {
+	const { locale } = useLocale();
+
 	if (!props.project || Object.keys(props.project).length === 0) {
 		return null;
 	}
@@ -44,34 +48,25 @@ export default function Project(props: IProjectProps)
 				</h1>
 				{!props.hideDescription &&
 					<h4 className={`h4 ${Style.ProjectDescription}`} data-cy={`Project-${props.project.name}-Description`}>
-						{props.project.description[props.locale]}
+						{props.project.description[locale]}
 					</h4>
 				}
 				{props.moreButtonRedirection &&
 					<Link className={Style.ProjectMoreButton} href={props.moreButtonRedirection} prefetch={false}>
-						{props.moreTextOverride || i18nText("MoreDetails", props.locale)}
+						{props.moreTextOverride || i18nText("MoreDetails", locale)}
 					</Link>
 				}
 			</div>
 			{!props.hideStats &&
 				<div className={Style.ProjectStats}>
 					{props.project.stats["youtube"] &&
-						<YoutubeStats
-							stats={props.project.stats["youtube"]}
-							locale={props.locale}
-						/>
+						<YoutubeStats stats={props.project.stats["youtube"]} />
 					}
 					{props.project.stats["vscode marketplace"] &&
-						<VsCodeStats
-							stats={props.project.stats["vscode marketplace"]}
-							locale={props.locale}
-						/>
+						<VsCodeStats stats={props.project.stats["vscode marketplace"]} />
 					}
 					{props.project.stats["github"] &&
-						<GithubStats
-							stats={props.project.stats["github"]}
-							locale={props.locale}
-						/>
+						<GithubStats stats={props.project.stats["github"]} />
 					}
 				</div>
 			}

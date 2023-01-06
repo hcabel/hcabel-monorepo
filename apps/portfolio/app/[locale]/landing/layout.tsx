@@ -7,7 +7,7 @@ export default function Layout(props: ILocaleLayoutProps)
 {
 	return (
 		<div className="Page">
-			<Scroller projectInfo={ProjectsInfos} locale={props.params.locale}>
+			<Scroller projectInfo={ProjectsInfos}>
 				{props.children}
 			</Scroller>
 		</div>

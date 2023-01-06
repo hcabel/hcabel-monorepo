@@ -1,7 +1,7 @@
 "use client";
 
 // External project
-import { IStat, Locales } from '@hcabel/types/ProjectApi';
+import { IStat } from '@hcabel/types/ProjectApi';
 
 // Design
 import Style from './Stats.module.scss';
@@ -12,13 +12,17 @@ import StarIcon from 'Images/github/StarIcon.svg';
 // Components
 import StatField from './StatField';
 
+// Hooks
+import { useLocale } from 'App/[locale]/LocaleContext';
+
 export interface IGithubStatsProps {
-	stats: IStat[];
-	locale: Locales;
+	stats: IStat[]
 }
 
 export default function GithubStats(props: IGithubStatsProps)
 {
+	const { locale } = useLocale();
+
 	return (
 		<div className={Style.StatsContainer}>
 			<GithubIcon />
@@ -27,7 +31,7 @@ export default function GithubStats(props: IGithubStatsProps)
 					return (
 						<StatField
 							key={`github-${stat.name.en}`}
-							name={stat.name[props.locale]}
+							name={stat.name[locale]}
 							value={stat.value}
 							url={stat.url}
 							icon={

@@ -1,7 +1,7 @@
 "use client";
 
 // External project
-import { IStat, Locales } from '@hcabel/types/ProjectApi';
+import { IStat } from '@hcabel/types/ProjectApi';
 
 // Design
 import Style from './Stats.module.scss';
@@ -10,13 +10,16 @@ import VsCodeIcon from 'Images/VsCodeIcon.svg';
 // Components
 import StatField from './StatField';
 
+// Hooks
+import { useLocale } from 'App/[locale]/LocaleContext';
+
 export interface IVsCodeStatsProps {
 	stats: IStat[];
-	locale: Locales;
 }
 
 export default function VsCodeStats(props: IVsCodeStatsProps)
 {
+	const { locale } = useLocale();
 	return (
 		<div className={Style.StatsContainer}>
 			<VsCodeIcon />
@@ -25,7 +28,7 @@ export default function VsCodeStats(props: IVsCodeStatsProps)
 					return (
 						<StatField
 							key={`vscode-${stat.name.en}`}
-							name={stat.name[props.locale]}
+							name={stat.name[locale]}
 							value={stat.value}
 							url={stat.url}
 						/>

@@ -1,7 +1,7 @@
 "use client";
 
 // External project
-import { IStat, Locales } from '@hcabel/types/ProjectApi';
+import { IStat } from '@hcabel/types/ProjectApi';
 
 // Design
 import Style from './Stats.module.scss';
@@ -10,13 +10,17 @@ import YoutubeIcon from 'Images/YoutubeIcon.svg';
 // Components
 import StatField from './StatField';
 
+// Hooks
+import { useLocale } from 'App/[locale]/LocaleContext';
+
 export interface IYoutubeStatsProps {
 	stats: IStat[];
-	locale: Locales;
 }
 
 export default function YoutubeStats(props: IYoutubeStatsProps)
 {
+	const { locale } = useLocale();
+
 	return (
 		<div className={Style.StatsContainer}>
 			<YoutubeIcon />
@@ -25,7 +29,7 @@ export default function YoutubeStats(props: IYoutubeStatsProps)
 					return (
 						<StatField
 							key={`youtube-${stat.name.en}`}
-							name={stat.name[props.locale]}
+							name={stat.name[locale]}
 							value={stat.value}
 							url={stat.url}
 						/>
