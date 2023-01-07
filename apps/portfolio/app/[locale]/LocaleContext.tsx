@@ -3,7 +3,8 @@
 import React from "react";
 
 export type Locales = "en" | "fr";
-const Locales: Locales[] = ["fr", "en"];
+// All the locales supported by the website
+export const SupportedLocales: Locales[] = ["fr", "en"];
 
 interface ILocaleContext {
 	locale: Locales;
@@ -12,7 +13,7 @@ interface ILocaleContext {
 
 const LocaleContext = React.createContext<ILocaleContext>({
 	locale: "en",
-	locales: Locales
+	locales: SupportedLocales
 });
 
 interface ILocaleContextProps {
@@ -25,7 +26,7 @@ export function LocaleProvider({ children, value }: ILocaleContextProps)
 	return (
 		<LocaleContext.Provider value={{
 			locale: value,
-			locales: Locales
+			locales: SupportedLocales
 		}}>
 			{children}
 		</LocaleContext.Provider>

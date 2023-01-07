@@ -1,6 +1,5 @@
 import { IRouteGetProjectById } from "@hcabel/types/ProjectApi";
 
-
 export function GetProjectData(projectId: string, options?: RequestInit): Promise<IRouteGetProjectById>
 {
 	// fetch the project data from the api
