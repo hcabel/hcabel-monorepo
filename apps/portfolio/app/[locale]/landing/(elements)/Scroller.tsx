@@ -85,7 +85,11 @@ export default function Scroller(props: IScrollerProps)
 						// and onLeaveBack is useless since there is no previous slide
 						return;
 					}
+					// Remove previous ScrollTrigger (in case of language change)
+					ScrollTrigger.getById(`ScrollBarTriggers_${i}`)?.kill();
+					// Create new ScrollTrigger
 					ScrollTrigger.create({
+						id: `ScrollBarTriggers_${i}`,
 						trigger: document.getElementById(`InvisibleDiv_${i}`),
 						start: "top top",
 						end: "bottom top",
@@ -101,7 +105,7 @@ export default function Scroller(props: IScrollerProps)
 					});
 				});
 			})
-	}, []);
+	}, [locale]);
 
 
 	// Prefetch All the slide so that the transition is near instant, and the user doesn't feel the switch of page when scrolling
@@ -109,7 +113,7 @@ export default function Scroller(props: IScrollerProps)
 		props.projectInfo.forEach((project, i) => {
 			router.prefetch(`${locale}${project.url}`);
 		});
-	}, [])
+	}, [locale])
 
 	return (
 		<div id="Scroller" style={{ scrollBehavior: 'auto' }}>
