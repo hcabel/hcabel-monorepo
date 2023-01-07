@@ -5,8 +5,18 @@ interface IHeadProps {
 }
 
 export default function Head(props: IHeadProps) {
-	const title = props.title;
-	const desc = props.desc?.replace(/\s+/g, ' ') || "";
+
+	const title = "Hugo Cabel";
+	const desc = "																				\
+		Welcome to my portfolio!																\
+		I am a passionate software engineer that love very diverse fields of computer science.	\
+		On this website, you can browse through my latest projects,								\
+		including 																				\
+			'HugoMeet' (using JavaScript, WebRTC, and React),									\
+			a terrain procedural generation project created with Unreal Engine 4 and C++,		\
+			and much more.																		\
+		Take a look and get in touch if you'd like to work together on your next project!		\
+	".replace(/\s+/g, ' ');
 
 	return (
 		<>
