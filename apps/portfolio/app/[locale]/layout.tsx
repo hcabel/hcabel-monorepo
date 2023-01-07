@@ -1,9 +1,15 @@
-import CookiePopup from 'Components/CookiePopup/CookiePopup';
+
+// design
 import '../global.scss';
 
+// Components
+import CookiePopup from 'Components/CookiePopup/CookiePopup';
+import LocaleSelector from 'Components/LocaleSelector/LocaleSelector';
+import PathnameWatcher from 'Components/telemetry/PathnameWatcher';
 import Head from "./head";
+
+// Hooks
 import { LocaleProvider, Locales } from './LocaleContext';
-import LocaleSelector from './LocaleSelector';
 
 export interface LocaleLayoutParams {
 	locale: Locales;
@@ -32,6 +38,7 @@ export default function LocaleLayout(props: ILocaleLayoutProps)
 				"}
 			/>
 			<body className="root" style={{ background: "grey" }}>
+				<PathnameWatcher />
 				{/* Allow to access the local from every where easily */}
 				<LocaleProvider value={props.params.locale}>
 					<LocaleSelector />

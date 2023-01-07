@@ -48,7 +48,9 @@ export default function CookiePopup()
 			<Image
 				src={CookiesBackground}
 				alt="Coookies popup background"
-				className={Style.BackgroundImage} />
+				className={Style.BackgroundImage}
+				priority
+			/>
 			<h4 className={`h4 ${Style.Title}`}>🍪Cookie Policy🍪</h4>
 			<div className={Style.Grid2x2}>
 				<ul>
@@ -67,10 +69,10 @@ export default function CookiePopup()
 				</Link>
 			</h5>
 			<div className={Style.Buttons}>
-				<button onClick={AcceptCookies}>
+				<button onClick={RefuseCookies}>
 					<h5 className={`h5 ${Style.BtnText}`}>Deny 😞</h5>
 				</button>
-				<button onClick={RefuseCookies} className={`${Style.PrimaryBtn}`}>
+				<button onClick={AcceptCookies} className={`${Style.PrimaryBtn}`}>
 					<h5 className={`h5 ${Style.BtnText}`}>Allow 😊</h5>
 				</button>
 			</div>
