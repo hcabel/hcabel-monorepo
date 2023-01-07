@@ -28,3 +28,12 @@ export default function LandingPage(props: ILocaleLayoutProps)
 		</div>
 	)
 }
+
+// Tell nextjs to pre-render the pages where the dynamic params [locale] is "en" and "fr"
+export async function generateStaticParams()
+{
+	return ([
+		{ locale: "en" },
+		{ locale: "fr" }
+	]);
+}

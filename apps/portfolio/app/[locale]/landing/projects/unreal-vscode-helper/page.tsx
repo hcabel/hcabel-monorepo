@@ -1,4 +1,4 @@
-import Project from "App/[locale]/(clients)/project/Projects";
+import Project from "App/[locale]/landing/(elements)/project/Projects";
 import { GetProjectData } from "../(shared)/getProjectDataFromApi";
 
 import Style from "../(shared)/project.module.scss";
@@ -13,4 +13,15 @@ export default async function ProjectsPage()
 			moreButtonRedirection="/redirects/unreal-vscode-helper"
 		/>
 	);
+}
+
+export const revalidate = 60 * 60 * 24; /* each day */
+
+// Tell nextjs to pre-render the pages where the dynamic params [locale] is "en" and "fr"
+export async function generateStaticParams()
+{
+	return ([
+		{ locale: "en" },
+		{ locale: "fr" }
+	]);
 }
