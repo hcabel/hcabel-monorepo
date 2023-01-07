@@ -6,19 +6,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-  reactStrictMode: false, // otherwise the app is loaded twice
-  headers: [
-    {
-      source: '/:all*(svg|jpg|png)',
-      locale: false,
-      headers: [
-        {
-          key: 'Cache-Control',
-          value: 'public, max-age=31536000, must-revalidate',
-        }
-      ],
-    },
-  ],
+  reactStrictMode: true,
   distDir: "../../dist/apps/portfolio/.next",
   nx: {
     svgr: false,
