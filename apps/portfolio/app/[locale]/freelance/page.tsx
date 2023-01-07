@@ -16,13 +16,14 @@ import Controller from "Images/Controller.svg";
 import LightPurplePeaksStacked from "Images/LightPurplePeaksStacked.svg";
 import Malt from "Images/Malt.svg";
 import Linkedin from "Images/Linkedin.svg";
-import i18nText from "Utils/i18Text";
+import { GetI18nDictValue } from "Utils/i18nDict";
+import { ILocaleLayoutProps } from "../layout";
 
-export default async function freelance({ params: { locale } }: any)
+export default async function freelance(props: ILocaleLayoutProps)
 {
 	return (
 		<main className={`Page ${Style.FreelancePage}`}>
-			<Link className={Style.BackToLandingPageArrow} href={`/${locale}`} aria-label="Go back to the landing page">
+			<Link className={Style.BackToLandingPageArrow} href={`/${props.params.locale}`} aria-label="Go back to the landing page">
 				<Arrow />
 			</Link>
 			<header>
@@ -32,37 +33,37 @@ export default async function freelance({ params: { locale } }: any)
 				<OrangeWaveUpsideDown />
 			</header>
 			<section className={Style.WhatIdo}>
-				<h2>{i18nText("What I do", locale)} :</h2>
+				<h2>{"What I do"} :</h2>
 				<BoxScroller useSnap entryClassName={Style.CardsEntry}>
 					<ServicesCard
-						title={i18nText("Unreal Engine Tools Programmer", locale)}
-						description={i18nText("Unreal Engine Tools Programmer - Description", locale)}
+						title={"Unreal Engine Tools Programmer"}
+						description={GetI18nDictValue("Unreal Engine Tools Programmer - Description", props.params.locale)}
 						icon={<Tools />}
 					/>
 					<ServicesCard
-						title={i18nText("Unreal Engine Gameplay Programmer", locale)}
-						description={i18nText("Unreal Engine Gameplay Programmer - Description", locale)}
+						title={"Unreal Engine Gameplay Programmer"}
+						description={GetI18nDictValue("Unreal Engine Gameplay Programmer - Description", props.params.locale)}
 						icon={<Controller />}
 					/>
 					<ServicesCard
-						title={i18nText("Front-End Design Implementation", locale)}
-						description={i18nText("Front-End Design Implementation - Description", locale)}
+						title={"Front-End Design Implementation"}
+						description={GetI18nDictValue("Front-End Design Implementation - Description", props.params.locale)}
 						icon={<Monitor />}
 					/>
 					<ServicesCard
-						title={i18nText("Backend Development", locale)}
-						description={i18nText("Backend Development - Description", locale)}
+						title={"Backend Development"}
+						description={GetI18nDictValue("Backend Development - Description", props.params.locale)}
 						icon={<Server />}
 					/>
 					<ServicesCard
-						title={i18nText("WebRTC Development", locale)}
-						description={i18nText("WebRTC Development - Description", locale)}
+						title={"WebRTC Development"}
+						description={GetI18nDictValue("WebRTC Development - Description", props.params.locale)}
 						icon={<Camera />}
 					/>
 					<ServicesCard
 						className={Style.CollaborateCard}
-						title={i18nText("Let's Collaborate and Brainstorm!", locale)}
-						description={i18nText("Let's Collaborate and Brainstorm! - Description", locale)}
+						title={"Let's Collaborate and Brainstorm!"}
+						description={GetI18nDictValue("Let's Collaborate and Brainstorm! - Description", props.params.locale)}
 						icon={<Handshake />}
 					/>
 				</BoxScroller>
@@ -71,10 +72,10 @@ export default async function freelance({ params: { locale } }: any)
 				<LightPurplePeaksStacked />
 				<div className={Style.SectionInner}>
 					<div className={Style.Platforms}>
-						<a href="https://www.malt.fr/profile/hugocabel" aria-label={i18nText("Go to my Malt profile", locale)}>
+						<a href="https://www.malt.fr/profile/hugocabel" aria-label={GetI18nDictValue("Go to my Malt profile", props.params.locale)}>
 							<Malt />
 						</a>
-						<a href="https://www.linkedin.com/in/hugo-cabel-553701202/" aria-label={i18nText("Go to my LinkeIn profile", locale)}>
+						<a href="https://www.linkedin.com/in/hugo-cabel-553701202/" aria-label={GetI18nDictValue("Go to my LinkeIn profile", props.params.locale)}>
 							<Linkedin />
 						</a>
 					</div>

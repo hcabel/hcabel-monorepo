@@ -1,4 +1,25 @@
+import { Locales } from "App/[locale]/LocaleContext";
+
+export type I18nDictValue = { [locale in Locales]: string };
+export type I18nDict = { [locale: string]: I18nDictValue };
+
+/**
+ * Fetch translated text from the i18nDict.json file.
+ * The text is fetch using the key and the locale provided.
+ * @param key the key to fetch the text from the i18nDict.json file
+ * @param locale the locale to fetch the text from the i18nDict.json file
+ * @returns the translated text in the locale provided
+ */
+export function GetI18nDictValue(key: string, locale: Locales): string
 {
+	const value = (i18nDict as any)[key]?.[locale] || null;
+	if (value === null) {
+		throw new Error(`i18n key "${key}" not found in locale "${locale}"`);
+	}
+	return value;
+}
+
+export const i18nDict: I18nDict = {
 	"MyJob": {
 		"en": "Software Engineer",
 		"fr": "Ingénieur logiciel"
@@ -75,4 +96,4 @@
 		"en": "Go to my LinkeIn profile",
 		"fr": "Vers mon profil LinkeIn"
 	}
-}
+};

@@ -1,5 +1,3 @@
-"use client";
-
 // Libs
 import Link from 'next/link';
 
@@ -13,10 +11,9 @@ import Style from './Project.module.scss';
 import GithubStats from './GithubStats';
 import VsCodeStats from './VsCodeStats';
 import YoutubeStats from './YoutubeStats';
-import i18nText from 'Utils/i18Text';
 
 // Hooks
-import { useLocale } from 'App/[locale]/LocaleContext';
+import { I18nDictText, I18nText } from 'Components/i18nText';
 
 export interface IProjectProps {
 	id?: string;
@@ -31,12 +28,11 @@ export interface IProjectProps {
 
 	hideDescription?: boolean;
 	hideStats?: boolean;
+	i18n?: boolean;
 }
 
 export default function Project(props: IProjectProps)
 {
-	const { locale } = useLocale();
-
 	if (!props.project || Object.keys(props.project).length === 0) {
 		return null;
 	}
@@ -48,12 +44,16 @@ export default function Project(props: IProjectProps)
 				</h1>
 				{!props.hideDescription &&
 					<h4 className={`h4 ${Style.ProjectDescription}`} data-cy={`Project-${props.project.name}-Description`}>
-						{props.project.description[locale]}
+						<I18nText i18nText={props.project.description} />
 					</h4>
 				}
 				{props.moreButtonRedirection &&
 					<Link className={Style.ProjectMoreButton} href={props.moreButtonRedirection} prefetch={false}>
-						{props.moreTextOverride || i18nText("MoreDetails", locale)}
+						{props.moreTextOverride ?
+							props.i18n ? <I18nDictText i18nKey={props.moreTextOverride} /> : props.moreTextOverride
+							:
+							<I18nDictText i18nKey="MoreDetails" />
+						}
 					</Link>
 				}
 			</div>
