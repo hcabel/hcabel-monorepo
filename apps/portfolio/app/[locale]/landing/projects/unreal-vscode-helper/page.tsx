@@ -1,7 +1,7 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
 import { GetProjectData } from "../(shared)/getProjectDataFromApi";
 import UvchExperienceCanvas from "./UvchExperienceCanvas";
-import EnterLeaveAnimation from "./EnterLeaveAnimation";
+import EnterLeaveAnimation from "../(shared)/EnterLeaveAnimation";
 
 import Style from "../(shared)/project.module.scss";
 
