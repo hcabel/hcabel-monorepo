@@ -34,13 +34,13 @@ export function middleware(request: NextRequest) {
 			// If the language is supported we redirect to the url with the language
 			const headerLocale = headerLocales[i].split("-")[0].toLowerCase();
 			if (LOCALES.includes(headerLocale)) {
-				url.pathname = `/${headerLocale}${url.pathname}`;
+				url.pathname = `/${headerLocale}${url.pathname}${url.search}${url.hash}`;
 				return (NextResponse.redirect(url));
 			}
 		}
 
 		// Otherwise we redirect to en by default
-		url.pathname = `/en${url.pathname}`;
+		url.pathname = `/en${url.pathname}${url.search}${url.hash}`;
 		return (NextResponse.redirect(url));
 	}
 	catch (error) {
