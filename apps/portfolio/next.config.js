@@ -6,6 +6,7 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  compress: true,
   reactStrictMode: true,
   distDir: "../../dist/apps/portfolio/.next",
   nx: {
