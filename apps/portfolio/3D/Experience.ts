@@ -1,24 +1,24 @@
+import * as THREE from 'three';
+import { StaticImageData } from 'next/image';
+import { EventEmitter } from 'events';
+import Stats from 'stats.js';
+
 import Sizes from '3D/utils/Sizes';
 import Clock from '3D/utils/Clock';
-
 import World from '3D/world/World';
 
-import Stats from 'stats.js';
-import Resources from './utils/Resources';
-import { EventEmitter } from 'events';
+import Resource from './utils/Resource';
+import ResourcesLoader from './utils/ResourcesLoader';
+import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
 class Experience extends EventEmitter
 {
-	// Singleton instance
-	private static instance: Experience;
-
 	// Own properties
 	private _Canvas: HTMLCanvasElement;
 	private _Clock: Clock;
 	private _Sizes: Sizes;
-	private _Resources: Resources;
+	private _Resources: Resource<any>[];
 	private _World: World;
-	private _Ready = false;
 
 	private _Stats: Stats;
 
@@ -26,79 +26,102 @@ class Experience extends EventEmitter
 	get Canvas(): HTMLCanvasElement { return this._Canvas; }
 	get Clock(): Clock { return this._Clock; }
 	get Sizes(): Sizes { return this._Sizes; }
-	get Resources(): Resources { return this._Resources; }
+	get Resources(): Resource<any>[] { return this._Resources; }
 	get World(): World { return this._World; }
-	get IsReady(): boolean { return this._Ready; }
 
-	constructor(canvas: HTMLCanvasElement | undefined = undefined)
+	private AssignTextureToScene(scene: GLTF, texture: THREE.Texture): void
 	{
-		// If the instance already exists, return it
-		if (Experience.instance) {
-			// Init experience if a canvas has been passed
-			if (canvas) {
-				Experience.instance.Init(canvas);
+		const material = new THREE.MeshBasicMaterial({
+			map: texture,
+			transparent: true
+		});
+		scene.scene.traverse((child) => {
+			if (child instanceof THREE.Mesh) {
+				child.material = material;
 			}
-			return (Experience.instance);
-		}
-
-		super();
-		this.setMaxListeners(20);
-
-		Experience.instance = this;
-		// Init experience if a canvas has been passed
-		if (canvas) {
-			Experience.instance.Init(canvas);
-		}
+		});
 	}
 
-	public Init(canvas: HTMLCanvasElement)
+	constructor(canvas: HTMLCanvasElement, atlas: Resource<THREE.Texture, string>, scene: Resource<GLTF, string>)
 	{
-		// If already initialized
-		if (this.Canvas !== undefined) {
+		super();
 
-			// If the canvas is the same, return
-			if (this.Canvas === canvas) {
-				return;
-			}
-			this._Canvas = canvas;
-			this._Sizes.Canvas = canvas;
-			this._World.Renderer.Canvas = canvas;
+		if (!canvas || !atlas || !scene) {
+			throw Error('Experience: missing parameters');
 		}
 
 		// Init experience properties
 		this._Canvas = canvas;
 		this._Clock = new Clock();
 		this._Sizes = new Sizes(this._Canvas);
-		this._Resources = new Resources();
-		this._World = new World();
+		this._World = new World(this);
+		this._Resources = [
+			atlas,
+			scene
+		];
 
-		this._Resources.on('ready', () => {
-			this._Clock.on('tick', () => {
-				this.Update();
-			});
-			this._Sizes.on('resize', () => {
-				this.Resize();
-			});
-
-			this._Ready = true;
-			this.emit('ready');
+		// I have lost the context of "this" in the callbacks, so I have to use a variable to keep it (I don't know why, it was working before)
+		let that = this;
+		atlas.once('load', (texture: THREE.Texture) => {
+			texture.flipY = false;
+			if (scene.Loaded) {
+				that.AssignTextureToScene(scene.Value, texture);
+			}
+		});
+		scene.once('load', (gltf: GLTF) => {
+			if (atlas.Loaded) {
+				that.AssignTextureToScene(gltf, atlas.Value);
+			}
+			that._World.Scene.add(gltf.scene);
 		});
 
-		// Performances stats
-		// this._Stats = new Stats();
-		// this._Stats.showPanel(0);
-		// document.body.appendChild(this._Stats.dom);
+		this.on('update', this.Update);
+		this.on('resize', this.Resize);
 
-		this.emit('initialized');
+		// Load resources
+		this.on('loaded', () => {
+			this._Clock.on('tick', () => that.emit('update'));
+			this._Sizes.on('resize', () => that.emit('resize'));
+			this.emit('ready');
+		});
+		const resourcesLoader = new ResourcesLoader();
+		resourcesLoader.WaitForEvreryone(this._Resources)
+			.then(() => { that.emit('loaded'); });
+
+		// Performances stats (optional)
+		this._Stats = new Stats();
+		if (this._Stats) {
+			this._Stats.showPanel(0);
+			document.body.appendChild(this._Stats.dom);
+		}
+	}
+
+	public Dispose()
+	{
+		this.removeAllListeners();
+		this._Canvas = undefined;
+		delete this._Clock;
+		delete this._Sizes;
+		delete this._Resources;
+		delete this._World;
 	}
 
 	private Update()
 	{
-		// this._Stats.begin();
+		if (this._Stats) {
+			this._Stats.begin();
+		}
 
-		this._World.Update();
+		if (this._World) {
+			this._World.Update();
+		}
+		else {
+			console.warn("No world");
+		}
 
-		// this._Stats.end();
+		if (this._Stats) {
+			this._Stats.end();
+		}
 	}
 
 	private Resize()
@@ -106,14 +129,15 @@ class Experience extends EventEmitter
 		this._World.Resize();
 	}
 
-	public OnReady(callback: () => void)
+	public UpdateCanvas(canvas: HTMLCanvasElement)
 	{
-		if (this._Ready) {
-			callback();
+		// If the canvas is the same, return
+		if (this.Canvas === canvas) {
+			return;
 		}
-		else {
-			this.on('ready', callback);
-		}
+		this._Canvas = canvas;
+		this._Sizes.Canvas = canvas;
+		this._World.Renderer.Canvas = canvas;
 	}
 }
 
