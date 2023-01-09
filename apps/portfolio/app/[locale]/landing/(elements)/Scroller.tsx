@@ -95,12 +95,12 @@ export default function Scroller(props: IScrollerProps)
 						end: "bottom top",
 						// Trigger when enter from the top
 						onEnter: () => {
-							router.push(`/${locale}${project.url}`);
+							router.push(`/${locale}${project.url}#top`);
 						},
 						// Trigger when leaving from the top
 						onLeaveBack: () => {
 							const previousProject = props.projectInfo[i - 1];
-							router.push(`/${locale}${previousProject.url}`);
+							router.push(`/${locale}${previousProject.url}#bottom`);
 						},
 					});
 				});
