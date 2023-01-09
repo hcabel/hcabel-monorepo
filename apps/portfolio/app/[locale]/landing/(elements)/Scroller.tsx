@@ -86,10 +86,10 @@ export default function Scroller(props: IScrollerProps)
 						return;
 					}
 					// Remove previous ScrollTrigger (in case of language change)
-					ScrollTrigger.getById(`ScrollBarTriggers_${i}`)?.kill();
+					ScrollTrigger.getById(project.scrollTriggerId)?.kill();
 					// Create new ScrollTrigger
 					ScrollTrigger.create({
-						id: `ScrollBarTriggers_${i}`,
+						id: project.scrollTriggerId,
 						trigger: document.getElementById(`InvisibleDiv_${i}`),
 						start: "top top",
 						end: "bottom top",
@@ -121,11 +121,9 @@ export default function Scroller(props: IScrollerProps)
 				{props.children}
 			</div>
 			<div id="InvisibleDivs">
-				{
-					props.projectInfo.map((project, i) =>
+				{props.projectInfo.map((project, i) =>
 					<div id={`InvisibleDiv_${i}`} className={`${Style.Background} ${project.background}`} key={i} style={{ height: `calc(100vh + ${project.height})` }} />
-					)
-				}
+				)}
 			</div>
 		</div>
 	);
