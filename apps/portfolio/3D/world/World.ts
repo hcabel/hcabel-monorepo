@@ -37,6 +37,15 @@ class World
 		this._Camera.Resize();
 		this._Renderer.Resize();
 	}
+
+	public Dispose()
+	{
+		this._Scene.remove(this._Camera.PerspectiveCamera);
+		this._Scene.clear();
+		this._Renderer.WebGLRenderer.renderLists.dispose();
+		this._Renderer.WebGLRenderer.dispose();
+		this._Renderer.WebGLRenderer.forceContextLoss();
+	}
 }
 
 export default World;

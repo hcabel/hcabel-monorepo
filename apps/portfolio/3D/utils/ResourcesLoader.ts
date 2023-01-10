@@ -9,6 +9,8 @@ import Resources from "./Resource";
  */
 export default class ResourcesLoader
 {
+	private static _Instance: ResourcesLoader;
+
 	// Own properties
 	private _GLTFLoader: GLTFLoader;
 	private _DRACOLoader: DRACOLoader;
@@ -16,6 +18,11 @@ export default class ResourcesLoader
 
 	constructor()
 	{
+		if (ResourcesLoader._Instance) {
+			return ResourcesLoader._Instance;
+		}
+		ResourcesLoader._Instance = this;
+
 		this._GLTFLoader = new GLTFLoader();
 		this._DRACOLoader = new DRACOLoader();
 		this._DRACOLoader.setDecoderPath("/draco/");

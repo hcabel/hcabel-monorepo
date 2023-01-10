@@ -59,6 +59,21 @@ class Experience extends EventEmitter
 			atlas,
 			scene
 		];
+		atlas.once('dispose', () => {
+			atlas.Value.dispose();
+		});
+		scene.once('dispose', () => {
+			scene.Value.scene.traverse((child) => {
+				if (child instanceof THREE.Mesh) {
+					const materials = Array.isArray(child.material) ? child.material : [child.material];
+					materials.forEach((material) => {
+						material.dispose();
+						material.map?.dispose();
+					});
+				}
+			});
+			this._World.Scene.remove(scene.Value.scene);
+		});
 
 		// I have lost the context of "this" in the callbacks, so I have to use a variable to keep it (I don't know why, it was working before)
 		let that = this;
@@ -100,10 +115,14 @@ class Experience extends EventEmitter
 	{
 		this.removeAllListeners();
 		this._Canvas = undefined;
+		this._Resources.forEach((resource) => {
+			resource.emit('dispose');
+		});
+		this._World.Dispose();
 		delete this._Clock;
 		delete this._Sizes;
-		delete this._Resources;
 		delete this._World;
+		delete this._Resources;
 	}
 
 	private Update()

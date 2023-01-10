@@ -7,7 +7,7 @@ const nextConfig = {
     appDir: true,
   },
   compress: true,
-  reactStrictMode: true,
+  reactStrictMode: false,
   distDir: "../../dist/apps/portfolio/.next",
   nx: {
     svgr: false,
