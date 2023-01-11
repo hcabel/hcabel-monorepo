@@ -37,8 +37,8 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps)
 
 
 	return (
-		<div className={props.className || ''} style={props.style || {}}>
-			<canvas style={{ width: "100%", height: "100%" }} id={props.id || "ExperienceCanvas"} />
+		<div className={props.className || ''} style={{ background: "transparent", ...props.style }}>
+			<canvas style={{ width: "100%", height: "100%", background: "transparent" }} id={props.id || "ExperienceCanvas"} />
 		</div>
 	);
 }

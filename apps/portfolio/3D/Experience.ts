@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { StaticImageData } from 'next/image';
 import { EventEmitter } from 'events';
 import Stats from 'stats.js';
 
@@ -103,12 +102,12 @@ class Experience extends EventEmitter
 		resourcesLoader.WaitForEvreryone(this._Resources)
 			.then(() => { that.emit('loaded'); });
 
-		// Performances stats (optional)
-		this._Stats = new Stats();
-		if (this._Stats) {
-			this._Stats.showPanel(0);
-			document.body.appendChild(this._Stats.dom);
-		}
+		// // Performances stats (optional)
+		// this._Stats = new Stats();
+		// if (this._Stats) {
+		// 	this._Stats.showPanel(0);
+		// 	document.body.appendChild(this._Stats.dom);
+		// }
 	}
 
 	public Dispose()
