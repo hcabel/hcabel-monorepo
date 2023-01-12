@@ -1,5 +1,5 @@
 
-import Style from "./page.module.scss";
+import Style from "./(elements)/ProjectScroll.module.scss";
 
 const ProjectsInfos = [
 	{

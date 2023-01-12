@@ -1,5 +1,5 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import EnterLeaveAnimation from "../(shared)/EnterLeaveAnimation";
+import EnterLeaveAnimation from "../../(elements)/ProjectScrollTransition";
 import { GetProjectData } from "../(shared)/getProjectDataFromApi";
 import ProceduralTerrainExperienceCanvas from "./ProceduralTerrainExperienceCanvas";
 
@@ -9,7 +9,9 @@ export default async function ProjectsPage()
 {
 	const project = await GetProjectData("6345e3b8af50b44526418320", { next: { revalidate: 60 * 60 * 24 /* each day */ }});
 	return (
-		<EnterLeaveAnimation>
+		<EnterLeaveAnimation
+			name="procedural_terrain_scroll_trigger"
+		>
 			<ProceduralTerrainExperienceCanvas />
 			<Project
 				project={project}
