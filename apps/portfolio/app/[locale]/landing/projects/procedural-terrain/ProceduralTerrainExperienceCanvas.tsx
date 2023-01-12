@@ -42,17 +42,25 @@ export default function ProceduralTerrainExperienceCanvas()
 				experience.World.Camera.Focus(new THREE.Vector3(0, 0, 0), true);
 				(experience.Resources[1].Value as GLTF).scene.rotation.y = startRotation;
 
+				// Update animation related to scroll
+				function update()
+				{
+					if (!proceduralTerrainScrollTrigger) {
+						proceduralTerrainScrollTrigger = ScrollTrigger.getById("procedural_terrain_scroll_trigger");
+						console.warn("procedural_terrain_scroll_trigger is null");
+						return;
+					}
+					const progress = proceduralTerrainScrollTrigger.progress;
+					(experience.Resources[1].Value as GLTF).scene.rotation.y = progress * endRotation + startRotation;
+				}
+				// Update at every frame if scrolling (for performance saving purpose)
 				experience.on('update', () => {
 					if (isScrolling.current) {
-						if (!proceduralTerrainScrollTrigger) {
-							proceduralTerrainScrollTrigger = ScrollTrigger.getById("procedural_terrain_scroll_trigger");
-							console.warn("procedural_terrain_scroll_trigger is null");
-							return;
-						}
-						const progress = proceduralTerrainScrollTrigger.progress;
-						(experience.Resources[1].Value as GLTF).scene.rotation.y = progress * endRotation + startRotation;
+						update();
 					}
 				});
+				// First update to set state before scroll
+				update();
 			}}
 		/>
 	);

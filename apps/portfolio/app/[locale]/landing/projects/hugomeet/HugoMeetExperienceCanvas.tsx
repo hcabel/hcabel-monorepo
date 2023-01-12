@@ -42,17 +42,25 @@ export default function HugoMeetExperienceCanvas()
 				experience.World.Camera.Focus(new THREE.Vector3(0, 0, 0), true);
 				(experience.Resources[1].Value as GLTF).scene.rotation.y = startRotation;
 
+				// Update animation related to scroll
+				function update()
+				{
+					if (!hugomeetScrollTrigger) {
+						hugomeetScrollTrigger = ScrollTrigger.getById("hugomeet_scroll_trigger");
+						console.warn("hugomeet_scroll_trigger is null");
+						return;
+					}
+					const progress = hugomeetScrollTrigger.progress;
+					(experience.Resources[1].Value as GLTF).scene.rotation.y = progress * endRotation + startRotation;
+				}
+				// Update at every frame if scrolling (for performance saving purpose)
 				experience.on('update', () => {
 					if (isScrolling.current) {
-						if (!hugomeetScrollTrigger) {
-							hugomeetScrollTrigger = ScrollTrigger.getById("hugomeet_scroll_trigger");
-							console.warn("hugomeet_scroll_trigger is null");
-							return;
-						}
-						const progress = hugomeetScrollTrigger.progress;
-						(experience.Resources[1].Value as GLTF).scene.rotation.y = progress * endRotation + startRotation;
+						update();
 					}
 				});
+				// First update to set state before scroll
+				update();
 			}}
 		/>
 	);

@@ -42,17 +42,25 @@ export default function UvchExperienceCanvas()
 				experience.World.Camera.Focus(new THREE.Vector3(0, 0, 0), true);
 				(experience.Resources[1].Value as GLTF).scene.rotation.y = startRotation;
 
+				// Update animation related to scroll
+				function update()
+				{
+					if (!uvchScrollTrigger) {
+						uvchScrollTrigger = ScrollTrigger.getById("uvch_scroll_trigger");
+						console.warn("uvch_scroll_trigger is null");
+						return;
+					}
+					const progress = uvchScrollTrigger.progress;
+					(experience.Resources[1].Value as GLTF).scene.rotation.y = progress * endRotation + startRotation;
+				}
+				// Update at every frame if scrolling (for performance saving purpose)
 				experience.on('update', () => {
 					if (isScrolling.current) {
-						if (!uvchScrollTrigger) {
-							uvchScrollTrigger = ScrollTrigger.getById("uvch_scroll_trigger");
-							console.warn("uvchScrollTrigger is null");
-							return;
-						}
-						const progress = uvchScrollTrigger.progress;
-						(experience.Resources[1].Value as GLTF).scene.rotation.y = progress * endRotation + startRotation;
+						update();
 					}
 				});
+				// First update to set state before scroll
+				update();
 			}}
 		/>
 	);

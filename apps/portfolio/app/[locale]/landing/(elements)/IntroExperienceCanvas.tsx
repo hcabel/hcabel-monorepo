@@ -16,9 +16,11 @@ export default function IntroExperienceCanvas()
 	useEffect(() => {
 		ScrollTrigger.addEventListener("scrollStart", () => {
 			isScrolling.current = true;
+			console.log("scrollStart")
 		});
 		ScrollTrigger.addEventListener("scrollEnd", () => {
 			isScrolling.current = false;
+			console.log("scrollEnd")
 		});
 	}, []);
 
@@ -39,16 +41,24 @@ export default function IntroExperienceCanvas()
 				experience.World.Camera.Focus(new THREE.Vector3(0, 0, 0), true);
 				(experience.Resources[1].Value as GLTF).scene.rotation.y = 0;
 
+				// Update animation related to scroll
+				function update()
+				{
+					if (!introScrollTrigger) {
+						introScrollTrigger = ScrollTrigger.getById("intro_scroll_trigger");
+						console.warn("intro_scroll_trigger is null");
+						return;
+					}
+					const progress = introScrollTrigger.progress;
+				}
+				// Update at every frame if scrolling (for performance saving purpose)
 				experience.on('update', () => {
 					if (isScrolling.current) {
-						if (!introScrollTrigger) {
-							introScrollTrigger = ScrollTrigger.getById("intro_scroll_trigger");
-							console.warn("intro_scroll_trigger is null");
-							return;
-						}
-						const progress = introScrollTrigger.progress;
+						update();
 					}
 				});
+				// First update to set state before scroll
+				update();
 			}}
 		/>
 	);
