@@ -66,7 +66,7 @@ export default function HugoMeetExperienceCanvas()
 				// Update 3d scene when scrolling
 				scrollTrigger.onScroll = update;
 				// First update to set state before scroll
-				update(window.location.hash === "#top" ? 1 : 0);
+				update(scrollTrigger.Progress);
 			}}
 		/>
 	);
