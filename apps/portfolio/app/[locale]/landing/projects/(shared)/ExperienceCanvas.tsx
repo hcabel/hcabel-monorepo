@@ -6,6 +6,8 @@ import Experience from "3D/Experience";
 import Resource from "3D/utils/Resource";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 
+import Style from "./ExperienceCanvas.module.scss";
+
 interface IExperienceCanvasProps {
 	texture: string;
 	scenePath: string;
@@ -27,7 +29,7 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps)
 		set_Experience(experience);
 
 		experience.once('ready', () => {
-			props.onReady(experience);
+			props.onReady?.(experience);
 		})
 
 		return () => {
@@ -38,7 +40,7 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps)
 
 	return (
 		<div className={props.className || ''} style={{ background: "transparent", ...props.style }}>
-			<canvas style={{ width: "100%", height: "100%", background: "transparent" }} id={props.id || "ExperienceCanvas"} />
+			<canvas className={Style.Canvas} id={props.id || "ExperienceCanvas"} />
 		</div>
 	);
 }
