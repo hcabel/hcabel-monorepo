@@ -15,6 +15,7 @@ interface IExperienceCanvasProps {
 	id?: string;
 	className?: string;
 	onReady? (experience: Experience): void;
+	onResize? (experience: Experience): void;
 }
 
 export default function ExperienceCanvas(props: IExperienceCanvasProps)
@@ -28,9 +29,15 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps)
 		);
 		set_Experience(experience);
 
+		const wrapper = document.getElementById("ExperienceWrapper");
+		experience.on('resize', () => {
+			wrapper.style.left = (window.innerWidth <= 920 ? "0px" : `${props.style.left}`)
+			props.onResize?.(experience);
+		});
+
 		experience.once('ready', () => {
 			props.onReady?.(experience);
-		})
+		});
 
 		return () => {
 			experience.Dispose();
@@ -39,7 +46,7 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps)
 
 
 	return (
-		<div className={props.className || ''} style={{ background: "transparent", ...props.style }}>
+		<div id="ExperienceWrapper" className={props.className || ''} style={{ background: "transparent", ...props.style }}>
 			<canvas className={Style.Canvas} id={props.id || "ExperienceCanvas"} />
 		</div>
 	);

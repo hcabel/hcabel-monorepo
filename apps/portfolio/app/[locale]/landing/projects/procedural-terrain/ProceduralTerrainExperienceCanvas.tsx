@@ -5,6 +5,7 @@ import * as THREE from "three";
 import ExperienceCanvas from "../(shared)/ExperienceCanvas";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import CustomScrollTriggers from "../../(elements)/CustomScrollTriggers";
+import { GetCameraPositionToFocusBox } from "../../(utils)/3dSceneInteraction";
 
 export default function ProceduralTerrainExperienceCanvas()
 {
@@ -19,6 +20,25 @@ export default function ProceduralTerrainExperienceCanvas()
 				width: "100vw",
 				height: "100vh",
 			}}
+			onResize={(experience) => {
+				const boundingBox = new THREE.Box3();
+				boundingBox.setFromCenterAndSize(
+					// Scene position
+					new THREE.Vector3(0, 0, 0),
+					// Size of the box
+					new THREE.Vector3(12.5, (window.innerWidth <= 920 ? 20 : 25), 12.5)
+				);
+
+				// Move camera to make sure the box is always fully visible
+				experience.World.Camera.MoveToVector3(
+					GetCameraPositionToFocusBox(
+						boundingBox,
+						new THREE.Vector3(-1, 1, 0),
+						experience.World.Camera.PerspectiveCamera
+					),
+					true
+				);
+			}}
 			onReady={(experience) => {
 				const startRotation = Math.PI / 4 /* 45deg */;
 				const endRotation = -Math.PI * 2 /* 360deg */;
@@ -28,9 +48,8 @@ export default function ProceduralTerrainExperienceCanvas()
 					throw new Error("procedural_terrain_scroll_trigger is null");
 				}
 
-				experience.World.Camera.MoveToVector3(new THREE.Vector3(-1, 1, 0).multiplyScalar(25), true);
+				// Keep looking at the center of the scene
 				experience.World.Camera.Focus(new THREE.Vector3(0, 0, 0), true);
-				(experience.Resources[1].Value as GLTF).scene.rotation.y = startRotation;
 
 				// Update scene position depending on scroll progress
 				function update(progress: number) {

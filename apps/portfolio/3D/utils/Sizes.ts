@@ -25,7 +25,7 @@ class Sizes extends EventEmitter {
 		this._Canvas = canvas;
 
 		// Class OnResize method when window is resized
-		window.addEventListener("resize", this.OnResize);
+		window.addEventListener("resize", this.OnResize.bind(this));
 		// And a first time to initialize the current size
 		this.OnResize();
 	}

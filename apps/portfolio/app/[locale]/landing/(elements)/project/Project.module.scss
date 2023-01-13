@@ -46,6 +46,9 @@
 }
 
 @media (max-width: $breakpoint-tablet) {
+	.ProjectContainer {
+		width: 100%;
+	}
 	.ProjectName {
 		font-size: 9vw;
 		width: 100%;

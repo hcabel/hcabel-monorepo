@@ -96,6 +96,7 @@ class Experience extends EventEmitter
 		this.on('loaded', () => {
 			this._Clock.on('tick', () => that.emit('update'));
 			this._Sizes.on('resize', () => that.emit('resize'));
+			this.emit('resize');
 			this.emit('ready');
 		});
 		const resourcesLoader = new ResourcesLoader();
@@ -145,6 +146,7 @@ class Experience extends EventEmitter
 	private Resize()
 	{
 		this._World.Resize();
+		this.emit('resized');
 	}
 
 	public UpdateCanvas(canvas: HTMLCanvasElement)
