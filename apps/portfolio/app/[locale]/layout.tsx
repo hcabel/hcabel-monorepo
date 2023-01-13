@@ -6,7 +6,6 @@ import '../global.scss';
 import CookiePopup from 'Components/CookiePopup/CookiePopup';
 import LocaleSelector from 'Components/LocaleSelector/LocaleSelector';
 import PathnameWatcher from 'Components/telemetry/PathnameWatcher';
-import Head from "./head";
 
 // Hooks
 import { LocaleProvider, Locales } from './LocaleContext';
