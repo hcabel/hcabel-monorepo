@@ -6,6 +6,7 @@ import ExperienceCanvas from "../(shared)/ExperienceCanvas";
 import { useEffect, useRef } from "react";
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
+import CustomScrollTriggers from "../../(elements)/CustomScrollTriggers";
 
 export default function ProceduralTerrainExperienceCanvas()
 {
@@ -34,33 +35,29 @@ export default function ProceduralTerrainExperienceCanvas()
 				height: "100vh",
 			}}
 			onReady={(experience) => {
-				let proceduralTerrainScrollTrigger = ScrollTrigger.getById("procedural_terrain_scroll_trigger");
 				const startRotation = Math.PI / 4 /* 45deg */;
 				const endRotation = -Math.PI * 2 /* 360deg */;
+
+				const scrollTrigger = CustomScrollTriggers.getTriggerbyId("procedural_terrain_scroll_trigger");
+				if (!scrollTrigger) {
+					throw new Error("procedural_terrain_scroll_trigger is null");
+				}
 
 				experience.World.Camera.MoveToVector3(new THREE.Vector3(-1, 1, 0).multiplyScalar(25), true);
 				experience.World.Camera.Focus(new THREE.Vector3(0, 0, 0), true);
 				(experience.Resources[1].Value as GLTF).scene.rotation.y = startRotation;
 
 				// Update animation related to scroll
-				function update()
+				function update(progress: number)
 				{
-					if (!proceduralTerrainScrollTrigger) {
-						proceduralTerrainScrollTrigger = ScrollTrigger.getById("procedural_terrain_scroll_trigger");
-						console.warn("procedural_terrain_scroll_trigger is null");
-						return;
-					}
-					const progress = proceduralTerrainScrollTrigger.progress;
 					(experience.Resources[1].Value as GLTF).scene.rotation.y = progress * endRotation + startRotation;
 				}
-				// Update at every frame if scrolling (for performance saving purpose)
+				// Update at every frame
 				experience.on('update', () => {
-					if (isScrolling.current) {
-						update();
-					}
+					update(scrollTrigger.Progress);
 				});
 				// First update to set state before scroll
-				update();
+				update(window.location.hash === "#top" ? 1 : 0);
 			}}
 		/>
 	);

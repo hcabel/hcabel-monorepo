@@ -6,6 +6,7 @@ import ExperienceCanvas from "../projects/(shared)/ExperienceCanvas";
 import { useEffect, useRef } from "react";
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
+import CustomScrollTriggers from "./CustomScrollTriggers";
 
 export default function IntroExperienceCanvas()
 {
@@ -35,30 +36,25 @@ export default function IntroExperienceCanvas()
 				height: "100vh",
 			}}
 			onReady={(experience) => {
-				let introScrollTrigger = ScrollTrigger.getById("intro_scroll_trigger");
+				const scrollTrigger = CustomScrollTriggers.getTriggerbyId("intro_scroll_trigger");
+				if (!scrollTrigger) {
+					throw new Error("intro_scroll_trigger is null");
+				}
 
 				experience.World.Camera.MoveToVector3(new THREE.Vector3(-1, 0, 0).multiplyScalar(25), true);
 				experience.World.Camera.Focus(new THREE.Vector3(0, 0, 0), true);
-				(experience.Resources[1].Value as GLTF).scene.rotation.y = 0;
 
 				// Update animation related to scroll
-				function update()
+				function update(progress: number)
 				{
-					if (!introScrollTrigger) {
-						introScrollTrigger = ScrollTrigger.getById("intro_scroll_trigger");
-						console.warn("intro_scroll_trigger is null");
-						return;
-					}
-					const progress = introScrollTrigger.progress;
+
 				}
-				// Update at every frame if scrolling (for performance saving purpose)
+				// Update at every frame
 				experience.on('update', () => {
-					if (isScrolling.current) {
-						update();
-					}
+					update(scrollTrigger.Progress);
 				});
 				// First update to set state before scroll
-				update();
+				update(window.location.hash === "#top" ? 1 : 0);
 			}}
 		/>
 	);
