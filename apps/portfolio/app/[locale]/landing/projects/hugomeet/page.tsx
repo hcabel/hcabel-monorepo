@@ -1,5 +1,4 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import EnterLeaveAnimation from "../../(elements)/ProjectScrollTransition";
 import { GetProjectData } from "../(shared)/getProjectDataFromApi";
 
 import Style from "../(shared)/project.module.scss";
@@ -9,9 +8,7 @@ export default async function ProjectsPage()
 {
 	const project = await GetProjectData("6345e3b7af50b4452641831f");
 	return (
-		<EnterLeaveAnimation
-			name="hugomeet_scroll_trigger"
-		>
+		<>
 			<HugoMeetExperienceCanvas />
 			<Project
 				project={project}
@@ -19,8 +16,8 @@ export default async function ProjectsPage()
 				moreButtonRedirection={"/redirects/hugomeet"}
 				moreTextOverride={"Go to HugoMeet"}
 				i18n
-				/>
-		</EnterLeaveAnimation>
+			/>
+		</>
 	);
 }
 

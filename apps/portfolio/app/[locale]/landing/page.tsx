@@ -4,15 +4,12 @@ import { ILocaleLayoutProps } from "../layout";
 import Style from "./page.module.scss";
 import ArrowIcon from 'Images/arrow.svg';
 import { I18nDictText } from "Components/i18nText";
-import EnterLeaveAnimation from "./(elements)/ProjectScrollTransition";
 import IntroExperienceCanvas from "./(elements)/IntroExperienceCanvas";
 
 export default function LandingPage(props: ILocaleLayoutProps)
 {
 	return (
-		<EnterLeaveAnimation
-			name="intro_scroll_trigger"
-		>
+		<>
 			<IntroExperienceCanvas />
 			<div className={`Page ${Style.Landing}`}>
 				<div className={Style.Description}>
@@ -32,7 +29,7 @@ export default function LandingPage(props: ILocaleLayoutProps)
 					<ArrowIcon />
 				</div>
 			</div>
-		</EnterLeaveAnimation>
+		</>
 	)
 }
 

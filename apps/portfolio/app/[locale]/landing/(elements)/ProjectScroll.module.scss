@@ -7,13 +7,14 @@
 }
 
 .Background {
-	// position: fixed;
-	// top: 0;
-	// right: 0;
-	// width: 100vw;
-	// height: 100%;
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 100vw;
+	height: 100vh;
 	z-index: -1000;
-	opacity: 1;
+	opacity: 0;
+	transition: opacity 0.5s;
 
 	&.Intro {
 		background-image: radial-gradient(ellipse at 15% 0%,
@@ -37,11 +38,6 @@
 		background-image: radial-gradient(ellipse at 15% 0%,
 			#96e083 0%,
 			#5cd5db 100%);
-	}
-
-	&.Active {
-		opacity: 1;
-		transition: opacity 0.75s;
 	}
 }
 
