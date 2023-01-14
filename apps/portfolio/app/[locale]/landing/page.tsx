@@ -6,11 +6,77 @@ import ArrowIcon from 'Images/arrow.svg';
 import { I18nDictText } from "Components/i18nText";
 import IntroExperienceCanvas from "./(elements)/IntroExperienceCanvas";
 
-export default function LandingPage(props: ILocaleLayoutProps)
+export interface GithubActivities {
+	data: {
+		user: {
+			name: string;
+			contributionsCollection: {
+				contributionCalendar: {
+					totalContributions: number;
+					weeks: {
+						contributionDays: {
+							color: `#${string}`;
+							contributionCount: number;
+							date: string;
+							weekday: number;
+						}[];
+						firstDay: string;
+					}[];
+				};
+			}
+		}
+	}
+}
+
+
+async function getGithubContributions(username: string): Promise<GithubActivities> {
+	const headers = {
+		'Authorization': `bearer ${process.env.NX_GITHUB_TOKEN}`,
+	}
+
+	// UTC Date 365 days ago rounded to the start of the day
+	const date365DaysAgose = new Date(
+		new Date().setUTCDate(new Date().getUTCDate() - 365)
+	);
+	date365DaysAgose.setUTCHours(0, 0, 0, 0);
+
+	const body = {
+		"query": `query {
+			user(login: "${username}") {
+				name
+				contributionsCollection(from: "${date365DaysAgose.toJSON()}", to: "${new Date().toJSON()}") {
+					contributionCalendar {
+						totalContributions
+						weeks {
+							contributionDays {
+								color
+								contributionCount
+								date
+								weekday
+							}
+							firstDay
+						}
+					}
+				}
+			}
+		}`
+	}
+	const response = await fetch('https://api.github.com/graphql', { method: 'POST', body: JSON.stringify(body), headers: headers });
+	return (await response.json());
+}
+
+export default async function LandingPage(props: ILocaleLayoutProps)
 {
+	const githubActivities = await getGithubContributions("hcabel");
+
+	if (!githubActivities) {
+		return (null);
+	}
 	return (
 		<>
-			<IntroExperienceCanvas />
+			<IntroExperienceCanvas
+				Activities={githubActivities}
+			/>
 			<div className={`Page ${Style.Landing}`}>
 				<div className={Style.Description}>
 					<h1 className={`h1 ${Style.Name}`} data-cy="my-real-name">Hugo Cabel</h1>
@@ -41,3 +107,5 @@ export async function generateStaticParams()
 		{ locale: "fr" }
 	]);
 }
+
+export const revalidate = 60 * 60 * 24; /* each day */
