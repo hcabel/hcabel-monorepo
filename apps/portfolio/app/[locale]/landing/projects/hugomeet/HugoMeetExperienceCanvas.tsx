@@ -59,9 +59,6 @@ export default function HugoMeetExperienceCanvas()
 					if (scene) {
 						scene.rotation.y = progress * endRotation + startRotation;
 					}
-					else {
-						console.log("scene is null");
-					}
 				}
 				// Update 3d scene when scrolling
 				scrollTrigger.onScroll = update;

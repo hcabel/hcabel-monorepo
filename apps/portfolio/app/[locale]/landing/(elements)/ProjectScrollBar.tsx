@@ -127,11 +127,9 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps)
 				end: 'top bottom',
 				enable: false,
 				onEnter: () => {
-					console.log(project.scrollTriggerId, "onEnter")
 					changePage(i, 0);
 				},
 				onLeave: (i === 0 ? undefined : () => {
-					console.log(project.scrollTriggerId, "onLeave")
 					changePage(i, -1);
 				}),
 			});
