@@ -28,7 +28,7 @@ interface IIntroExperienceCanvasProps {
 
 export default function IntroExperienceCanvas(props: IIntroExperienceCanvasProps)
 {
-	function CreateGithubActivitiesChart(chartPos: THREE.Vector3, scene: THREE.Scene)
+	function CreateGithubActivitiesChart(chartPos: THREE.Vector3, scene: THREE.Group)
 	{
 		// contants
 		const cubeSize = 0.4;
@@ -137,8 +137,11 @@ export default function IntroExperienceCanvas(props: IIntroExperienceCanvasProps
 				// Create the chart and add it to the scene
 				const githubChart = CreateGithubActivitiesChart(
 					new THREE.Vector3(0, 4, 0),
-					experience.World.Scene
+					(experience.World.Scene.children[1] as THREE.Group)
 				);
+
+				const sceneRotationStart = Math.PI / 8;
+				const sceneRotationEnd = -sceneRotationStart;
 
 				const scenePosition = new THREE.Vector3(0, 0, 0);
 				experience.World.Camera.Focus(scenePosition, true);
@@ -154,7 +157,7 @@ export default function IntroExperienceCanvas(props: IIntroExperienceCanvasProps
 					});
 
 					// if the screen is not wide enough, rotate the camera to focus on the current cube
-					if (window.innerWidth <= 700 && experience.World?.Camera) {
+					if (window.innerWidth <= 700) {
 						// Get the current cube to focus on
 						const currentAnimationCube = githubChart.cubes[Math.max(Math.min(scrollCubeProgress, githubChart.cubes.length - 1), 0)];
 						// Get his position
@@ -167,11 +170,22 @@ export default function IntroExperienceCanvas(props: IIntroExperienceCanvasProps
 						focusPos.z = focusPos.z / 2;
 						experience.World.Camera.Focus(focusPos, true);
 					}
+
+					const scene = (experience.World.Scene.children[1] as THREE.Group);
+					if (scene) {
+						// Rotate the scene depending on the scroll progress
+						scene.rotation.z = sceneRotationStart + (sceneRotationEnd - sceneRotationStart) * progress;
+					}
 				}
 				// Update 3d scene when scrolling
 				scrollTrigger.onScroll = update;
 				// First update to set state before scroll
 				update(scrollTrigger.Progress);
+			}}
+			onDispose={(experience) => {
+				// clean the scroll trigger scroll event otherwise it will be called before the onReady when going back to the page
+				const scrollTrigger = CustomScrollTriggers.getTriggerbyId("intro_scroll_trigger");
+				scrollTrigger.onScroll = () => {};
 			}}
 		/>
 	);

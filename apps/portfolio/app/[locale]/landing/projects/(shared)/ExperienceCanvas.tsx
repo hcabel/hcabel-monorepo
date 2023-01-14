@@ -16,6 +16,7 @@ interface IExperienceCanvasProps {
 	className?: string;
 	onReady? (experience: Experience): void;
 	onResize? (experience: Experience): void;
+	onDispose? (experience: Experience): void;
 }
 
 export default function ExperienceCanvas(props: IExperienceCanvasProps)
@@ -40,6 +41,7 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps)
 		});
 
 		return () => {
+			props.onDispose?.(experience);
 			experience.Dispose();
 		};
 	}, []);
