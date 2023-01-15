@@ -40,9 +40,8 @@ class Camera
 	get PerspectiveCamera(): THREE.PerspectiveCamera { return this._PerspectiveCamera; }
 	get Position(): THREE.Vector3 { return this._PerspectiveCamera.position; }
 
-	constructor(InScene: THREE.Scene)
+	constructor(experience: Experience, InScene: THREE.Scene)
 	{
-		const experience = new Experience();
 		this._Sizes = experience.Sizes;
 		this._Scene = InScene;
 

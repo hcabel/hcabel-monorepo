@@ -6,19 +6,8 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
-  reactStrictMode: false, // otherwise the app is loaded twice
-  headers: [
-    {
-      source: '/:all*(svg|jpg|png)',
-      locale: false,
-      headers: [
-        {
-          key: 'Cache-Control',
-          value: 'public, max-age=31536000, must-revalidate',
-        }
-      ],
-    },
-  ],
+  compress: true,
+  reactStrictMode: false,
   distDir: "../../dist/apps/portfolio/.next",
   nx: {
     svgr: false,
@@ -39,6 +28,22 @@ const nextConfig = {
   redirects: async() => {
     return [
       {
+        source: '/',
+        destination: '/landing',
+        permanent: true
+      },
+      {
+        source: '/en',
+        destination: '/en/landing',
+        permanent: true
+      },
+      {
+        source: '/fr',
+        destination: '/fr/landing',
+        permanent: true
+      },
+      // EXTERNAL REDIRECTS
+      {
         source: '/redirects/youtube',
         destination: 'https://youtube.com/c/hugocabel',
         permanent: true
@@ -57,6 +62,22 @@ const nextConfig = {
         source: '/redirects/unreal-vscode-helper',
         destination: 'https://marketplace.visualstudio.com/items?itemName=HugoCabel.uvch',
         permanent: true
+      }
+    ];
+  },
+  rewrites: async() => {
+    return [
+      {
+        source: '/',
+        destination: '/landing'
+      },
+      {
+        source: '/en',
+        destination: '/en/landing'
+      },
+      {
+        source: '/fr',
+        destination: '/fr/landing'
       }
     ];
   },

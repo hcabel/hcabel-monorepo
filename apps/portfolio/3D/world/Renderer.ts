@@ -25,10 +25,8 @@ class Renderer
 		this.SetRenderer();
 	}
 
-	constructor(InScene: THREE.Scene, InCamera: Camera)
+	constructor(experience: Experience, InScene: THREE.Scene, InCamera: Camera)
 	{
-		const experience = new Experience();
-
 		this._Canvas = experience.Canvas;
 		this._Sizes = experience.Sizes;
 		this._Scene = InScene;
