@@ -73,11 +73,12 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps)
 
 		// Get all the divs before the current one
 		const previousDivs = document.querySelectorAll(`#InvisibleDivs > div:nth-child(-n+${projectIndex})`);
-		// Sum the there heights, +10 to make sure that the scroll is not too close to the previous div
-		let targetPosition = 10;
+		let targetPosition = 0;
 		previousDivs.forEach((div) => {
 			targetPosition += div.clientHeight;
 		});
+		// Sum the there heights, +10 to make sure that the scroll is not too close to the previous div
+		targetPosition += (targetPosition === 0 ? 0 : 10);
 		// Scroll to the right position
 		window.scrollTo({
 			top: targetPosition,
