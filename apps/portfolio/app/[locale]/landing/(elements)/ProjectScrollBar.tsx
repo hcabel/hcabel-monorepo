@@ -10,7 +10,7 @@ import Style from './ProjectScroll.module.scss';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale } from 'App/[locale]/LocaleContext';
 import ProjectsInfos from '../getProjectsInfos';
-import CustomScrollTriggers from './CustomScrollTriggers';
+import CustomScrollTriggers from '../(utils)/CustomScrollTriggers';
 
 interface IProjectScrollBarProps {
 	children: React.ReactNode;

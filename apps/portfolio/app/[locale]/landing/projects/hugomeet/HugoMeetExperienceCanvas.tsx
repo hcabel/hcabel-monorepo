@@ -3,7 +3,7 @@
 import * as THREE from "three";
 
 import ExperienceCanvas from "../(shared)/ExperienceCanvas";
-import CustomScrollTriggers from "../../(elements)/CustomScrollTriggers";
+import CustomScrollTriggers from "../../(utils)/CustomScrollTriggers";
 import { GetCameraPositionToFocusBox } from "../../(utils)/3dSceneInteraction";
 
 export default function HugoMeetExperienceCanvas()

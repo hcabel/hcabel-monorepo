@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 import ExperienceCanvas from "../(shared)/ExperienceCanvas";
 import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import CustomScrollTriggers from "../../(elements)/CustomScrollTriggers";
+import CustomScrollTriggers from "../../(utils)/CustomScrollTriggers";
 import { GetCameraPositionToFocusBox } from "../../(utils)/3dSceneInteraction";
 
 export default function UvchExperienceCanvas()
