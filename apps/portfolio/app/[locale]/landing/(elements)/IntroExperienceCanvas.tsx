@@ -99,6 +99,11 @@ export default function IntroExperienceCanvas(props: IIntroExperienceCanvasProps
 		return (chart);
 	}
 
+	function OnMouseMove()
+	{
+
+	}
+
 	return (
 		<ExperienceCanvas
 			texture="/3dscenes/T_Intro.webp"
@@ -181,11 +186,78 @@ export default function IntroExperienceCanvas(props: IIntroExperienceCanvasProps
 				scrollTrigger.onScroll = update;
 				// First update to set state before scroll
 				update(scrollTrigger.Progress);
+
+				const mousePos = new THREE.Vector2();
+				const raycaster = new THREE.Raycaster();
+
+				const youtubeLogoMesh = experience.World.Scene.getObjectByName("YtLogo");
+				const githubLogoMesh = experience.World.Scene.getObjectByName("GithubLogo");
+				const interactableObjects = [
+					githubLogoMesh,
+					youtubeLogoMesh,
+				];
+
+				// listen to mouse move to rotate the scene
+				window.onmousemove = (e) => {
+					e.preventDefault();
+
+					mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
+					mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+					raycaster.setFromCamera(mousePos, experience.World.Camera.PerspectiveCamera);
+
+					const intersects = raycaster.intersectObjects(interactableObjects);
+
+					// Change the cursor to a pointer, if the mouse is over an interactable object
+					if (intersects.length > 0) {
+						document.body.style.cursor = 'pointer';
+					}
+					else {
+						document.body.style.cursor = 'default';
+					}
+
+					// increase the size of the object hover by 10% otherwise set it back to normal
+					interactableObjects.forEach((object) => {
+						if (intersects[0] && object === intersects[0].object) {
+							object.scale.set(1.1, 1.1, 1.1);
+						}
+						else {
+							object.scale.set(1, 1, 1);
+						}
+					});
+				};
+
+				// Listen to mouse click and redirect to the corresponding website if click on 3d object
+				window.onclick = (e) => {
+					e.preventDefault();
+
+					mousePos.x = (e.clientX / window.innerWidth) * 2 - 1;
+					mousePos.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+					raycaster.setFromCamera(mousePos, experience.World.Camera.PerspectiveCamera);
+
+					const intersects = raycaster.intersectObjects(interactableObjects);
+
+					if (intersects.length > 0) {
+						// redirect to my github if the client click on the github logo
+						if (intersects[0].object === githubLogoMesh) {
+							window.location.assign('/redirects/github');
+						}
+						// redirect to my youtube if the client click on the youtube logo
+						else if (intersects[0].object === youtubeLogoMesh) {
+							window.location.assign('/redirects/youtube');
+						}
+					}
+				};
+
 			}}
-			onDispose={(experience) => {
+			onDispose={() => {
 				// clean the scroll trigger scroll event otherwise it will be called before the onReady when going back to the page
 				const scrollTrigger = CustomScrollTriggers.getTriggerbyId("intro_scroll_trigger");
 				scrollTrigger.onScroll = () => {};
+
+				window.onmousemove = null;
+				window.onclick = null;
 			}}
 		/>
 	);
