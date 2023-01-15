@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-import Resources from '3D/utils/Resource';
 import Camera from '3D/world/Camera';
 import Renderer from '3D/world/Renderer';
 import Experience from '3D/Experience';

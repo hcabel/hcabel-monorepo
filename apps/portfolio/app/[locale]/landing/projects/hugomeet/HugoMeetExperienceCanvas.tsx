@@ -3,7 +3,6 @@
 import * as THREE from "three";
 
 import ExperienceCanvas from "../(shared)/ExperienceCanvas";
-import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import CustomScrollTriggers from "../../(elements)/CustomScrollTriggers";
 import { GetCameraPositionToFocusBox } from "../../(utils)/3dSceneInteraction";
 
@@ -55,7 +54,7 @@ export default function HugoMeetExperienceCanvas()
 
 				// Update scene position depending on scroll progress
 				function update(progress: number) {
-					const scene = (experience.Resources?.at(1)?.Value as GLTF)?.scene;
+					const scene = experience.Resources?.at(1)?.Value?.scene;
 					if (scene) {
 						scene.rotation.y = progress * endRotation + startRotation;
 					}

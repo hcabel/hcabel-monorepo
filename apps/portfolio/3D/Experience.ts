@@ -73,35 +73,28 @@ class Experience extends EventEmitter
 			});
 			this._World.Scene.remove(scene.Value.scene);
 		});
-
-		// I have lost the context of "this" in the callbacks, so I have to use a variable to keep it (I don't know why, it was working before)
-		let that = this;
-		atlas.once('load', (texture: THREE.Texture) => {
+		atlas.once('load', ((texture: THREE.Texture) => {
 			texture.flipY = false;
 			if (scene.Loaded) {
-				that.AssignTextureToScene(scene.Value, texture);
+				this.AssignTextureToScene(scene.Value, texture);
 			}
-		});
-		scene.once('load', (gltf: GLTF) => {
+		}).bind(this));
+		scene.once('load', ((gltf: GLTF) => {
 			if (atlas.Loaded) {
-				that.AssignTextureToScene(gltf, atlas.Value);
+				this.AssignTextureToScene(gltf, atlas.Value);
 			}
-			that._World.Scene.add(gltf.scene);
-		});
-
-		this.on('update', this.Update);
-		this.on('resize', this.Resize);
+			this._World.Scene.add(gltf.scene);
+		}).bind(this));
 
 		// Load resources
-		this.on('loaded', () => {
-			this._Clock.on('tick', () => that.emit('update'));
-			this._Sizes.on('resize', () => that.emit('resize'));
-			this.emit('resize');
-			this.emit('ready');
-		});
 		const resourcesLoader = new ResourcesLoader();
 		resourcesLoader.WaitForEvreryone(this._Resources)
-			.then(() => { that.emit('loaded'); });
+			.then((() => {
+				this._Clock.on('tick', this.Update.bind(this));
+				this._Sizes.on('resize', this.Resize.bind(this));
+				this.emit('resize');
+				this.emit('ready');
+			}).bind(this));
 
 		// // Performances stats (optional)
 		// this._Stats = new Stats();
