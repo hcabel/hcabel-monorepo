@@ -1,7 +1,6 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import { GetProjectData } from "../(shared)/getProjectDataFromApi";
+import { GetProjectData } from "../../(utils)/getProjectDataFromApi";
 
-import Style from "../(shared)/project.module.scss";
 import HugoMeetExperienceCanvas from "./HugoMeetExperienceCanvas";
 
 export default async function ProjectsPage()
@@ -12,7 +11,13 @@ export default async function ProjectsPage()
 			<HugoMeetExperienceCanvas />
 			<Project
 				project={project}
-				className={Style.Project}
+				style={{
+					position: "relative",
+					padding: "5%",
+					boxSizing: "border-box",
+					height: "100vh",
+					width: "60vw",
+				}}
 				moreButtonRedirection={"/redirects/hugomeet"}
 				moreTextOverride={"Go to HugoMeet"}
 				i18n

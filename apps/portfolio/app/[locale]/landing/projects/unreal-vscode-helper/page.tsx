@@ -1,8 +1,6 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import { GetProjectData } from "../(shared)/getProjectDataFromApi";
+import { GetProjectData } from "../../(utils)/getProjectDataFromApi";
 import UvchExperienceCanvas from "./UvchExperienceCanvas";
-
-import Style from "../(shared)/project.module.scss";
 
 export default async function ProjectsPage()
 {
@@ -13,7 +11,13 @@ export default async function ProjectsPage()
 			<UvchExperienceCanvas />
 			<Project
 				project={project}
-				className={Style.Project}
+				style={{
+					position: "relative",
+					padding: "5%",
+					boxSizing: "border-box",
+					height: "100vh",
+					width: "60vw",
+				}}
 				moreButtonRedirection="/redirects/unreal-vscode-helper"
 			/>
 		</>

@@ -2,7 +2,7 @@
 
 import * as THREE from "three";
 
-import ExperienceCanvas from "../projects/(shared)/ExperienceCanvas";
+import ExperienceCanvas from "./ExperienceCanvas";
 import CustomScrollTriggers from "../(utils)/CustomScrollTriggers";
 import { GetCameraPositionToFocusBox } from "../(utils)/3dSceneInteraction";
 import { GithubActivities } from "../page";

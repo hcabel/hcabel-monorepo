@@ -9,7 +9,7 @@ import Style from './ProjectScroll.module.scss';
 // Hooks
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale } from 'App/[locale]/LocaleContext';
-import ProjectsInfos from '../getProjectsInfos';
+import ProjectsInfos from '../(utils)/getProjectsInfos';
 import CustomScrollTriggers from '../(utils)/CustomScrollTriggers';
 
 interface IProjectScrollBarProps {

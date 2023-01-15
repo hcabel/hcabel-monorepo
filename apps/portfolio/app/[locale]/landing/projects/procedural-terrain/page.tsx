@@ -1,8 +1,6 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import { GetProjectData } from "../(shared)/getProjectDataFromApi";
+import { GetProjectData } from "../../(utils)/getProjectDataFromApi";
 import ProceduralTerrainExperienceCanvas from "./ProceduralTerrainExperienceCanvas";
-
-import Style from "../(shared)/project.module.scss";
 
 export default async function ProjectsPage()
 {
@@ -12,7 +10,13 @@ export default async function ProjectsPage()
 			<ProceduralTerrainExperienceCanvas />
 			<Project
 				project={project}
-				className={Style.Project}
+				style={{
+					position: "relative",
+					padding: "5%",
+					boxSizing: "border-box",
+					height: "100vh",
+					width: "60vw",
+				}}
 			/>
 		</>
 	);
