@@ -41,8 +41,8 @@ class World
 	{
 		this._Scene.remove(this._Camera.PerspectiveCamera);
 		this._Scene.clear();
-		this._Renderer.WebGLRenderer.renderLists.dispose();
-		this._Renderer.WebGLRenderer.dispose();
+		this._Renderer.WebGLRenderer.renderLists?.dispose();
+		this._Renderer.WebGLRenderer?.dispose();
 		this._Renderer.WebGLRenderer.forceContextLoss();
 	}
 }

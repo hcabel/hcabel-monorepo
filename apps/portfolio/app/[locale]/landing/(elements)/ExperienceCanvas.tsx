@@ -42,7 +42,7 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps)
 
 		return () => {
 			props.onDispose?.(experience);
-			experience.Dispose();
+			experience?.Dispose();
 		};
 	}, []);
 

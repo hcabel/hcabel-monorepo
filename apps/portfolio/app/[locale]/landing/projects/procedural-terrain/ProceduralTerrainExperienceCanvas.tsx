@@ -11,8 +11,8 @@ export default function ProceduralTerrainExperienceCanvas()
 {
 	return (
 		<ExperienceCanvas
-			texture="/3dscenes/T_ProceduralTerrain.webp"
-			scenePath="/3dscenes/procedural_terrain_scene.glb"
+			texture="/3dScenes/T_ProceduralTerrain.webp"
+			scenePath="/3dScenes/procedural_terrain_scene.glb"
 			style={{
 				position: "absolute",
 				top: 0,
@@ -62,6 +62,11 @@ export default function ProceduralTerrainExperienceCanvas()
 				scrollTrigger.onScroll = update;
 				// First update to set state before scroll
 				update(scrollTrigger.Progress);
+			}}
+			onDispose={() => {
+				// clean the scroll trigger scroll event otherwise it will be called before the onReady when going back to the page
+				const scrollTrigger = CustomScrollTriggers.getTriggerbyId("procedural_terrain_scroll_trigger");
+				scrollTrigger.onScroll = () => {};
 			}}
 		/>
 	);

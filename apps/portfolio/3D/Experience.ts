@@ -59,14 +59,14 @@ class Experience extends EventEmitter
 			scene
 		];
 		atlas.once('dispose', () => {
-			atlas.Value.dispose();
+			atlas.Value?.dispose();
 		});
 		scene.once('dispose', () => {
 			scene.Value.scene.traverse((child) => {
 				if (child instanceof THREE.Mesh) {
 					const materials = Array.isArray(child.material) ? child.material : [child.material];
 					materials.forEach((material) => {
-						material.dispose();
+						material?.dispose();
 						material.map?.dispose();
 					});
 				}
@@ -111,7 +111,7 @@ class Experience extends EventEmitter
 		this._Resources.forEach((resource) => {
 			resource.emit('dispose');
 		});
-		this._World.Dispose();
+		this._World?.Dispose();
 		delete this._Clock;
 		delete this._Sizes;
 		delete this._World;

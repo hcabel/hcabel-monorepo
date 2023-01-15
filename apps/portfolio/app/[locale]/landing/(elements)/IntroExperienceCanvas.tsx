@@ -106,8 +106,8 @@ export default function IntroExperienceCanvas(props: IIntroExperienceCanvasProps
 
 	return (
 		<ExperienceCanvas
-			texture="/3dscenes/T_Intro.webp"
-			scenePath="/3dscenes/intro_scene.glb"
+			texture="/3dScenes/T_Intro.webp"
+			scenePath="/3dScenes/intro_scene.glb"
 			style={{
 				position: "absolute",
 				top: 0,

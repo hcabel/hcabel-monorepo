@@ -11,8 +11,8 @@ export default function UvchExperienceCanvas()
 {
 	return (
 		<ExperienceCanvas
-			texture="/3dscenes/T_Uvch.webp"
-			scenePath="/3dscenes/uvch_scene.glb"
+			texture="/3dScenes/T_Uvch.webp"
+			scenePath="/3dScenes/uvch_scene.glb"
 			style={{
 				position: "absolute",
 				top: 0,
@@ -61,6 +61,11 @@ export default function UvchExperienceCanvas()
 				scrollTrigger.onScroll = update;
 				// First update to set state before scroll
 				update(scrollTrigger.Progress);
+			}}
+			onDispose={() => {
+				// clean the scroll trigger scroll event otherwise it will be called before the onReady when going back to the page
+				const scrollTrigger = CustomScrollTriggers.getTriggerbyId("uvch_scroll_trigger");
+				scrollTrigger.onScroll = () => {};
 			}}
 		/>
 	);
