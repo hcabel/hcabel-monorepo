@@ -4,8 +4,8 @@
 	"projects": {
 		"backend-project-api": "apps/backend/project-api",
 		"backend-telemetry-api": "apps/backend/telemetry-api",
+		"frontend-hugomeet": "apps/frontend/hugomeet",
 		"frontend-portfolio": "apps/frontend/portfolio",
-		"hugomeet": "apps/hugomeet",
 		"hugomeet-signalling-server": "apps/hugomeet-signalling-server",
 		"portfolio-e2e": "apps/portfolio-e2e",
 		"rest-api-utils": "libs/rest-api-utils",
