@@ -1,40 +1,40 @@
 {
 	"folders": [
 		{
-			"path": "./apps/frontend/portfolio",
-			"name": "Apps / Portfolio"
-		},
-		{
 			"path": "./apps/portfolio-e2e",
-			"name": "Apps / Portfolio / e2e",
+			"name": "E2E / Portfolio",
 		},
 		{
-			"path": "./apps/hugomeet",
-			"name": "Apps / HugoMeet"
+			"path": "./apps/frontend/portfolio",
+			"name": "FRONT / Portfolio"
 		},
 		{
-			"path": "./apps/hugomeet-signalling-server",
-			"name": "Apps / HugoMeet-SS"
+			"path": "./apps/frontend/hugomeet",
+			"name": "FRONT / HugoMeet"
 		},
 		{
-			"path": "./apps/project-api",
-			"name": "Apps / ProjectApi"
+			"path": "./apps/backend/hugomeet-ss",
+			"name": "BACK / HugoMeet-SS"
+		},
+		{
+			"path": "./apps/backend/project-api",
+			"name": "BACK / ProjectApi"
+		},
+		{
+			"path": "./apps/backend/telemetry-api",
+			"name": "BACK / TelemetryApi"
 		},
 		{
 			"path": "./libs/types/types-project-api",
-			"name": "Libs / Types / ProjectApi"
-		},
-		{
-			"path": "./apps/telemetry-api",
-			"name": "Apps / TelemetryApi"
+			"name": "TYPES / ProjectApi"
 		},
 		{
 			"path": "./libs/types/types-telemetry-api",
-			"name": "Libs / Types / TelemetryApi"
+			"name": "TYPES / TelemetryApi"
 		},
 		{
 			"path": "./libs/rest-api-utils",
-			"name": "Libs / RestApiUtils",
+			"name": "LIB / RestApiUtils",
 		},
 		{
 			"path": ".",
