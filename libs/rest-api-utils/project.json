@@ -1,25 +1,23 @@
 {
-  "name": "rest-api-utils",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/rest-api-utils/src",
-  "projectType": "library",
-  "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "eslintConfig": ".eslintrc.json",
-        "lintFilePatterns": [
-          "libs/rest-api-utils/src/**/*"
-        ]
-      },
-      "defaultConfiguration": "test",
-      "configurations": {
-        "test": {},
-        "fix": {
-          "fix": true
-        }
-      }
-    }
-  },
-  "tags": ["backend", "library"]
+	"name": "rest-api-utils",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/rest-api-utils/src",
+	"projectType": "library",
+	"targets": {
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"eslintConfig": ".eslintrc.json",
+				"lintFilePatterns": ["libs/rest-api-utils/src/**/*"]
+			},
+			"defaultConfiguration": "test",
+			"configurations": {
+				"test": {},
+				"fix": {
+					"fix": true
+				}
+			}
+		}
+	},
+	"tags": ["backend", "library"]
 }

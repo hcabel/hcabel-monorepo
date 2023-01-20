@@ -1,39 +1,37 @@
 {
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/portfolio-e2e/src",
-  "projectType": "application",
-  "targets": {
-    "e2e": {
-      "executor": "@nrwl/cypress:cypress",
-      "options": {
-        "cypressConfig": "apps/portfolio-e2e/cypress.config.ts",
-        "devServerTarget": "portfolio:serve:PROD:OnComputer",
-        "testingType": "e2e",
-        "watch": true
-      },
-      "configurations": {
-        "chrome": {
-          "browser": "chrome"
-        }
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "eslintConfig": "./apps/portfolio-e2e/.eslintrc.json",
-        "lintFilePatterns": [
-          "apps/portfolio-e2e/src/**/*"
-        ]
-      },
-      "defaultConfiguration": "test",
-      "configurations": {
-        "test": {},
-        "fix": {
-          "fix": true
-        }
-      }
-    }
-  },
-  "tags": ["e2e"],
-  "implicitDependencies": ["portfolio"]
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/portfolio-e2e/src",
+	"projectType": "application",
+	"targets": {
+		"e2e": {
+			"executor": "@nrwl/cypress:cypress",
+			"options": {
+				"cypressConfig": "apps/portfolio-e2e/cypress.config.ts",
+				"devServerTarget": "frontend-portfolio:serve:PROD",
+				"testingType": "e2e",
+				"watch": true
+			},
+			"configurations": {
+				"chrome": {
+					"browser": "chrome"
+				}
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"eslintConfig": "./apps/portfolio-e2e/.eslintrc.json",
+				"lintFilePatterns": ["apps/portfolio-e2e/src/**/*"]
+			},
+			"defaultConfiguration": "test",
+			"configurations": {
+				"test": {},
+				"fix": {
+					"fix": true
+				}
+			}
+		}
+	},
+	"tags": ["e2e"],
+	"implicitDependencies": ["frontend-portfolio"]
 }

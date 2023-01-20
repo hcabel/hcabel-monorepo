@@ -1,0 +1,92 @@
+@import "App/vars.scss";
+
+.ScrollerH {
+	$spacer: 1vw;
+
+	display: grid;
+	grid-auto-flow: column;
+	gap: $spacer;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	padding: $spacer / 2 0;
+	padding-left: calc($spacer / 2);
+	padding-right: calc($spacer / 2);
+	width: fit-content;
+	max-width: 100%;
+	margin: auto;
+
+	&.Snap {
+		scroll-snap-type: both mandatory;
+		scroll-padding: $spacer;
+	}
+}
+
+@media (max-width: $breakpoint-tablet) {
+	.ScrollerH {
+		$spacer: 2vh;
+
+		gap: $spacer;
+		grid-auto-flow: row;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		padding: 0 $spacer / 2;
+		padding-top: calc($spacer / 2);
+		padding-bottom: calc($spacer / 2);
+
+		&.Snap {
+			scroll-padding: $spacer;
+		}
+	}
+}
+
+.ScrollerV {
+	$spacer: 1vh;
+
+	margin: auto;
+	display: grid;
+	grid-auto-flow: row;
+	gap: $spacer;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding-top: calc($spacer / 2);
+	padding-bottom: calc($spacer / 2);
+	padding: 0 $spacer / 2;
+	height: 100%;
+
+	&.Snap {
+		scroll-snap-type: both mandatory;
+		scroll-padding: $spacer;
+	}
+}
+
+.ScrollerV::-webkit-scrollbar,
+.ScrollerH::-webkit-scrollbar {
+	width: 0.35rem;
+	height: 1vh;
+}
+
+.ScrollerV::-webkit-scrollbar-track,
+.ScrollerH::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.ScrollerV::-webkit-scrollbar-thumb,
+.ScrollerH::-webkit-scrollbar-thumb {
+	background: rgb(255, 255, 255);
+	border-radius: 1rem;
+}
+
+.ScrollerV::-webkit-scrollbar-thumb:hover,
+.ScrollerH::-webkit-scrollbar-thumb:hover {
+	background: rgb(200, 200, 200);
+}
+
+.Element {
+	text-align: center;
+	align-self: center;
+	opacity: 75%;
+}
+
+.Snap > * {
+	scroll-snap-align: start;
+}

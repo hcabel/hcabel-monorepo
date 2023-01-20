@@ -1,0 +1,64 @@
+{
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/frontend/portfolio",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/next:build",
+			"outputs": ["{options.outputPath}"],
+			"nextConfig": "apps/frontend/portfolio/next.config.js",
+			"options": {
+				"root": "apps/frontend/portfolio",
+				"outputPath": "dist/apps/frontend/portfolio"
+			}
+		},
+		"serve": {
+			"executor": "@nrwl/next:server",
+			"defaultConfiguration": "DEV:OnComputer",
+			"options": {
+				"buildTarget": "frontend-portfolio:build",
+				"dev": true
+			},
+			"configurations": {
+				"DEV:OnComputer": {
+					"buildTarget": "frontend-portfolio:build"
+				},
+				"DEV:OnLocalNetwork": {
+					"buildTarget": "frontend-portfolio:build",
+					"hostname": "10.0.0.78"
+				},
+				"PROD:OnComputer": {
+					"buildTarget": "frontend-portfolio:build",
+					"dev": false
+				}
+			}
+		},
+		"deploy": {
+			"executor": "nx:run-commands",
+			"dependsOn": ["build"],
+			"options": {
+				"commands": ["pm2 start --name Portfolio next -- start -p 4200"]
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": [
+					"apps/frontend/portfolio/pages/**/*",
+					"apps/frontend/portfolio/components/**/*",
+					"apps/frontend/portfolio/styles/**/*",
+					"apps/frontend/portfolio/3D/**/*"
+				]
+			},
+			"defaultConfiguration": "test",
+			"configurations": {
+				"test": {},
+				"fix": {
+					"fix": true
+				}
+			}
+		}
+	},
+	"tags": ["frontend"],
+	"implicitDependencies": ["project-api"]
+}
