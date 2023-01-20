@@ -1,0 +1,14 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"types": ["jest", "node"]
+	},
+	"include": [
+		"jest.config.ts",
+		"testing/**/*.spec.ts",
+		"testing/*.d.ts",
+		"testing/setup.ts"
+	],
+	"files": ["testing/setup.d.ts"],
+	"exclude": ["src", "scripts"]
+}

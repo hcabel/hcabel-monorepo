@@ -71,7 +71,7 @@
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
 			"options": {
-				"lintFilePatterns": ["apps/project-api/src/**/*"],
+				"lintFilePatterns": ["apps/backend/project-api/src/**/*"],
 				"eslintConfig": ".eslintrc.json"
 			},
 			"defaultConfiguration": "test",

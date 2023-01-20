@@ -60,5 +60,5 @@
 		}
 	},
 	"tags": ["frontend"],
-	"implicitDependencies": ["project-api"]
+	"implicitDependencies": ["backend-project-api"]
 }
