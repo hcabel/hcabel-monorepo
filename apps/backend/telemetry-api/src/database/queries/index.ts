@@ -12,8 +12,8 @@ const queries: ITelemetryApiQueries = {
 		read: VisitRead.read,
 		read_one: VisitRead.read_one,
 		update_one: VisitUpdate.update_one,
-		delete_one: VisitDelete.delete_one
-	}
-}
+		delete_one: VisitDelete.delete_one,
+	},
+};
 
 export default queries;

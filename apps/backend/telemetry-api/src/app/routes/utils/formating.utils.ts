@@ -6,14 +6,14 @@ export function IVisitModelToIVisit(visit: IVisitModel): IVisit {
 	return {
 		...rest,
 		_id: _id.toString(),
-		date: date.toISOString()
+		date: date.toISOString(),
 	};
 }
 
 export function ConvertQueryToVisitFilter(query: any): Partial<IVisitModel> {
 	const allowedField: { [key in keyof IVisitModel]?: boolean } = {
 		_id: true,
-		pagePath: true
+		pagePath: true,
 	};
 
 	const filter: Partial<IVisitModel> = {};
@@ -24,5 +24,5 @@ export function ConvertQueryToVisitFilter(query: any): Partial<IVisitModel> {
 		}
 	}
 
-	return (filter);
+	return filter;
 }
