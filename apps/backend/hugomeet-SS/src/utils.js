@@ -10,17 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-function	generateId(length) {
-	let result = '';
-	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function generateId(length) {
+	let result = "";
+	const characters =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 	for (let i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() * characters.length));
+		result += characters.charAt(
+			Math.floor(Math.random() * characters.length)
+		);
 	}
-	return (result);
+	return result;
 }
 
-function	generateUniqueId(length, blacklist = []) {
+function generateUniqueId(length, blacklist = []) {
 	let unique = false;
 	let newid = "";
 	let retry = 0;
@@ -37,12 +40,12 @@ function	generateUniqueId(length, blacklist = []) {
 		retry += 1;
 	}
 	if (retry >= 1000) {
-		return ("");
+		return "";
 	}
-	return (newid);
+	return newid;
 }
 
-function	sendMsgToAllClientsInTheRoom(roomMap, msg, blacklist = []) {
+function sendMsgToAllClientsInTheRoom(roomMap, msg, blacklist = []) {
 	roomMap.forEach((client) => {
 		let sendTo = true;
 
@@ -56,9 +59,11 @@ function	sendMsgToAllClientsInTheRoom(roomMap, msg, blacklist = []) {
 		if (sendTo) {
 			if (client.ws && client.ws.readyState === 1) {
 				client.ws.send(msg);
-			}
-			else {
-				console.warn(`Client_${client._id} WebSocket is closed, message dropped:\t`, msg);
+			} else {
+				console.warn(
+					`Client_${client._id} WebSocket is closed, message dropped:\t`,
+					msg
+				);
 			}
 		}
 	});
@@ -67,5 +72,5 @@ function	sendMsgToAllClientsInTheRoom(roomMap, msg, blacklist = []) {
 module.exports = {
 	generateId,
 	generateUniqueId,
-	sendMsgToAllClientsInTheRoom
+	sendMsgToAllClientsInTheRoom,
 };

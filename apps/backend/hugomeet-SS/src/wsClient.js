@@ -13,23 +13,24 @@
 const Utils = require("./utils");
 const globalVariables = require("./globalVariables");
 
-module.exports = async function(socket, req) {
+module.exports = async function (socket, req) {
 	let clientId = "";
 	let roomId = "";
 
-	function	promotePeer(newOwner) {
+	function promotePeer(newOwner) {
 		if (newOwner) {
 			newOwner.role = "Owner";
-			newOwner.ws.send(JSON.stringify({
-				type: "OwnershipReceived",
-			}));
-		}
-		else {
+			newOwner.ws.send(
+				JSON.stringify({
+					type: "OwnershipReceived",
+				})
+			);
+		} else {
 			throw Error("couldn't give ownership");
 		}
 	}
 
-	function	giveOwnership(to) {
+	function giveOwnership(to) {
 		const roomPeers = globalVariables.rooms.get(roomId);
 		let newOwnerId = to;
 
@@ -39,7 +40,6 @@ module.exports = async function(socket, req) {
 		}
 
 		if (newOwnerId === undefined) {
-
 			// Try to give ownership to client
 			const peers = Array.from(roomPeers.values());
 			for (const peer of peers) {
@@ -66,26 +66,31 @@ module.exports = async function(socket, req) {
 
 					// Approve connection AND promote
 					const newOwner = roomPeers.get(newOwnerId);
-					newOwner.ws.send(JSON.stringify({ type: "JoinRequestCallback", approved: true }));
+					newOwner.ws.send(
+						JSON.stringify({
+							type: "JoinRequestCallback",
+							approved: true,
+						})
+					);
 					promotePeer(newOwner);
 
 					// We wait before giving him all the pending notification to give him time to get all previous message
 					setTimeout(() => {
-
 						const peersToNotify = Array.from(roomPeers.values());
 						for (const peer of peersToNotify) {
 							if (peer.role === "Pending") {
-								newOwner.ws.send(JSON.stringify({
-									type: "JoinRequestReceived",
-									from: peer._id,
-									to: newOwner._id,
-									name: peer.name
-								}));
+								newOwner.ws.send(
+									JSON.stringify({
+										type: "JoinRequestReceived",
+										from: peer._id,
+										to: newOwner._id,
+										name: peer.name,
+									})
+								);
 							}
 						}
 					}, 1000);
-				}
-				else {
+				} else {
 					// Found nobody (room is empty)
 					return;
 				}
@@ -96,33 +101,36 @@ module.exports = async function(socket, req) {
 		promotePeer(newOwner);
 	}
 
-	function	getRoomOwner(ownerRoomId) {
+	function getRoomOwner(ownerRoomId) {
 		const room = globalVariables.rooms.get(ownerRoomId);
 		const peers = Array.from(room.values());
 
 		for (const peer of peers) {
 			if (peer.role === "Owner") {
-				return (peer);
+				return peer;
 			}
 		}
-		return (undefined);
+		return undefined;
 	}
 
-	function	onPlayerDisconnected() {
+	function onPlayerDisconnected() {
 		const roomPeers = globalVariables.rooms.get(roomId);
 
 		const role = roomPeers.get(clientId).role;
-		Utils.sendMsgToAllClientsInTheRoom(roomPeers, JSON.stringify({
-			type: "clientLeave",
-			from: clientId,
-			role: role
-		}), [clientId]);
+		Utils.sendMsgToAllClientsInTheRoom(
+			roomPeers,
+			JSON.stringify({
+				type: "clientLeave",
+				from: clientId,
+				role: role,
+			}),
+			[clientId]
+		);
 
 		if (roomPeers.size === 1) {
 			// If everyone leave delete room
 			globalVariables.rooms.delete(roomId);
-		}
-		else {
+		} else {
 			roomPeers.delete(clientId);
 			globalVariables.rooms.set(roomId, roomPeers);
 		}
@@ -146,7 +154,10 @@ module.exports = async function(socket, req) {
 			socket.close(1008 /* Policy violation */, "Cannot parse msg");
 			return;
 		}
-		console.log(`Room_${roomId}:\t<-- Client_${clientId}:\tMessage received.`, msg.type);
+		console.log(
+			`Room_${roomId}:\t<-- Client_${clientId}:\tMessage received.`,
+			msg.type
+		);
 
 		// who send the message
 		msg.from = clientId;
@@ -154,13 +165,17 @@ module.exports = async function(socket, req) {
 		const roomPeers = globalVariables.rooms.get(roomId);
 		const target = roomPeers.get(msg.to); // Send the msg to who
 		if (!target) {
-			console.error(`Message to client_${msg.to} dropped: Player not find`);
+			console.error(
+				`Message to client_${msg.to} dropped: Player not find`
+			);
 			socket.close(1008 /* Policy violation */, "Cannot find peers id");
 			return;
 		}
 
 		if (!target.ws || (target.ws && target.ws.readyState !== 1)) {
-			console.error(`Client_${msg.to} WebSocket is closed, message ${msg.type} dropped`);
+			console.error(
+				`Client_${msg.to} WebSocket is closed, message ${msg.type} dropped`
+			);
 			return;
 		}
 
@@ -171,62 +186,65 @@ module.exports = async function(socket, req) {
 				return;
 			}
 
-			target.ws.send(JSON.stringify({ type: "JoinRequestCallback", approved: true }));
+			target.ws.send(
+				JSON.stringify({ type: "JoinRequestCallback", approved: true })
+			);
 			target.role = "Client";
 
 			Utils.sendMsgToAllClientsInTheRoom(
 				globalVariables.rooms.get(roomId),
 				JSON.stringify({
 					type: "clientJoin",
-					newPeer: {...target, ws: undefined},
-					from: clientId
+					newPeer: { ...target, ws: undefined },
+					from: clientId,
 				}),
 				[target._id]
 			);
-		}
-		else if (msg.type === "RoomSetup") {
-			const peers = Array.from(
-				globalVariables.rooms.get(roomId).values()
-			).filter((peer) => {
-				return (peer.role !== "Pending");
-			}).map((value) => {
-				// You can't use `delete value.ws` because it will be erase in `roonPeers` has well
-				return ({ ...value, ws: undefined });
-			});
+		} else if (msg.type === "RoomSetup") {
+			const peers = Array.from(globalVariables.rooms.get(roomId).values())
+				.filter((peer) => {
+					return peer.role !== "Pending";
+				})
+				.map((value) => {
+					// You can't use `delete value.ws` because it will be erase in `roonPeers` has well
+					return { ...value, ws: undefined };
+				});
 
-			target.ws.send(JSON.stringify({
-				type: "RoomSetupCallback",
-				peers: peers
-			}));
-		}
-		else if (msg.type === "Offer") {
+			target.ws.send(
+				JSON.stringify({
+					type: "RoomSetupCallback",
+					peers: peers,
+				})
+			);
+		} else if (msg.type === "Offer") {
 			console.log(`** WS:\t<-- Client ${clientId}:\tOffer`);
 			target.ws.send(JSON.stringify(msg));
-		}
-		else if (msg.type === "Answer") {
+		} else if (msg.type === "Answer") {
 			console.log(`** WS:\t<-- Client ${clientId}:\tAnswer`);
 			target.ws.send(JSON.stringify(msg));
-		}
-		else if (msg.type === "IceCandidate") {
+		} else if (msg.type === "IceCandidate") {
 			console.log(`** WS:\t<-- Client ${clientId}:\tIceCandidate`);
 			target.ws.send(JSON.stringify(msg));
-		}
-		else {
-			console.error(`** WS:\tClient ${clientId}:\tUnsuported message type:\t${msg.type}`);
-			ws.close(1008/* Custom kick */, "kicked");
+		} else {
+			console.error(
+				`** WS:\tClient ${clientId}:\tUnsuported message type:\t${msg.type}`
+			);
+			ws.close(1008 /* Custom kick */, "kicked");
 			return;
 		}
 	}
 
 	function onClose(code, reason) {
-		console.log(`Room_${roomId}:\tClient_${clientId}:\tConnection closed:\t${code} - ${reason}`);
+		console.log(
+			`Room_${roomId}:\tClient_${clientId}:\tConnection closed:\t${code} - ${reason}`
+		);
 		onPlayerDisconnected();
 	}
 
 	function onError(error) {
 		console.log(`Room_${roomId}:\tClient_${clientId}:\tConnection error`);
 		onPlayerDisconnected();
-		socket.close(1006/* abnormal closure */, error);
+		socket.close(1006 /* abnormal closure */, error);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -258,36 +276,41 @@ module.exports = async function(socket, req) {
 		_id: clientId,
 		ws: socket,
 		name: clientName,
-		role: "Pending"
+		role: "Pending",
 	});
 	// Override the map
 	globalVariables.rooms.set(roomId, roomMap);
 
-	console.log(`** WS:\tRoom_${roomId}:\tNew client_${clientId}:\t${req.headers.origin}`);
+	console.log(
+		`** WS:\tRoom_${roomId}:\tNew client_${clientId}:\t${req.headers.origin}`
+	);
 
 	// register clients events
-	socket.on('message', onMessage);
-	socket.on('close', onClose);
-	socket.on('error', onError);
+	socket.on("message", onMessage);
+	socket.on("close", onClose);
+	socket.on("error", onError);
 
 	if (blacklist.length > 0) {
 		// ask to enter in the room
 		const roomOwner = getRoomOwner(roomId);
-		roomOwner.ws.send(JSON.stringify({
-			type: "JoinRequestReceived",
-			from: clientId,
-			to: roomOwner._id,
-			name: clientName
-		}));
-	}
-	else {
+		roomOwner.ws.send(
+			JSON.stringify({
+				type: "JoinRequestReceived",
+				from: clientId,
+				to: roomOwner._id,
+				name: clientName,
+			})
+		);
+	} else {
 		giveOwnership(clientId);
 	}
 
-	socket.send(JSON.stringify({
-		type: "ConnectionCallback",
-		peerConnectionOptions: globalVariables.peerConnectionOptions,
-		selfId: clientId,
-		instantJoin: (blacklist.length > 0 ? false : true)
-	}));
+	socket.send(
+		JSON.stringify({
+			type: "ConnectionCallback",
+			peerConnectionOptions: globalVariables.peerConnectionOptions,
+			selfId: clientId,
+			instantJoin: blacklist.length > 0 ? false : true,
+		})
+	);
 };

@@ -84,5 +84,5 @@
 		}
 	},
 	"tags": [],
-	"implicitDependencies": ["hugomeet-signalling-server"]
+	"implicitDependencies": ["backend-hugomeet-SS"]
 }

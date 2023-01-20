@@ -2,11 +2,11 @@
 	"$schema": "./node_modules/nx/schemas/workspace-schema.json",
 	"version": 2,
 	"projects": {
+		"backend-hugomeet-SS": "apps/backend/hugomeet-SS",
 		"backend-project-api": "apps/backend/project-api",
 		"backend-telemetry-api": "apps/backend/telemetry-api",
 		"frontend-hugomeet": "apps/frontend/hugomeet",
 		"frontend-portfolio": "apps/frontend/portfolio",
-		"hugomeet-signalling-server": "apps/hugomeet-signalling-server",
 		"portfolio-e2e": "apps/portfolio-e2e",
 		"rest-api-utils": "libs/rest-api-utils",
 		"types-project-api": "libs/types/types-project-api",
