@@ -17,6 +17,9 @@
 			"@hcabel/bridges/ProjectApi": [
 				"libs/bridges/bridge-project-api/src/index.ts"
 			],
+			"@hcabel/bridges/TelemetryApi": [
+				"libs/bridges/bridge-telemetry-api/src/index.ts"
+			],
 
 			// App local path
 			"App/*": ["apps/frontend/portfolio/app/*"],
