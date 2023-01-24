@@ -1,10 +1,10 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import { GetProjectData } from "../../(utils)/getProjectDataFromApi";
+import { Routes as ProjectApiRoutes } from "@hcabel/bridges/ProjectApi";
 
 import HugoMeetExperienceCanvas from "./HugoMeetExperienceCanvas";
 
 export default async function ProjectsPage() {
-	const project = await GetProjectData("6345e3b7af50b4452641831f");
+	const project = await ProjectApiRoutes.get_single_project("6345e3b7af50b4452641831f");
 	return (
 		<>
 			<HugoMeetExperienceCanvas />

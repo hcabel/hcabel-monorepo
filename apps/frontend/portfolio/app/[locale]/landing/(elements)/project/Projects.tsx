@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 // External project
-import { IRouteGetProjectById } from "@hcabel/types/ProjectApi";
+import { Types as ProjectApiTypes } from "@hcabel/bridges/ProjectApi";
 
 // Design
 import Style from "./Project.module.scss";
@@ -24,7 +24,7 @@ export interface IProjectProps {
 	moreButtonRedirection?: string;
 	moreTextOverride?: string;
 
-	project: IRouteGetProjectById;
+	project: ProjectApiTypes.IRouteGetProjectById;
 
 	hideDescription?: boolean;
 	hideStats?: boolean;

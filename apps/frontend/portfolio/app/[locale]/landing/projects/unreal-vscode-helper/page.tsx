@@ -1,12 +1,9 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import { GetProjectData } from "../../(utils)/getProjectDataFromApi";
+import { Routes as ProjectApiRoutes } from "@hcabel/bridges/ProjectApi";
 import UvchExperienceCanvas from "./UvchExperienceCanvas";
 
 export default async function ProjectsPage() {
-	const project = await GetProjectData("6345e3b3af50b4452641831e", {
-		next: { revalidate: 60 * 60 * 24 /* each day */ },
-	});
-
+	const project = await ProjectApiRoutes.get_single_project("6345e3b3af50b4452641831e");
 	return (
 		<>
 			<UvchExperienceCanvas />

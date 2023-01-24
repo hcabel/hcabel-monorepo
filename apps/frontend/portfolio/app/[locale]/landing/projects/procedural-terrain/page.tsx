@@ -1,11 +1,9 @@
 import Project from "App/[locale]/landing/(elements)/project/Projects";
-import { GetProjectData } from "../../(utils)/getProjectDataFromApi";
+import { Routes as ProjectApiRoutes } from "@hcabel/bridges/ProjectApi";
 import ProceduralTerrainExperienceCanvas from "./ProceduralTerrainExperienceCanvas";
 
 export default async function ProjectsPage() {
-	const project = await GetProjectData("6345e3b8af50b44526418320", {
-		next: { revalidate: 60 * 60 * 24 /* each day */ },
-	});
+	const project = await ProjectApiRoutes.get_single_project("6345e3b8af50b44526418320");
 	return (
 		<>
 			<ProceduralTerrainExperienceCanvas />

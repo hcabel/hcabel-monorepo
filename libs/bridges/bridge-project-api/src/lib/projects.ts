@@ -4,11 +4,11 @@ import {
 	IRouteGetProjectById,
 } from "@hcabel/types/ProjectApi";
 
-export function get_all_projects(projectApiUrl: String, queryParamsFilter: `?${string}`,  options?: RequestInit): Promise<IRouteGetAllProjects>
+export function get_all_projects(queryParamsFilter: `?${string}`,  options?: RequestInit): Promise<IRouteGetAllProjects>
 {
 	return (
 		fetch(
-			`${projectApiUrl}/projects${queryParamsFilter || ''}`,
+			`${process.env.NX_PROJECT_API_ENDPOINT}/projects${queryParamsFilter || ''}`,
 			options || {}
 		)
 		.then((res) => res.json() as Promise<IRouteGetAllProjects>)

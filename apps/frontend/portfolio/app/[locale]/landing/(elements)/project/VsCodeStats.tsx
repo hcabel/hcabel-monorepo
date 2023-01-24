@@ -1,7 +1,7 @@
 "use client";
 
 // External project
-import { IStat } from "@hcabel/types/ProjectApi";
+import { Types as ProjectApiTypes } from "@hcabel/bridges/ProjectApi";
 
 // Design
 import Style from "./Stats.module.scss";
@@ -14,7 +14,7 @@ import StatField from "./StatField";
 import { useLocale } from "App/[locale]/LocaleContext";
 
 export interface IVsCodeStatsProps {
-	stats: IStat[];
+	stats: ProjectApiTypes.IStat[];
 }
 
 export default function VsCodeStats(props: IVsCodeStatsProps) {

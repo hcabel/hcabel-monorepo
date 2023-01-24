@@ -33,6 +33,10 @@
 			"name": "TYPES / TelemetryApi"
 		},
 		{
+			"path": "./libs/bridges/bridge-project-api",
+			"name": "LIB / BRIDGES / ProjectAPI",
+		},
+		{
 			"path": "./libs/rest-api-utils",
 			"name": "LIB / RestApiUtils",
 		},
