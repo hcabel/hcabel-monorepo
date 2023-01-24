@@ -3,7 +3,7 @@
 	"parserOptions": {
 		"project": [
 			"(../../|./)tsconfig.base.json",
-			"(lib/types/types-project-api/|./)tsconfig.json"
+			"(libs/types/types-project-api/|./)tsconfig.json"
 		]
 	}
 }
