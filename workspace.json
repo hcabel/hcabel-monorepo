@@ -12,6 +12,6 @@
 		"portfolio-e2e": "apps/portfolio-e2e",
 		"rest-api-utils": "libs/rest-api-utils",
 		"types-project-api": "libs/types/types-project-api",
-		"types-types-telemetry-api": "libs/types/types-telemetry-api"
+		"types-telemetry-api": "libs/types/types-telemetry-api"
 	}
 }
