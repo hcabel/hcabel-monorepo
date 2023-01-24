@@ -1,0 +1,16 @@
+{
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/bridges/bridge-project-api/src",
+	"projectType": "library",
+	"targets": {
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": ["{options.outputFile}"],
+			"options": {
+				"lintFilePatterns": ["libs/bridges/bridge-project-api/**/*.ts"]
+			}
+		}
+	},
+	"tags": ["frontend", "library"],
+	"implicitDependencies": ["backend-project-api"]
+}
