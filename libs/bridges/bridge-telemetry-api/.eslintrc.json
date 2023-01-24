@@ -1,3 +1,9 @@
 {
-	"extends": ["../../../.eslintrc.json"]
+	"extends": ["../../../.eslintrc.json"],
+	"parserOptions": {
+		"project": [
+			"(../../|./)tsconfig.base.json",
+			"(libs/bridges/bridge-telemetry-api/|./)tsconfig.json"
+		]
+	}
 }

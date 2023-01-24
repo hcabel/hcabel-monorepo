@@ -1,4 +1,4 @@
-import { ITelemetryApiQueries } from "@hcabel/types/TelemetryApi"
+import { ITelemetryApiQueries } from "@hcabel/types/TelemetryApi";
 
 export function get_all_visit(queryParams: `?${string}`): Promise<ITelemetryApiQueries>
 {
@@ -11,8 +11,8 @@ export function get_all_visit(queryParams: `?${string}`): Promise<ITelemetryApiQ
 				},
 			},
 		)
-		.then((response) => response.json())
-	)
+			.then((response) => response.json())
+	);
 }
 
 export function create_visit(href: string): Promise<Response>
@@ -29,5 +29,5 @@ export function create_visit(href: string): Promise<Response>
 				}),
 			},
 		)
-	)
+	);
 }
