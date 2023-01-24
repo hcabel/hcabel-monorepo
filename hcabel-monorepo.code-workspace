@@ -37,6 +37,10 @@
 			"name": "LIB / BRIDGES / ProjectAPI",
 		},
 		{
+			"path": "./libs/bridges/bridge-telemetry-api",
+			"name": "LIB / BRIDGES / TelemetryApi",
+		},
+		{
 			"path": "./libs/rest-api-utils",
 			"name": "LIB / RestApiUtils",
 		},

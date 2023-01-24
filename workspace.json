@@ -6,6 +6,7 @@
 		"backend-project-api": "apps/backend/project-api",
 		"backend-telemetry-api": "apps/backend/telemetry-api",
 		"bridge-project-api": "libs/bridges/bridge-project-api",
+		"bridge-telemetry-api": "libs/bridges/bridge-telemetry-api",
 		"frontend-hugomeet": "apps/frontend/hugomeet",
 		"frontend-portfolio": "apps/frontend/portfolio",
 		"portfolio-e2e": "apps/portfolio-e2e",
