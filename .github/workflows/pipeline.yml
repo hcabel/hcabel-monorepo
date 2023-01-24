@@ -6,6 +6,10 @@ on:
     branches:
     - DEV
 
+env:
+  NX_PROJECT_API_ENDPOINT: https://project-api.hugocabel.com/
+  NX_TELEMETRY_API_ENDPOINT: https://api-telemetry.hugocabel.com/
+
 jobs:
   install-deps:
     runs-on: ubuntu-latest
