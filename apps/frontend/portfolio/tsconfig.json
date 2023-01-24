@@ -20,6 +20,12 @@
 			"@hcabel/bridges/TelemetryApi": [
 				"libs/bridges/bridge-telemetry-api/src/index.ts"
 			],
+			"@hcabel/types/ProjectApi": [
+				"libs/types/types-project-api/src/index.ts"
+			],
+			"@hcabel/types/TelemetryApi": [
+				"libs/types/types-telemetry-api/src/index.ts"
+			],
 
 			// App local path
 			"App/*": ["apps/frontend/portfolio/app/*"],
