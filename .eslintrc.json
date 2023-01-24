@@ -86,7 +86,7 @@
     {
       "files": ["*.json", "*.config.ts", "*.config.js"],
       "rules": {
-        "indent": ["error", 2],
+        "indent": ["error", 2]
       }
     }
   ]
