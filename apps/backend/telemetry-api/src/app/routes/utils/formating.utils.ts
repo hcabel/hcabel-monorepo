@@ -1,6 +1,7 @@
 import { IVisit, IVisitModel } from "@hcabel/types/TelemetryApi";
 
 export function IVisitModelToIVisit(visit: IVisitModel): IVisit {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { _id, __v, date, ...rest } = visit;
 
 	return {

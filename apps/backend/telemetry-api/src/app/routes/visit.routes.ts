@@ -1,20 +1,18 @@
-import { Request } from "express";
-
 import { IDatabase, IRequestResponse } from "@hcabel/rest-api-utils";
 import {
 	IRouteGetAllVisit,
 	IVisitModel,
 	ITelemetryApiQueries,
 	IRouteCreateVisit,
-	IRouteCreateVisitArgs,
 } from "@hcabel/types/TelemetryApi";
+import { Request as ExpressRequest } from "express";
 import {
 	ConvertQueryToVisitFilter,
 	IVisitModelToIVisit,
 } from "./utils/formating.utils";
 
 export async function GetAllVisit(
-	req: Request
+	req: ExpressRequest
 ): Promise<IRequestResponse<IRouteGetAllVisit>> {
 	const database = req.app.get("database") as IDatabase<ITelemetryApiQueries>;
 
@@ -36,7 +34,7 @@ export async function GetAllVisit(
 }
 
 export async function CreateVisit(
-	req: Request
+	req: ExpressRequest
 ): Promise<IRequestResponse<IRouteCreateVisit>> {
 	let url: URL;
 	// check inputs
@@ -61,10 +59,6 @@ export async function CreateVisit(
 			},
 		};
 	}
-	// Explictly create an object with the right inputs (now that we know they are valid)
-	const inputs: IRouteCreateVisitArgs = {
-		href: url.href,
-	};
 
 	const database = req.app.get("database") as IDatabase<ITelemetryApiQueries>;
 

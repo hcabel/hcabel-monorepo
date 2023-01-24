@@ -9,7 +9,7 @@ import { IRouteCreateVisitArgs } from "@hcabel/types/TelemetryApi";
 
 // TODO: replace any by mock interface
 const mockDatabase: IDatabase<Nested<any>> = {
-	connect: jest.fn(async () => true),
+	connect: jest.fn(async() => true),
 	queries: {
 		Visit: {
 			create: jest.fn(() => generate_random_visit()),
@@ -25,24 +25,24 @@ const app = create_app(mockDatabase);
 
 describe("visits", () => {
 	describe("Get All visits", () => {
-		it("Should return a 200 status code with a json content type", async () => {
+		it("Should return a 200 status code with a json content type", async() => {
 			const response = await supertest(app).get("/visits");
 			expect(response.status).toBe(200);
 			expect(response.type).toBe("application/json");
 		});
 
-		it("Should return an array of visits", async () => {
+		it("Should return an array of visits", async() => {
 			const response = await supertest(app).get("/visits");
 			expect(response.body).toBeInstanceOf(Array);
 		});
 
-		it("Should call the read query once", async () => {
+		it("Should call the read query once", async() => {
 			mockDatabase.queries.Visit.read.mockReset();
 			await supertest(app).get("/visits");
 			expect(mockDatabase.queries.Visit.read).toHaveBeenCalledTimes(1);
 		});
 
-		it("Should return 500 is the query failed", async () => {
+		it("Should return 500 is the query failed", async() => {
 			mockDatabase.queries.Visit.read.mockReset();
 			mockDatabase.queries.Visit.read.mockResolvedValueOnce(null);
 			const response = await supertest(app).get("/visits");
@@ -50,7 +50,7 @@ describe("visits", () => {
 			expect(response.body.error).toBeDefined();
 		});
 
-		it("Should convert the IVisitModel received from the db to IVisit", async () => {
+		it("Should convert the IVisitModel received from the db to IVisit", async() => {
 			const inputs = [
 				[],
 				[generate_random_visit()],
@@ -73,7 +73,7 @@ describe("visits", () => {
 			}
 		});
 
-		it("Should convert the query params to a filter and use it in the query", async () => {
+		it("Should convert the query params to a filter and use it in the query", async() => {
 			const filters = [
 				{
 					send: {
@@ -145,7 +145,7 @@ describe("visits", () => {
 		];
 
 		for (const input of validInputs) {
-			it(`Should return 204 with no content if the query succeed => ${input.href}`, async () => {
+			it(`Should return 204 with no content if the query succeed => ${input.href}`, async() => {
 				// reset the mock
 				mockDatabase.queries.Visit.create.mockReset();
 				mockDatabase.queries.Visit.create.mockResolvedValueOnce(
@@ -163,7 +163,7 @@ describe("visits", () => {
 		for (const input of invalidInputs) {
 			it(`Shoud return 400 if one of the input is invalid => ${JSON.stringify(
 				input
-			)}`, async () => {
+			)}`, async() => {
 				const response = await supertest(app)
 					.post("/visits")
 					.send(input);
@@ -172,7 +172,7 @@ describe("visits", () => {
 			});
 		}
 
-		it("Should call the create query once", async () => {
+		it("Should call the create query once", async() => {
 			// reset the mock
 			mockDatabase.queries.Visit.create.mockReset();
 			mockDatabase.queries.Visit.create.mockResolvedValueOnce(
@@ -186,7 +186,7 @@ describe("visits", () => {
 			expect(mockDatabase.queries.Visit.create).toHaveBeenCalledTimes(1);
 		});
 
-		it("Should return 500 if the query failed", async () => {
+		it("Should return 500 if the query failed", async() => {
 			// reset the mock
 			mockDatabase.queries.Visit.create.mockReset();
 			mockDatabase.queries.Visit.create.mockRejectedValueOnce(null);

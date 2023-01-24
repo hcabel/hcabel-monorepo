@@ -6,7 +6,7 @@ import { CreateVisit, GetAllVisit } from "./visit.routes";
 
 const RouteTree: IRoutingTreeBranch = {
 	__self__: {
-		get: useRoute(async () => ({
+		get: useRoute(async() => ({
 			status: 200,
 			json: { message: "Telemetry API is watching you ! 👁️👁️" },
 		})),
