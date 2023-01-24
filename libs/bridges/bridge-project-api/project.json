@@ -5,9 +5,15 @@
 	"targets": {
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
-			"outputs": ["{options.outputFile}"],
 			"options": {
-				"lintFilePatterns": ["libs/bridges/bridge-project-api/**/*.ts"]
+				"eslintConfig": ".eslintrc.json",
+				"lintFilePatterns": ["libs/bridges/bridge-project-api/src/**/*"]
+			},
+			"defaultConfiguration": "test",
+			"configurations": {
+				"fix": {
+					"fix": true
+				}
 			}
 		}
 	},
