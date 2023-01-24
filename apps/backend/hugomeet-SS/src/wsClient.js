@@ -13,7 +13,7 @@
 const Utils = require("./utils");
 const globalVariables = require("./globalVariables");
 
-module.exports = async function (socket, req) {
+module.exports = async function(socket, req) {
 	let clientId = "";
 	let roomId = "";
 

@@ -22,7 +22,6 @@
 			},
 			"defaultConfiguration": "test",
 			"configurations": {
-				"test": {},
 				"fix": {
 					"fix": true
 				}
