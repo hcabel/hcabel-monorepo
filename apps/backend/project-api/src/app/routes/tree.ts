@@ -6,7 +6,7 @@ import { get_all_projects, get_project_by_id } from "./projects.routes";
 
 const RouteTree: IRoutingTreeBranch = {
 	__self__: {
-		get: useRoute(async () => {
+		get: useRoute(async() => {
 			return { status: 200, json: { message: "ProjectApi is running." } };
 		}),
 	},
