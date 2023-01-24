@@ -35,10 +35,11 @@
     "stats.js": "^0.17.0",
     "tslib": "^2.3.0",
     "webpack": "5",
-    "ws": "^8.2.3"
+    "ws": "^8.2.3",
+    "supertest": "^6.3.3",
+    "@jest/globals": "^29.3.1"
   },
   "devDependencies": {
-    "@jest/globals": "^29.3.1",
     "@jest/types": "^29.3.1",
     "@nrwl/cli": "14.7.3",
     "@nrwl/cypress": "14.7.3",
@@ -82,7 +83,6 @@
     "prettier": "^2.6.2",
     "react-test-renderer": "18.2.0",
     "sass": "1.54.5",
-    "supertest": "^6.3.1",
     "three": "^0.144.0",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
