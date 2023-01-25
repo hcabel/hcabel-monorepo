@@ -3,7 +3,7 @@
 	"sourceRoot": "apps/portfolio-e2e/src",
 	"projectType": "application",
 	"targets": {
-		"e2e": {
+		"test": {
 			"executor": "@nrwl/cypress:cypress",
 			"options": {
 				"cypressConfig": "apps/portfolio-e2e/cypress.config.ts",
