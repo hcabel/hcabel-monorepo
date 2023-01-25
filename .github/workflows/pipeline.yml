@@ -58,5 +58,5 @@ jobs:
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
       # - run: npx nx affected:build --base=${{ github.event.before }} --parallel
       # - run: npx nx affected:test --base=${{ github.event.before }} --parallel
-      - run: npx nx build portfolio
+      - run: npx nx build frontend-portfolio
       - run: npx nx test portfolio-e2e
