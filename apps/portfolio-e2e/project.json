@@ -1,13 +1,14 @@
 {
+	"name": "portfolio-e2e",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "apps/portfolio-e2e/src",
 	"projectType": "application",
 	"targets": {
-		"test": {
+		"e2e": {
 			"executor": "@nrwl/cypress:cypress",
 			"options": {
 				"cypressConfig": "apps/portfolio-e2e/cypress.config.ts",
-				"devServerTarget": "frontend-portfolio:serve:PROD",
+				"devServerTarget": "frontend-portfolio:serve-PROD",
 				"testingType": "e2e",
 				"watch": true
 			},
@@ -28,6 +29,18 @@
 				"fix": {
 					"fix": true
 				}
+			}
+		},
+		"test": {
+			"executor": "@nrwl/cypress:cypress",
+			"options": {
+				"cypressConfig": "apps/portfolio-e2e/cypress.config.ts",
+				"devServerTarget": "frontend-portfolio:serve-PROD",
+				"testingType": "e2e",
+				"browser": "chrome",
+				"record": false,
+				"parallel": false
+
 			}
 		}
 	},

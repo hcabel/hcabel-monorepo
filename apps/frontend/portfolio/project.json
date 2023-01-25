@@ -12,24 +12,27 @@
 				"outputPath": "dist/apps/frontend/portfolio"
 			}
 		},
-		"serve": {
+		"serve-DEV": {
 			"executor": "@nrwl/next:server",
-			"defaultConfiguration": "DEV:OnComputer",
 			"options": {
 				"buildTarget": "frontend-portfolio:build",
 				"dev": true
 			},
 			"configurations": {
-				"DEV:OnComputer": {
-					"buildTarget": "frontend-portfolio:build"
-				},
-				"DEV:OnLocalNetwork": {
-					"buildTarget": "frontend-portfolio:build",
+				"OnLocalNetwork": {
 					"hostname": "10.0.0.78"
-				},
-				"PROD:OnComputer": {
-					"buildTarget": "frontend-portfolio:build",
-					"dev": false
+				}
+			}
+		},
+		"serve-PROD": {
+			"executor": "@nrwl/next:server",
+			"options": {
+				"buildTarget": "frontend-portfolio:build",
+				"dev": false
+			},
+			"configurations": {
+				"OnLocalNetwork": {
+					"hostname": "10.0.0.78"
 				}
 			}
 		},
