@@ -44,7 +44,7 @@ jobs:
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
       - run: npx nx affected:lint --base=${{ github.event.before }} --parallel
 
-  build_then_test:
+  build:
     runs-on: ubuntu-latest
     needs: install-deps
     steps:
@@ -56,7 +56,18 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
-      # - run: npx nx affected:build --base=${{ github.event.before }} --parallel
-      # - run: npx nx affected:test --base=${{ github.event.before }} --parallel
-      - run: npx nx build frontend-portfolio
-      - run: npx nx test portfolio-e2e
+      - run: npx nx affected:build --base=${{ github.event.before }} --parallel
+
+  test:
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+      - run: npx nx affected:test --base=${{ github.event.before }} --parallel

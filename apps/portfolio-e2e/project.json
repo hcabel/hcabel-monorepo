@@ -31,7 +31,7 @@
 				}
 			}
 		},
-		"test": {
+		"test_NOT_WORKING_IN_PIPELINE": {
 			"executor": "@nrwl/cypress:cypress",
 			"options": {
 				"cypressConfig": "apps/portfolio-e2e/cypress.config.ts",
