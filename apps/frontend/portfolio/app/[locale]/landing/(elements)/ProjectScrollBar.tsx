@@ -143,8 +143,8 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 					i === 0
 						? undefined
 						: () => {
-								changePage(i, -1);
-						  },
+							changePage(i, -1);
+						},
 			});
 		});
 
@@ -193,6 +193,17 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 
 	return (
 		<div style={{ scrollBehavior: "auto" }}>
+			{/* All the invitible divs that allow the scroll bar to show */}
+			<div id="InvisibleDivs">
+				{ProjectsInfos.map((project, i) => (
+					<div
+						id={`InvisibleDiv_${i}`}
+						key={i}
+						style={{ height: `calc(100vh + ${project.height})` }}
+					/>
+				))}
+			</div>
+			{/* I show the background here for smooth transition between prokect pages */}
 			<div id="BackgroundDivs">
 				{ProjectsInfos.map((project, i) => (
 					<div
@@ -202,21 +213,13 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 					/>
 				))}
 			</div>
+			{/* Real content on top of all the rest (has to be the last) */}
 			<div
 				id="ScrollContent"
 				className={Style.ScrollContent}
 				style={{ top: "100vh" }}
 			>
 				{props.children}
-			</div>
-			<div id="InvisibleDivs">
-				{ProjectsInfos.map((project, i) => (
-					<div
-						id={`InvisibleDiv_${i}`}
-						key={i}
-						style={{ height: `calc(100vh + ${project.height})` }}
-					/>
-				))}
 			</div>
 		</div>
 	);

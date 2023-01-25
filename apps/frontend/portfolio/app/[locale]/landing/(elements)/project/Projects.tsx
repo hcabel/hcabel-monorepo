@@ -44,14 +44,14 @@ export default function Project(props: IProjectProps) {
 			<div>
 				<h1
 					className={`h1 ${Style.ProjectName}`}
-					data-cy={`Project-${props.project.name}-Title`}
+					data-cy={`Project-Title`}
 				>
 					{props.project.name}
 				</h1>
 				{!props.hideDescription && (
 					<h4
 						className={`h4 ${Style.ProjectDescription}`}
-						data-cy={`Project-${props.project.name}-Description`}
+						data-cy={`Project-Description`}
 					>
 						<I18nText i18nText={props.project.description} />
 					</h4>
