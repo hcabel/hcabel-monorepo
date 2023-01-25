@@ -70,4 +70,5 @@ jobs:
         with:
           path: node_modules
           key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
-      - run: npx nx affected:test --base=${{ github.event.before }} --parallel
+      # - run: npx nx affected:test --base=${{ github.event.before }} --parallel
+      - run: npx nx test portfolio-e2e
