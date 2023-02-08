@@ -11,7 +11,7 @@ export function create_app(database: any) {
 
 	// Allow cross origin requests
 	app.use((req, res, next) => {
-		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Origin", "https://hugocabel.com");
 		res.header(
 			"Access-Control-Allow-Headers",
 			"Origin, X-Requested-With, Content-Type, Accept"
