@@ -9,13 +9,6 @@ export default async function ProjectsPage() {
 			<ProceduralTerrainExperienceCanvas />
 			<Project
 				project={project}
-				style={{
-					position: "relative",
-					padding: "5%",
-					boxSizing: "border-box",
-					height: "100vh",
-					width: "60vw",
-				}}
 			/>
 		</>
 	);

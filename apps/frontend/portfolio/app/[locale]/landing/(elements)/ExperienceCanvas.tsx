@@ -44,6 +44,7 @@ export default function ExperienceCanvas(props: IExperienceCanvasProps) {
 		});
 
 		return () => {
+			set_Experience(null);
 			props.onDispose?.(experience);
 			experience?.Dispose();
 		};

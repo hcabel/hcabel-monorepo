@@ -104,14 +104,16 @@ class Experience extends EventEmitter {
 
 		// Load resources
 		const resourcesLoader = new ResourcesLoader();
-		resourcesLoader.WaitForEvreryone(this._Resources).then(
-			(() => {
-				this._Clock.on("tick", this.Update.bind(this));
-				this._Sizes.on("resize", this.Resize.bind(this));
-				this.emit("resize");
-				this.emit("ready");
-			}).bind(this)
-		);
+		resourcesLoader.WaitForEvreryone(this._Resources)
+			.then(
+				(() => {
+					this._Clock.on("tick", this.Update.bind(this));
+					this._Sizes.on("resize", this.Resize.bind(this));
+					this.emit("resize");
+					this.emit("ready");
+				}).bind(this)
+			)
+			.catch(() => {});
 
 		// // Performances stats (optional)
 		// this._Stats = new Stats();
@@ -121,17 +123,25 @@ class Experience extends EventEmitter {
 		// }
 	}
 
-	public Dispose() {
+	public async Dispose() {
+		this._Clock.removeAllListeners();
+		this._Sizes.removeAllListeners();
 		this.removeAllListeners();
+
 		this._Canvas = undefined;
 		this._Resources.forEach((resource) => {
 			resource.emit("dispose");
 		});
+
 		this._World?.Dispose();
 		delete this._Clock;
+		this._Clock = null;
 		delete this._Sizes;
+		this._Sizes = null;
 		delete this._World;
+		this._World = null;
 		delete this._Resources;
+		this._Resources = null;
 	}
 
 	private Update() {
@@ -141,8 +151,6 @@ class Experience extends EventEmitter {
 
 		if (this._World) {
 			this._World.Update();
-		} else {
-			console.warn("No world");
 		}
 
 		if (this._Stats) {

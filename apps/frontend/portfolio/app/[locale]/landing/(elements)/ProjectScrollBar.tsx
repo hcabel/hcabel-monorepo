@@ -102,17 +102,17 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 		return new Promise((resolve, reject) => {
 			// Timeout in case of error
 			const timeout = setTimeout(() => {
-				reject();
+				reject(`Timeout ${self.pageYOffset} !== ${targetPosition}`);
 			}, 2000);
 
 			function scrollHandler() {
-				if (self.pageYOffset === targetPosition) {
+				if (Math.round(self.pageYOffset) === targetPosition) {
 					window.removeEventListener("scroll", scrollHandler);
 					clearTimeout(timeout);
 					resolve();
 				}
 			}
-			if (self.pageYOffset === targetPosition) {
+			if (Math.round(self.pageYOffset) === targetPosition) {
 				clearTimeout(timeout);
 				resolve();
 			} else {
@@ -163,8 +163,8 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 					trigger.enable();
 				});
 			})
-			.catch(() => {
-				console.error("Error while scrolling to the right position");
+			.catch((e) => {
+				console.error("Error while scrolling to the right position:", e);
 			});
 	}, []);
 
