@@ -1,0 +1,53 @@
+{
+	"extends": "../../../tsconfig.base.json",
+	"compilerOptions": {
+		"jsx": "preserve",
+		"allowJs": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": false,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"incremental": true,
+		"types": ["node"],
+		"paths": {
+			// External libs paths
+			"@hcabel/bridges/ProjectApi": [
+				"libs/bridges/bridge-project-api/src/index.ts"
+			],
+			"@hcabel/bridges/TelemetryApi": [
+				"libs/bridges/bridge-telemetry-api/src/index.ts"
+			],
+			"@hcabel/types/ProjectApi": [
+				"libs/types/types-project-api/src/index.ts"
+			],
+			"@hcabel/types/TelemetryApi": [
+				"libs/types/types-telemetry-api/src/index.ts"
+			],
+
+			// App local path
+			"App/*": ["apps/frontend/portfolio/app/*"],
+			"Components/*": ["apps/frontend/portfolio/components/*"],
+			"3D/*": ["apps/frontend/portfolio/3D/*"],
+			"Images/*": ["apps/frontend/portfolio/assets/images/*"],
+			"Utils/*": ["apps/frontend/portfolio/utils/*"]
+		},
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
+	},
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.js",
+		"**/*.jsx",
+		"next-env.d.ts",
+		"**/*.glsl",
+		".next/types/**/*.ts"
+	],
+	"exclude": ["node_modules", "next.config.js"]
+}

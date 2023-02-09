@@ -1,0 +1,35 @@
+@import "App/vars.scss";
+
+.LocaleSelector {
+	position: fixed;
+	top: 0;
+	right: 0;
+	margin: 2%;
+	color: white;
+	border: 1px solid white;
+	border-radius: 1rem;
+	// padding: 0.25rem 0.5rem;
+	font-size: 1em;
+	text-transform: capitalize;
+	z-index: 1000;
+
+	.LocalSelected {
+		display: flex;
+		align-items: center;
+	}
+
+	span {
+		padding: 0px 10px;
+	}
+
+	svg {
+		width: 1.5vw;
+		height: auto;
+		margin-left: 5px;
+	}
+
+	.LocalLink {
+		color: $PrimaryTextColor;
+		text-decoration: none;
+	}
+}

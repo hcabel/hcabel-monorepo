@@ -1,24 +1,21 @@
 {
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/types/types-project-api/src",
-  "projectType": "library",
-  "targets": {
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "eslintConfig": ".eslintrc.json",
-        "lintFilePatterns": [
-          "libs/types/types-project-api/src/**/*"
-        ]
-      },
-      "defaultConfiguration": "test",
-      "configurations": {
-        "test": {},
-        "fix": {
-          "fix": true
-        }
-      }
-    }
-  },
-  "tags": ["shared", "types", "library"]
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/types/types-project-api/src",
+	"projectType": "library",
+	"targets": {
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"eslintConfig": ".eslintrc.json",
+				"lintFilePatterns": ["libs/types/types-project-api/src/**/*"]
+			},
+			"defaultConfiguration": "test",
+			"configurations": {
+				"fix": {
+					"fix": true
+				}
+			}
+		}
+	},
+	"tags": ["shared", "types", "library"]
 }

@@ -6,6 +6,10 @@ on:
     branches:
     - DEV
 
+env:
+  NX_PROJECT_API_ENDPOINT: https://project-api.hugocabel.com
+  NX_TELEMETRY_API_ENDPOINT: https://api-telemetry.hugocabel.com
+
 jobs:
   install-deps:
     runs-on: ubuntu-latest
@@ -18,7 +22,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
       - name: install pnpm
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm install -g pnpm
@@ -37,7 +41,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
       - run: npx nx affected:lint --base=${{ github.event.before }} --parallel
 
   build:
@@ -51,7 +55,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
       - run: npx nx affected:build --base=${{ github.event.before }} --parallel
 
   test:
@@ -65,5 +69,5 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: cache-node-modules-${{ hashFiles('pnpm-lock.yml') }}
+          key: cache-node-modules-${{ hashFiles('pnpm-lock.yaml') }}
       - run: npx nx affected:test --base=${{ github.event.before }} --parallel

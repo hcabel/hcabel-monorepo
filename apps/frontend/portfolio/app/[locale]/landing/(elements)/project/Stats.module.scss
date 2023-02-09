@@ -1,0 +1,56 @@
+@import "App/vars.scss";
+
+.Stats {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	white-space: nowrap;
+
+	margin-left: 8px;
+
+	color: $PrimaryTextColor;
+	font-family: "Roboto", sans-serif;
+
+	.StatField {
+		display: flex;
+		flex-direction: row;
+
+		cursor: pointer;
+
+		.StatIcon {
+			margin-right: 8px;
+		}
+		.StatIcon svg path {
+			fill: $PrimaryTextColor;
+		}
+		.StatValue {
+			font-weight: bold;
+		}
+		.StatName {
+			margin-left: 0.25em;
+		}
+	}
+}
+
+.StatsContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.Loading {
+	font-style: italic;
+}
+
+@media (max-width: $breakpoint-tablet) {
+	.StatsContainer {
+		flex-direction: column;
+	}
+	.Stats {
+		margin-left: 0px;
+		margin-top: 8px;
+	}
+	.StatIcon {
+		margin-right: 0px;
+	}
+}

@@ -1,0 +1,123 @@
+@import "../../../vars.scss";
+
+.Card {
+	position: relative;
+	z-index: 0;
+	min-width: 300px;
+	max-width: 400px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	&::before {
+		content: "";
+		background: linear-gradient(
+			45deg,
+			#ff0000 0%,
+			#ff9a00 5%,
+			#d0de21 10%,
+			#4fdc4a 15%,
+			#3fdad8 20%,
+			#2fc9e2 25%,
+			#1c7dee 30%,
+			#5f15f2 35%,
+			#ba0cf8 40%,
+			#fb07d9 45%,
+			#ff0000 50%,
+			#fb07d9 55%,
+			#ba0cf8 60%,
+			#5f15f2 65%,
+			#1c7dee 70%,
+			#2fc9e2 75%,
+			#3fdad8 80%,
+			#4fdc4a 85%,
+			#d0de21 90%,
+			#ff9a00 95%,
+			#ff0000 100%
+		);
+		background-size: 400% 100%;
+		position: absolute;
+		inset: -3px;
+
+		border-radius: 16px;
+		filter: blur(8px);
+		z-index: -1;
+		animation: glowing 6s linear infinite;
+		transition: all 0.3s ease-in-out;
+		opacity: 0;
+	}
+
+	&:hover {
+		&::before {
+			opacity: 1;
+		}
+		&:after {
+			background-color: #000000;
+		}
+	}
+
+	&:after {
+		z-index: -1;
+		content: "";
+		position: absolute;
+		background-color: #363636;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		border-radius: 20px;
+	}
+
+	@keyframes glowing {
+		0% {
+			background-position: 0% 50%;
+		}
+		50% {
+			background-position: 100% 50%;
+		}
+		100% {
+			background-position: 0% 50%;
+		}
+	}
+
+	.CardInner {
+		padding: 10px;
+
+		h3 {
+			color: #ffb56f;
+			font-size: 3vh;
+			font-family: "Inter var", sans-serif;
+			text-transform: uppercase;
+			letter-spacing: 0.15vw;
+			margin: 0;
+			padding-bottom: 2vh;
+			font-weight: bolder;
+		}
+
+		p {
+			color: $PrimaryTextColor;
+			font-size: 2vh;
+			font-family: "Inter var", sans-serif;
+			margin: 0;
+			text-align: left;
+			font-weight: 200;
+		}
+	}
+
+	.Icon {
+		margin: 10%;
+
+		svg {
+			max-width: 200px;
+			max-height: 200px;
+		}
+	}
+}
+
+@media (max-width: $breakpoint-tablet) {
+	.Card {
+		width: 100%;
+		height: fit-content;
+	}
+}

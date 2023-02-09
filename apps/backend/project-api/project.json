@@ -1,0 +1,60 @@
+{
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"name": "project-api",
+	"sourceRoot": "apps/backend/project-api/src",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/webpack:webpack",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"target": "node",
+				"compiler": "tsc",
+				"outputPath": "dist/apps/backend/project-api",
+				"main": "apps/backend/project-api/src/server.ts",
+				"tsConfig": "apps/backend/project-api/tsconfig.json"
+			},
+			"configurations": {
+				"production": {
+					"optimization": true,
+					"extractLicenses": true,
+					"inspect": false
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nrwl/js:node",
+			"options": {
+				"buildTarget": "backend-project-api:build"
+			},
+			"configurations": {
+				"production": {
+					"buildTarget": "backend-project-api:build:production",
+					"inspect": false,
+					"watch": false
+				}
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"lintFilePatterns": ["apps/backend/project-api/src/**/*"]
+			},
+			"defaultConfiguration": "test",
+			"configurations": {
+				"fix": {
+					"fix": true
+				}
+			}
+		},
+		"test": {
+			"executor": "@nrwl/jest:jest",
+			"outputs": ["coverage/apps/backend/project-api"],
+			"options": {
+				"jestConfig": "apps/backend/project-api/jest.config.ts",
+				"passWithNoTests": true
+			}
+		}
+	},
+	"tags": ["backend"]
+}

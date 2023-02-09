@@ -1,0 +1,9 @@
+{
+	"extends": ["../../../.eslintrc.json"],
+	"parserOptions": {
+		"project": [
+			"(../../|./)tsconfig.base.json",
+			"(libs/types/types-project-api/|./)tsconfig.json"
+		]
+	}
+}

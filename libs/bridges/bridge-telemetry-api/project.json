@@ -1,0 +1,22 @@
+{
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/bridges/bridge-telemetry-api/src",
+	"projectType": "library",
+	"targets": {
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"options": {
+				"eslintConfig": ".eslintrc.json",
+				"lintFilePatterns": ["libs/bridges/bridge-telemetry-api/src/**/*"]
+			},
+			"defaultConfiguration": "test",
+			"configurations": {
+				"fix": {
+					"fix": true
+				}
+			}
+		}
+	},
+	"tags": [],
+	"implicitDependencies": ["backend-telemetry-api"]
+}
