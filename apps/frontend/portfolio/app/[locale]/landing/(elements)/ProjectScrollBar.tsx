@@ -45,29 +45,48 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 		}, 50);
 	}
 
-	function changePage(projectIndex: number, direction: 0 | -1) {
+	function changePage(projectIndex: number, direction: 1 | -1) {
+		const newProjectIndex = projectIndex + (direction === 1 ? 0 : -1);
 		// Animate the content to the opposite direction
-		MoveScrollContent(0, direction === 0 ? -100 : 100);
+		MoveScrollContent(0, direction * 100);
 
 		const backgroundDivs = document.querySelectorAll<HTMLDivElement>(
 			"#BackgroundDivs > div"
 		);
 		backgroundDivs.forEach((div) => {
 			div.style.opacity =
-				div.id === `BackgroundDiv_${projectIndex + direction}`
+				div.id === `BackgroundDiv_${newProjectIndex}`
 					? "1"
 					: "0";
 		});
 
+		// lock scroll to current position to avoid scrolling while the animation is running
+		const scrollPosition = window.pageYOffset + direction * 100; // + offset to make sure that the scroll is not too close to the previous div
+
+		const LockScroll = () => {
+			console.log(scrollPosition);
+			window.scrollTo({
+				top: scrollPosition,
+				behavior: "auto"
+			});
+		}
+		window.addEventListener("scroll", LockScroll);
+
 		// once the animation is done, change the page
 		setTimeout(() => {
-			const previousProject = ProjectsInfos[projectIndex + direction];
+			const previousProject = ProjectsInfos[newProjectIndex];
 			router.push(
 				`/${locale}${previousProject.url}${
-					direction === 0 ? "#bottom" : "#top"
+					direction === 1 ? "#bottom" : "#top"
 				}`
 			);
+
 		}, TransitionDuration);
+
+		// Unlock scroll after the transition is done
+		setTimeout(() => {
+			window.removeEventListener("scroll", LockScroll);
+		}, TransitionDuration * 2);
 	}
 
 	// Scroll to a specific position using a promise that is resolve once the scroll animation is done
@@ -137,12 +156,10 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 				end: "top bottom",
 				enable: false,
 				onEnter: () => {
-					changePage(i, 0);
+					changePage(i, 1);
 				},
 				onLeave:
-					i === 0
-						? undefined
-						: () => {
+					i === 0 ? undefined : () => {
 							changePage(i, -1);
 						},
 			});
