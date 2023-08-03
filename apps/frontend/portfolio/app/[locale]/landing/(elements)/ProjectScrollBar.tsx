@@ -48,7 +48,7 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 	function changePage(projectIndex: number, direction: 1 | -1) {
 		const newProjectIndex = projectIndex + (direction === 1 ? 0 : -1);
 		// Animate the content to the opposite direction
-		MoveScrollContent(0, direction * 100);
+		MoveScrollContent(0, direction * -100);
 
 		const backgroundDivs = document.querySelectorAll<HTMLDivElement>(
 			"#BackgroundDivs > div"

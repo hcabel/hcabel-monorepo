@@ -3,7 +3,7 @@ import { Routes as ProjectApiRoutes } from "@hcabel/bridges/ProjectApi";
 import ProceduralTerrainExperienceCanvas from "./ProceduralTerrainExperienceCanvas";
 
 export default async function ProjectsPage() {
-	const project = await ProjectApiRoutes.get_single_project("6345e3b8af50b44526418320");
+	const project = await ProjectApiRoutes.get_single_project("6339018aa4c9d89b6ed06751");
 	return (
 		<>
 			<ProceduralTerrainExperienceCanvas />

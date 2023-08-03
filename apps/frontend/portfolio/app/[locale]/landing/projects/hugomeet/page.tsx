@@ -4,7 +4,7 @@ import { Routes as ProjectApiRoutes } from "@hcabel/bridges/ProjectApi";
 import HugoMeetExperienceCanvas from "./HugoMeetExperienceCanvas";
 
 export default async function ProjectsPage() {
-	const project = await ProjectApiRoutes.get_single_project("6345e3b7af50b4452641831f");
+	const project = await ProjectApiRoutes.get_single_project("6338ffeb5e00275fb5051c9e");
 	return (
 		<>
 			<HugoMeetExperienceCanvas />
