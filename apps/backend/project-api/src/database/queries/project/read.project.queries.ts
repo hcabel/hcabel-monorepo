@@ -29,6 +29,7 @@ export function read_single(
 ): Promise<IProjectModel | null> {
 	return Project.table
 		.findOne(filter)
+		.limit(1)
 		.lean()
 		.exec()
 		.catch((error: any) => {

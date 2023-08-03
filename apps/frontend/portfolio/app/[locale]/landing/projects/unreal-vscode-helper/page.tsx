@@ -3,7 +3,7 @@ import { Routes as ProjectApiRoutes } from "@hcabel/bridges/ProjectApi";
 import UvchExperienceCanvas from "./UvchExperienceCanvas";
 
 export default async function ProjectsPage() {
-	const project = await ProjectApiRoutes.get_single_project("6345e3b3af50b4452641831e");
+	const project = await ProjectApiRoutes.get_single_project("633900a7471d8a488d9ab4a3");
 	return (
 		<>
 			<UvchExperienceCanvas />
