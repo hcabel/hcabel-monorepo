@@ -121,7 +121,10 @@ export default function ProjectScrollBar(props: IProjectScrollBarProps) {
 		return new Promise((resolve, reject) => {
 			// Timeout in case of error
 			const timeout = setTimeout(() => {
-				reject(`Timeout ${self.pageYOffset} !== ${targetPosition}`);
+				if (self.pageYOffset - targetPosition > 100)
+					reject(`Timeout ${self.pageYOffset} !== ${targetPosition}`);
+				else
+					resolve();
 			}, 2000);
 
 			function scrollHandler() {

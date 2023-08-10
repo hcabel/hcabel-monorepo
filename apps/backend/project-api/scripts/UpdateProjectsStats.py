@@ -7,77 +7,61 @@ from utils.mongo_db_utils import (
 	update_stats
 )
 
-def update_uvch_stats_info(db) -> None:
-	print("Updating UVCH project stats...")
-
-	# fetch projects info
-	uvch_github_repo = get_github_repo_data("https://api.github.com/repos/hcabel/UnrealVsCodeHelper")
-	uvch_vscode_extension = get_vscode_marketplace_data("HugoCabel.uvch").results[0].extensions[0]
-	uvch_youtube_video = get_youtube_video_data("https://www.youtube.com/watch?v=_usDZ6osnR4")
-
-	# get project info
-	uvch = db.projects.find_one({"name": "Unreal VsCode Helper"})
-	if (not uvch):
-		raise Exception("Failed to find project UVHC")
-
-	# update github stats stars
-	update_stats(db, uvch["_id"], "github", "stars", uvch_github_repo.stargazers_count)
-	update_stats(db, uvch["_id"], "github", "forks", uvch_github_repo.forks)
-
-	# update vscode stats
-	update_stats(db, uvch["_id"], "vscode marketplace", "installs", int(uvch_vscode_extension.statistics[0].value))
-
-	# update youtube stats
-	update_stats(db, uvch["_id"], "youtube", "views", int(uvch_youtube_video.items[0].statistics.view_count))
-
-	print("UVCH is now up to date!")
-
-def update_hugomeet_stats_info(db) -> None:
-	print("Updating HugoMeet project stats...")
-
-	# fetch projects info
-	hugomeet_github_repo = get_github_repo_data("https://api.github.com/repos/hcabel/HugoMeet")
-	hugomeet_youtube_video_fr = get_youtube_video_data("https://www.youtube.com/watch?v=XQ5PZToo1qo")
-	hugomeet_youtube_video_en = get_youtube_video_data("https://www.youtube.com/watch?v=2oupECsHxPU")
-
-	# get project info
-	hugomeet = db.projects.find_one({"name": "HugoMeet"})
-	if (not hugomeet):
-		raise Exception("Failed to find project HugoMeet")
-
-	# update github stats stars
-	update_stats(db, hugomeet["_id"], "github", "stars", hugomeet_github_repo.stargazers_count)
-	update_stats(db, hugomeet["_id"], "github", "forks", hugomeet_github_repo.forks)
-
-	# update youtube stats
-	update_stats(db, hugomeet["_id"], "youtube", "views - fr", int(hugomeet_youtube_video_fr.items[0].statistics.view_count))
-	update_stats(db, hugomeet["_id"], "youtube", "views - en", int(hugomeet_youtube_video_en.items[0].statistics.view_count))
-
-	print("HugoMeet is now up to date!")
-
-def update_procedural_terrain_stats_info(db) -> None:
-	print("Updating Procedural Terrain project stats...")
-
-	# fetch projects info
-	procedural_terrain_youtube_video = get_youtube_video_data("https://www.youtube.com/watch?v=MHB8Tn3zbqM&t=157s")
-
-	# get project info
-	procedural_terrain = db.projects.find_one({"name": "Procedural Terrain"})
-	if (not procedural_terrain):
-		raise Exception("Failed to find project Procedural Terrain")
-
-	# update youtube stats
-	update_stats(db, procedural_terrain["_id"], "youtube", "views", int(procedural_terrain_youtube_video.items[0].statistics.view_count))
-
-	print("Procedural Terrain is now up to date!")
+from projects import Project
+from stats import (
+	GitHubStars,
+	GithubForks,
+	YoutubeViews,
+	YoutubeViewsFr,
+	YoutubeViewsEn,
+	VsCodeInstalls
+)
 
 def main():
 	# connect to db
 	db = Connect()
 
-	update_uvch_stats_info(db)
-	update_hugomeet_stats_info(db)
-	update_procedural_terrain_stats_info(db)
+	projects = [
+		Project("Unreal VsCode Helper", [
+			GitHubStars("hcabel", "UnrealVsCodeHelper"),
+			GithubForks("hcabel", "UnrealVsCodeHelper"),
+			VsCodeInstalls("HugoCabel.uvch"),
+			YoutubeViews("https://www.youtube.com/watch?v=_usDZ6osnR4")
+		]),
+		Project("HugoMeet", [
+			GitHubStars("hcabel", "HugoMeet"),
+			GithubForks("hcabel", "HugoMeet"),
+			YoutubeViewsFr("https://www.youtube.com/watch?v=XQ5PZToo1qo"),
+			YoutubeViewsEn("https://www.youtube.com/watch?v=2oupECsHxPU")
+		]),
+		Project("Procedural Terrain", [
+			YoutubeViews("https://www.youtube.com/watch?v=MHB8Tn3zbqM")
+		])
+	]
+
+	# get all projects in the db
+	projects_in_db = db.projects.find()
+	# convert to list
+	projects_in_db = list(projects_in_db)
+
+	for project in projects:
+
+		# retrieve project in db
+		project_in_db = None
+		for project_db in projects_in_db:
+			if (project_db["name"] == project.name):
+				project_in_db = project_db
+				break
+
+		if (not project_in_db):
+			print(f"Error: project not found in db '{project.name}'")
+			continue
+
+		# update the stats in the db
+		for stat in project.stats:
+			stat.update()
+			update_stats(db, project_in_db["_id"], stat.platform, stat.name, stat.value, stat.get_url())
+			print(f"Updated stat: {project.name}: {stat}")
 
 if (__name__ == "__main__"):
 	load_dotenv()
